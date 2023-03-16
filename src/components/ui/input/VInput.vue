@@ -438,10 +438,7 @@ export default {
 
 <style lang="scss" module>
     $white-color: $white;
-    $grey-light-color: $grey-middle;
-    $grey-color: $grey;
-    $black-color: $base-600;
-    $active-color: $violet;
+    $black-color: $base-900;
     $alert-color: $error;
     $success-color: $accept;
 
@@ -482,7 +479,7 @@ export default {
 
             .premask,
             .label {
-                color: $grey-color;
+                color: $base-100;
             }
         }
 

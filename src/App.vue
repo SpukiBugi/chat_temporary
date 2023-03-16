@@ -1,4 +1,5 @@
 <template>
+    <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget :class="[$style.App, $style.reset]">
         <div :class="$style.circle"></div>
 

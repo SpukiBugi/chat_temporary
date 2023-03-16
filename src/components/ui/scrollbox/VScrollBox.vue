@@ -317,7 +317,7 @@ export default {
 </script>
 
 <style lang="scss" module>
-    $scrollbar-color: $violet;
+    $scrollbar-color: $base-200;
 
     .VScrollBox {
         position: relative;
@@ -363,8 +363,8 @@ export default {
         bottom: 0;
         z-index: 1;
         overflow: hidden;
-        width: 6px;
-        margin-right: 3px;
+        width: 4px;
+        margin-right: 4px;
 
         &._horizontal {
             left: 0;
