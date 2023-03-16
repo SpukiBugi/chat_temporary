@@ -14,11 +14,6 @@ export default {
     name: 'VButton',
 
     props: {
-        name: {
-            type: String,
-            required: true,
-        },
-
         size: {
             type: String,
             default: 'size-24',

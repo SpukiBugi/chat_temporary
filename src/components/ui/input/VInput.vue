@@ -190,9 +190,10 @@ export default {
             currentMask: '',
 
             /** Border */
-            tween: null,
-            positionX: -200,
-            positionY: -200,
+            mouseTween: null,
+            roundTween: null,
+            borderX: 0,
+            borderY: 0,
         };
     },
 
@@ -266,7 +267,7 @@ export default {
         borderStyle() {
             return [
                 {
-                    maskImage: `radial-gradient(35% 35px at ${this.positionX}% ${this.positionY}%, black 60%, transparent)`,
+                    maskImage: `radial-gradient(35% 35px at ${this.borderX}% ${this.borderY}%, black 60%, transparent)`,
                 },
             ];
         },
@@ -286,11 +287,14 @@ export default {
     },
 
     mounted() {
+        this.tweenAround();
         window.addEventListener('mousemove', this.onMouseMove);
     },
 
     beforeDestroy() {
         window.removeEventListener('mousemove', this.onMouseMove);
+        this.stopTweenAround();
+        this.stopTweenOnMouse();
     },
 
     methods: {
@@ -392,6 +396,84 @@ export default {
 
         onMouseMove(e) {
             const elRect = this.$refs.border?.getBoundingClientRect();
+            const mouseGap = 30;
+
+            /** Проверка что курсор находится недалеко от элемента */
+            if ((elRect.left - mouseGap < e.clientX && elRect.right + mouseGap > e.clientX)
+                && (elRect.top - mouseGap < e.clientY && elRect.bottom + mouseGap > e.clientY)) {
+                this.tweenOnMouse(e, elRect);
+            } else {
+                this.tweenAround();
+            }
+        },
+
+        tweenAround() {
+            if (this.roundTween || this.value) {
+                return;
+            }
+
+            this.stopTweenOnMouse();
+
+            const steps = [{ x: 80, y: 0, duration: .4 }, { x: 110, y: 50, duration: .4 }, { x: 80, y: 100, duration: .5 }, { x: 50, y: 130, duration: .4 }, { x: 20, y: 100, duration: .4 }, { x: -10, y: 50, duration: .4 }, { x: 20, y: 0, duration: .5 }, { x: 50, y: -30, duration: .4 }];
+
+            /** Подвод к вращению из текущей позиции */
+            const startTimeline = gsap.timeline();
+            const startTweenObj = {
+                x: this.borderX,
+                y: this.borderY,
+            };
+            const startStep = steps.findIndex(el => {
+                if (this.borderY > 50) {
+                    return el.x < this.borderX && el.y >= 50;
+                } else {
+                    return el.x > this.borderX && el.y <= 50;
+                }
+            });
+            const startSteps = steps.slice(startStep);
+            startSteps[0].duration = .6;
+
+            startSteps.forEach(step => {
+                startTimeline.to(startTweenObj, {
+                    ...step,
+                    onUpdate: () => {
+                        this.borderX = startTweenObj.x;
+                        this.borderY = startTweenObj.y;
+                    },
+
+                    ease: 'none',
+                });
+            });
+            //
+
+            /** Основная анимация вращения */
+            const mainTimeline = gsap.timeline({
+                repeat: -1,
+            });
+            const mainTweenObj = {
+                x: 50,
+                y: -30,
+            };
+
+            steps.forEach(step => {
+                mainTimeline.to(mainTweenObj, {
+                    ...step,
+                    onUpdate: () => {
+                        this.borderX = mainTweenObj.x;
+                        this.borderY = mainTweenObj.y;
+                    },
+
+                    ease: 'none',
+                });
+            });
+            //
+
+            this.roundTween = gsap.timeline();
+            this.roundTween.add(startTimeline);
+            this.roundTween.add(mainTimeline);
+        },
+
+        tweenOnMouse(e, elRect) {
+            this.stopTweenAround();
 
             if (!elRect) {
                 return;
@@ -400,18 +482,9 @@ export default {
             const xPerc = (e.clientX - elRect.left) / elRect.width * 100;
             const yPerc = (e.clientY - elRect.top) / elRect.height * 100;
 
-            /** Оптимизация чтобы значения менялись только если курсор рядом */
-            if ((xPerc < -200 || xPerc > 200) || (yPerc < -200 || yPerc > 200)) {
-                this.tween?.kill();
-
-                return;
-            }
-            /** */
-
-            /** Плавное изменение значений */
             const tweenObj = {
-                x: this.positionX,
-                y: this.positionY,
+                x: this.borderX,
+                y: this.borderY,
             };
             const tweenObjNew = {
                 x: xPerc,
@@ -422,15 +495,24 @@ export default {
                 duration: 1,
                 ...tweenObjNew,
                 onUpdate: () => {
-                    this.positionX = tweenObj.x;
-                    this.positionY = tweenObj.y;
+                    this.borderX = tweenObj.x;
+                    this.borderY = tweenObj.y;
                 },
 
                 ease: 'power3.out',
             };
 
-            this.tween = gsap.to(tweenObj, options);
-            /** */
+            this.mouseTween = gsap.to(tweenObj, options);
+        },
+
+        stopTweenOnMouse() {
+            this.mouseTween?.kill();
+            this.mouseTween = null;
+        },
+
+        stopTweenAround() {
+            this.roundTween?.kill();
+            this.roundTween = null;
         },
     },
 };
@@ -513,15 +595,15 @@ export default {
             .label {
                 opacity: 0;
             }
+
+            .border {
+                opacity: 0;
+            }
         }
 
         &._focused {
             .native {
                 border-color: $primary-500;
-            }
-
-            .border {
-                opacity: 0;
             }
         }
 
