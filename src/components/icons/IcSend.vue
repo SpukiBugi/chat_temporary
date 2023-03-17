@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name: 'Send',
+    name: 'ISend',
 };
 </script>

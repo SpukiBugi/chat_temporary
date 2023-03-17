@@ -2,8 +2,8 @@
     <component
         :is="component"
         v-bind="linkProperties"
-        class="v-button"
-        :class="classList"
+        :class="[$style.VButton, ...classList]"
+        v-on="$listeners"
     >
         <slot />
     </component>
@@ -47,8 +47,11 @@ export default {
     computed: {
         classList() {
             return [
-                this.size,
-                this.color,
+                {
+                    [this.$style[`_${this.size}`]]: this.size,
+                    [this.$style[`_${this.color}`]]: this.color,
+                    [this.$style._disabled]: this.disabled,
+                },
             ];
         },
 
@@ -81,8 +84,8 @@ export default {
 };
 </script>
 
-<style lang='scss'>
-    .v-button {
+<style lang='scss' module>
+    .VButton {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -91,7 +94,7 @@ export default {
         user-select: none;
 
         /** Sizes */
-        &.size-24 {
+        &._size-24 {
             height: 24px;
             padding: 0 7px;
             border-radius: 8px;
@@ -104,7 +107,7 @@ export default {
         /** End Sizes */
 
         /** Colors */
-        &.primary-100 {
+        &._primary-100 {
             border: 1px solid $primary-200;
             background-color: $primary-100;
             color: $primary-500;
@@ -122,6 +125,27 @@ export default {
             &._disabled {
                 border-color: $primary-100;
                 color: $primary-300;
+            }
+        }
+
+        &._base-100 {
+            border: 1px solid $base-200;
+            background-color: $base-100;
+            color: $base-500;
+
+            @include hover {
+                background-color: $base-200;
+                color: $base-600;
+            }
+
+            &:active {
+                background-color: $primary-500;
+                color: $white;
+            }
+
+            &._disabled {
+                border-color: $base-100;
+                color: $base-300;
             }
         }
 

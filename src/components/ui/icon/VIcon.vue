@@ -2,7 +2,8 @@
     <component
         :is="component"
         class="v-icon"
-        :class="classList"
+        :class="[$style.VIcon, ...classList]"
+        @click.native="$emit('click')"
     />
 </template>
 
@@ -18,14 +19,16 @@ export default {
 
         size: {
             type: String,
-            default: 'size-20',
+            default: '',
         },
     },
 
     computed: {
         classList() {
             return [
-                this.size,
+                {
+                    [this.$style[`_${this.size}`]]: this.size,
+                }
             ];
         },
 
@@ -36,21 +39,21 @@ export default {
 };
 </script>
 
-<style lang='scss'>
-    .v-icon {
+<style lang='scss' module>
+    .VIcon {
         fill: currentColor;
 
-        &.size-20 {
+        &._size-20 {
             width: 20px;
             height: 20px;
         }
 
-        &.size-16 {
+        &._size-16 {
             width: 16px;
             height: 16px;
         }
 
-        &.size-12 {
+        &._size-12 {
             width: 12px;
             height: 12px;
         }

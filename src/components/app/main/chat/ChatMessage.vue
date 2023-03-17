@@ -4,11 +4,11 @@
             <div :class="$style.bubbleText" v-html="item.text"></div>
 
             <div v-if="item.type === 'answer'" :class="$style.rate">
-                <VButtonIcon name="Like"
+                <VButtonIcon name="IcLike"
                              icon-size="size-12"
                              :class="[$style.rateItem, $style._dislike]"
                 />
-                <VButtonIcon name="Like"
+                <VButtonIcon name="IcLike"
                              icon-size="size-12"
                              :class="[$style.rateItem, $style._like]"
                 />
@@ -52,6 +52,12 @@ export default {
         line-height: 18px;
         letter-spacing: -.015em;
 
+        @include hover {
+            .rate {
+                opacity: 1;
+            }
+        }
+
         &._question {
             margin-left: auto;
             text-align: right;
@@ -85,7 +91,9 @@ export default {
         padding: 4px;
         border-radius: 12px;
         background-color: $white;
+        opacity: 0;
         transform: translateY(50%);
+        transition: $default-transition;
     }
 
     .rateItem {

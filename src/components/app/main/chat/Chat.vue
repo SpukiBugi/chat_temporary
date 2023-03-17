@@ -1,14 +1,15 @@
 <template>
     <div :class="$style.Chat">
-        <div :class="$style.head">
-            <VButton :class="$style.about">Обо мне</VButton>
-            <VIcon name="CloseCircle" :class="$style.close" />
-        </div>
-
         <ChatMessages
+            v-if="history.length"
             :history="history"
             :class="$style.messages"
         />
+
+        <div v-else :class="$style.hello">
+            <p>Привет! Я Сова – </p>
+            <p :class="$style.helloBottom">отвечу на вопрос за 4 секунды</p>
+        </div>
 
         <div :class="$style.inputWrap">
             <VInput
@@ -19,7 +20,7 @@
             />
 
             <div :class="$style.send">
-                <VIcon name="Send"
+                <VIcon name="IcSend"
                        size="size-16"
                        :class="$style.sendIcn"
                 />
@@ -29,15 +30,13 @@
 </template>
 
 <script>
-import VInput from '@/components/ui/input/VInput.vue';
-import ChatMessages from '@/components/app/chat/ChatMessages.vue';
+import ChatMessages from '@/components/app/main/chat/ChatMessages.vue';
 import testHistory from '@/assets/json/testHistory';
 
 export default {
     name: 'Chat',
 
     components: {
-        VInput,
         ChatMessages,
     },
 
@@ -56,36 +55,18 @@ export default {
 
 <style lang='scss' module>
     .Chat {
-        position: fixed;
-        right: 32px;
-        bottom: 32px;
-        width: 356px;
-        padding-bottom: 8px;
-        border-radius: 24px;
-        background-color: white;
+        width: 100%;
     }
 
-    .head {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        padding: 12px;
+    .hello {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: -.02em;
     }
 
-    .close {
-        margin-bottom: 2px;
+    .helloBottom {
         color: $base-300;
-        transition: $default-transition;
-        cursor: pointer;
-        user-select: none;
-
-        @include hover {
-            color: $base-600;
-        }
-
-        &:active {
-            color: $primary-500;
-        }
     }
 
     .inputWrap {
@@ -98,13 +79,24 @@ export default {
         position: absolute;
         top: 50%;
         right: 8px;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 48px;
         height: 48px;
+        color: $primary-500;
         transform: translateY(-50%);
+        transition: $default-transition;
+        cursor: pointer;
         user-select: none;
-        pointer-events: none;
+
+        @include hover {
+            color: $primary-600;
+        }
+
+        &:active {
+            color: $primary-900;
+        }
     }
 </style>

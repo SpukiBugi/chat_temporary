@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.ChatMessages">
-        <VScrollBox :class="$style.scrollable">
+        <VScrollBox ref="scrollbox" :class="$style.scrollable">
             <div :class="$style.list">
                 <ChatMessage
                     v-for="item in history"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ChatMessage from '@/components/app/chat/ChatMessage.vue';
+import ChatMessage from '@/components/app/main/chat/ChatMessage.vue';
 import VScrollBox from '@/components/ui/scrollbox/VScrollBox.vue';
 
 export default {
@@ -33,11 +33,28 @@ export default {
     },
 
     data() {
-        return {};
+        return {
+        };
+    },
+
+    watch: {
+        history() {
+            this.scrollToBottom();
+        },
+    },
+
+    mounted() {
+        this.scrollToBottom(true);
     },
 
     methods: {
+        scrollToBottom(isFirst) {
+            const container = this.$refs.scrollbox.$refs.wrapper;
 
+            if (isFirst || (container.scrollTop + container.clientHeight === container.scrollHeight)) {
+                container.scrollTop = container.scrollHeight;
+            }
+        },
     },
 };
 </script>

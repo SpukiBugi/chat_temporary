@@ -21,17 +21,6 @@
                 :style="borderStyle"
             />
 
-            <span
-                v-if="suffixIcon"
-                :class="$style.suffix"
-            >
-                <svg-icon
-                    :class="`icon-${suffixIcon}`"
-                    :name="suffixIcon"
-                />
-            </span>
-
-
             <div
                 v-if="premask"
                 :class="$style.premask"
@@ -139,14 +128,6 @@ export default {
         },
 
         /**
-         * Можно передать название иконки svg-sprite, для отображения в поле ввода
-         */
-        suffixIcon: {
-            type: String,
-            default: '',
-        },
-
-        /**
          * Параметр маски инпута, если необходим
          * @values phone, date, time, number, snils, inn, passport, payment, percent, year, pin, months
          */
@@ -204,7 +185,6 @@ export default {
                 [this.$style[`_${this.size}`]]: this.size,
                 [this.$style._focused]: this.isFocused,
                 [this.$style._active]: this.value || this.isFocused,
-                [this.$style._suffix]: this.suffixIcon,
                 [this.$style._disabled]: this.disabled,
                 [this.$style._error]: this.error,
                 [this.$style._showLabel]: Boolean(this.label),
@@ -673,23 +653,6 @@ export default {
         position: relative;
         z-index: 2;
         overflow: hidden;
-    }
-
-    .suffix {
-        position: absolute;
-        top: 0;
-        right: 6px;
-        height: 100%;
-        text-align: center;
-        color: $black-color;
-
-        &:after {
-            content: "";
-            display: inline-block;
-            width: 0;
-            height: 100%;
-            vertical-align: middle;
-        }
     }
 
     .premask {

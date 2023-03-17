@@ -1,20 +1,22 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget :class="[$style.App, $style.reset]">
-        <div :class="$style.circle"></div>
+        <Avatar :class="$style.circle" />
 
-        <Chat />
+        <Main />
     </my-widget>
 </template>
 
 <script>
-import Chat from '@/components/app/Chat.vue';
+import Avatar from '@/components/ui/Avatar.vue';
+import Main from '@/components/app/Main.vue';
 
 export default {
     name: 'AudioGuideExample',
 
     components: {
-        Chat,
+        Avatar,
+        Main,
     },
 };
 </script>
@@ -28,12 +30,6 @@ export default {
         position: fixed;
         right: 32px;
         bottom: 32px;
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background-image: url('/bot.gif');
-        background-position: center;
-        background-size: contain;
     }
 </style>
 

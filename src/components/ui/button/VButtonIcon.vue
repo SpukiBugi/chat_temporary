@@ -1,9 +1,14 @@
 <template>
-    <div class="v-button-icon" :class="classList">
+    <component
+        :is="component"
+        v-bind="linkProperties"
+        :class="[$style.VButtonIcon, ...classList]"
+        v-on="$listeners"
+    >
         <VIcon :name="name"
                :size="iconSize"
         />
-    </div>
+    </component>
 </template>
 
 <script>
@@ -30,6 +35,21 @@ export default {
             type: String,
             default: 'size-20',
         },
+
+        href: {
+            type: String,
+            default: '',
+        },
+
+        blank: {
+            type: Boolean,
+            default: false,
+        },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -39,9 +59,34 @@ export default {
     computed: {
         classList() {
             return [
-                this.size,
-                this.color,
+                {
+                    [this.$style[`_${this.size}`]]: this.size,
+                    [this.$style[`_${this.color}`]]: this.color,
+                    [this.$style._disabled]: this.disabled,
+                },
             ];
+        },
+
+        component() {
+            if (this.href) {
+                return 'a';
+            }
+
+            return 'button';
+        },
+
+        linkProperties() {
+            const linkProperties = {};
+
+            if (this.href) {
+                linkProperties.href = this.href;
+            }
+
+            if (this.blank) {
+                linkProperties.target = '_blank';
+            }
+
+            return linkProperties;
         },
     },
 
@@ -51,8 +96,8 @@ export default {
 };
 </script>
 
-<style lang='scss'>
-    .v-button-icon {
+<style lang='scss' module>
+    .VButtonIcon {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -61,7 +106,7 @@ export default {
         user-select: none;
 
         /** Sizes */
-        &.size-20 {
+        &._size-20 {
             width: 20px;
             height: 20px;
             border-radius: 8px;
@@ -70,7 +115,7 @@ export default {
         /** End Sizes */
 
         /** Colors */
-        &.base-100 {
+        &._base-100 {
             border: 1px solid $base-200;
             background-color: $base-100;
             color: $base-400;

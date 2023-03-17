@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name: 'CloseCircle',
+    name: 'IcCloseCircle',
 };
 </script>

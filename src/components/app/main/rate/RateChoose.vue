@@ -1,0 +1,204 @@
+<template>
+    <div :class="[$style.RateChoose, {[$style._rated]: values.rating}]">
+        <div :class="$style.title">
+            Насколько легко
+            <br>
+            пользоваться сайтом?
+        </div>
+
+        <div :class="$style.smiles">
+            <div
+                v-for="smile in smiles"
+                :key="smile.value"
+                :class="[$style.smile, {[$style._active]: smile.value === values.rating}]"
+                @click="values.rating = smile.value"
+            >
+            </div>
+        </div>
+
+        <Expander :is-open="Boolean(values.rating)" :class="$style.inputExpander">
+            <div :class="$style.inputWrap">
+                <VInput
+                    v-model="values.question"
+                    :autocomplete="false"
+                    placeholder="Напишите комментарий"
+                    :class="$style.input"
+                />
+
+                <div :class="$style.send">
+                    <VIcon name="IcSend"
+                           size="size-16"
+                           :class="$style.sendIcn"
+                    />
+                </div>
+            </div>
+        </Expander>
+
+        <div :class="$style.btns">
+            <VButton
+                color="base-100"
+                :class="$style.btn"
+            >
+                Сделать скриншот
+            </VButton>
+            <VButton
+                color="base-100"
+                :class="$style.btn"
+            >
+                Прикрепить фото
+            </VButton>
+        </div>
+    </div>
+</template>
+
+<script>
+import Expander from '@/components/ui/Expander.vue';
+
+export default {
+    name: 'RateChoose',
+
+    components: {
+        Expander,
+    },
+
+    data() {
+        return {
+            values: {
+                rating: null,
+                question: '',
+            },
+
+            smiles: [
+                {
+                    value: 1,
+                },
+                {
+                    value: 2,
+                },
+                {
+                    value: 3,
+                },
+                {
+                    value: 4,
+                },
+                {
+                    value: 5,
+                },
+            ],
+        };
+    },
+
+    methods: {
+
+    },
+};
+</script>
+
+<style lang='scss' module>
+    .RateChoose {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+
+        &._rated {
+            .title {
+                font-size: 13px;
+                line-height: 16px;
+            }
+
+            .smiles {
+                margin-top: 50px;
+            }
+
+            .smile {
+                &:not(._active) {
+                    filter: grayscale(1);
+                    opacity: .48;
+                }
+            }
+        }
+    }
+
+    .title {
+        margin-top: 46px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+        letter-spacing: -.015em;
+        transition: $default-transition;
+    }
+
+    .smiles {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 82px;
+        transition: $default-transition;
+    }
+
+    .smile {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: yellow;
+        transition: $default-transition;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            transform: scale(1.18);
+        }
+
+        &._active {
+            transform: scale(1.18);
+        }
+    }
+
+    .btns {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 20px 20px 12px;
+        border-radius: 24px;
+        background-color: $white;
+        gap: 6px;
+    }
+
+    .inputExpander {
+        margin-top: auto;
+    }
+
+    .inputWrap {
+        position: relative;
+        padding: 0 8px;
+    }
+
+    .send {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        color: $primary-500;
+        transform: translateY(-50%);
+        transition: $default-transition;
+        cursor: pointer;
+        user-select: none;
+
+        @include hover {
+            color: $primary-600;
+        }
+
+        &:active {
+            color: $primary-900;
+        }
+    }
+</style>
