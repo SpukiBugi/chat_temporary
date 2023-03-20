@@ -17,7 +17,7 @@
         </div>
 
         <Expander :is-open="Boolean(values.rating)" :class="$style.inputExpander">
-            <div :class="$style.inputWrap">
+            <form :class="$style.inputWrap" @submit.prevent="onSubmit">
                 <VInput
                     v-model="values.question"
                     :autocomplete="false"
@@ -25,13 +25,13 @@
                     :class="$style.input"
                 />
 
-                <div :class="$style.send">
+                <button :class="$style.send">
                     <VIcon name="IcSend"
                            size="size-16"
                            :class="$style.sendIcn"
                     />
-                </div>
-            </div>
+                </button>
+            </form>
         </Expander>
 
         <div :class="$style.btns">
@@ -89,7 +89,9 @@ export default {
     },
 
     methods: {
-
+        onSubmit() {
+            this.$emit('go-rate-step', 'Bye');
+        },
     },
 };
 </script>

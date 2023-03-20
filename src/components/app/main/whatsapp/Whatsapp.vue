@@ -1,13 +1,27 @@
 <template>
-    <div :class="$style.Whatsapp">
-        <div :class="$style.image"></div>
+    <a :class="$style.Whatsapp"
+       href="https://www.google.com/"
+       target="_blank"
+    >
+        <VueQrcode
+            :value="'https://www.google.com/'"
+            :options="{ width: 176 }"
+            tag="svg"
+            :class="$style.image"
+        />
         <div :class="$style.text">Нажмите для перехода к менеджеру<br>или наведите камеру на QR-код</div>
-    </div>
+    </a>
 </template>
 
 <script>
+import VueQrcode from '@chenfengyuan/vue-qrcode';
+
 export default {
     name: 'Whatsapp',
+
+    components: {
+        VueQrcode,
+    },
 
     data() {
         return {};
@@ -30,8 +44,6 @@ export default {
         width: 176px;
         height: 176px;
         margin-top: 40px;
-        border-radius: 24px;
-        background-color: black;
     }
 
     .text {

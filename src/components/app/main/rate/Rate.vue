@@ -2,9 +2,10 @@
     <div :class="$style.Rate">
         <transition name="widget-sova-fade" mode="out-in">
             <component
-                :is="currentStep.component"
+                :is="currentRateStep.component"
                 :class="$style.content"
-                @go-step="onGoStep"
+                @go-rate-step="onGoRateStep"
+                @go-step="$emit('go-step', $event)"
             />
         </transition>
     </div>
@@ -16,8 +17,8 @@ export default {
 
     data() {
         return {
-            stepId: 'Hello',
-            steps: [
+            rateStepId: 'Hello',
+            rateSteps: [
                 {
                     id: 'Hello',
                     component: () => import('@/components/app/main/rate/RateHello.vue'),
@@ -26,19 +27,23 @@ export default {
                     id: 'Choose',
                     component: () => import('@/components/app/main/rate/RateChoose.vue'),
                 },
+                {
+                    id: 'Bye',
+                    component: () => import('@/components/app/main/rate/RateBye.vue'),
+                },
             ],
         };
     },
 
     computed: {
-        currentStep() {
-            return this.steps.find(el => el.id === this.stepId);
+        currentRateStep() {
+            return this.rateSteps.find(el => el.id === this.rateStepId);
         },
     },
 
     methods: {
-        onGoStep(val) {
-            this.stepId = val;
+        onGoRateStep(val) {
+            this.rateStepId = val;
         },
     },
 };
@@ -50,6 +55,6 @@ export default {
     }
 
     .content {
-        height: 284px;
+        height: 100%;
     }
 </style>

@@ -4,7 +4,9 @@ import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        vue(),
+    ],
 
     resolve: {
         alias: {
@@ -18,6 +20,14 @@ export default defineConfig({
             scss: {
                 additionalData: '@import "@/assets/scss/shared.scss";',
             },
+        },
+    },
+
+    build: {
+        lib: {
+            entry: resolve(__dirname, './src/main.js'),
+            name: 'widget-sova',
+            fileName: 'widget-sova',
         },
     },
 

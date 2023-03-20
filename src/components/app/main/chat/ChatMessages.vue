@@ -1,11 +1,19 @@
 <template>
     <div :class="$style.ChatMessages">
-        <VScrollBox ref="scrollbox" :class="$style.scrollable">
+        <VScrollBox ref="scrollbox"
+                    resizable
+                    :class="$style.scrollable"
+        >
             <div :class="$style.list">
                 <ChatMessage
                     v-for="item in history"
                     :key="item.id"
                     :item="item"
+                    :class="$style.message"
+                />
+
+                <ChatPreload
+                    v-if="isLoading"
                     :class="$style.message"
                 />
             </div>
@@ -14,21 +22,28 @@
 </template>
 
 <script>
-import ChatMessage from '@/components/app/main/chat/ChatMessage.vue';
 import VScrollBox from '@/components/ui/scrollbox/VScrollBox.vue';
+import ChatMessage from '@/components/app/main/chat/ChatMessage.vue';
+import ChatPreload from '@/components/app/main/chat/ChatPreload.vue';
 
 export default {
     name: 'ChatMessages',
 
     components: {
-        ChatMessage,
         VScrollBox,
+        ChatMessage,
+        ChatPreload,
     },
 
     props: {
         history: {
             type: Array,
             default: () => [],
+        },
+
+        isLoading: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -38,22 +53,21 @@ export default {
     },
 
     watch: {
-        history() {
-            this.scrollToBottom();
+        isLoading() {
+            this.$nextTick(() => {
+                this.scrollToBottom();
+            });
         },
     },
 
     mounted() {
-        this.scrollToBottom(true);
+        this.scrollToBottom();
     },
 
     methods: {
-        scrollToBottom(isFirst) {
+        scrollToBottom() {
             const container = this.$refs.scrollbox.$refs.wrapper;
-
-            if (isFirst || (container.scrollTop + container.clientHeight === container.scrollHeight)) {
-                container.scrollTop = container.scrollHeight;
-            }
+            container.scrollTop = container.scrollHeight;
         },
     },
 };
@@ -71,7 +85,7 @@ export default {
     .list {
         display: flex;
         flex-direction: column;
-        padding: 0 16px;
+        padding: 0 16px 20px;
     }
 
     .message {

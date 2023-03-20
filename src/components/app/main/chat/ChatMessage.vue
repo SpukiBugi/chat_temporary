@@ -13,13 +13,31 @@
                              :class="[$style.rateItem, $style._like]"
                 />
             </div>
+            <ChatMessageFlat v-if="item.flat"
+                             :flat="item.flat"
+                             :class="$style.flat"
+            />
         </div>
+        <VButton v-if="item.flat && item.flat.link"
+                 :href="item.flat.link"
+                 size="size-40"
+                 blank
+                 :class="$style.link"
+        >
+            Смотреть
+        </VButton>
     </div>
 </template>
 
 <script>
+import ChatMessageFlat from '@/components/app/main/chat/message/ChatMessageFlat.vue';
+
 export default {
     name: 'ChatMessage',
+
+    components: {
+        ChatMessageFlat,
+    },
 
     props: {
         item: {
@@ -48,6 +66,9 @@ export default {
 
 <style lang='scss' module>
     .ChatMessage {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
         font-size: 13px;
         line-height: 18px;
         letter-spacing: -.015em;
@@ -83,6 +104,33 @@ export default {
         padding: 12px 16px;
     }
 
+    .bubbleText {
+        a {
+            position: relative;
+            color: $primary-500;
+            transition: $default-transition;
+
+            &:hover {
+                filter: brightness(.7);
+            }
+
+            &:after {
+                content: '';
+                position: relative;
+                top: 2px;
+                display: inline-block;
+                width: 13px;
+                height: 13px;
+                margin-left: 4px;
+                border-radius: 3px;
+                background-image: url('/link.svg');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
+        }
+    }
+
     .rate {
         position: absolute;
         right: 12px;
@@ -104,5 +152,9 @@ export default {
         &._dislike {
             transform: rotate(180deg);
         }
+    }
+
+    .link {
+        margin-top: 8px;
     }
 </style>

@@ -94,6 +94,16 @@ export default {
         user-select: none;
 
         /** Sizes */
+        &._size-40 {
+            height: 40px;
+            padding: 0 15px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 16px;
+            letter-spacing: -.01em;
+        }
+
         &._size-24 {
             height: 24px;
             padding: 0 7px;
