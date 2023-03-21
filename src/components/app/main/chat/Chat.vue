@@ -5,6 +5,7 @@
             :history="history"
             :is-loading="isLoading"
             :class="$style.messages"
+            @set-rating="onSetRating"
         />
 
         <div v-else :class="$style.hello">
@@ -138,6 +139,13 @@ export default {
                     });
                 }, 4000);
             });
+        },
+
+        onSetRating({ value, item }) {
+            const index = this.history.findIndex(el => el.id === item.id);
+            this.history.splice(index, 1, { ...item, rating: value });
+            /** Запрос на изменение */
+            //
         },
     },
 };

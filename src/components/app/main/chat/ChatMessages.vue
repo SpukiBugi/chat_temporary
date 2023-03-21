@@ -10,6 +10,7 @@
                     :key="item.id"
                     :item="item"
                     :class="$style.message"
+                    @set-rating="$emit('set-rating', $event)"
                 />
 
                 <ChatPreload

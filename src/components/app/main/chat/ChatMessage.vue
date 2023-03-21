@@ -2,15 +2,18 @@
     <div :class="[$style.ChatMessage, ...classList]">
         <div :class="$style.bubble">
             <div :class="$style.bubbleText" v-html="item.text"></div>
-
             <div v-if="item.type === 'answer'" :class="$style.rate">
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
-                             :class="[$style.rateItem, $style._dislike]"
+                             :color="item.rating === false ? 'primary-500' : 'base-100'"
+                             :class="[$style.rateItem, $style._dislike, {[$style._active]: item.rating === false }]"
+                             @click="$emit('set-rating', {value: item.rating === false ? null : false, item: item})"
                 />
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
-                             :class="[$style.rateItem, $style._like]"
+                             :color="item.rating === true ? 'primary-500' : 'base-100'"
+                             :class="[$style.rateItem, $style._like, {[$style._active]: item.rating === true }]"
+                             @click="$emit('set-rating', {value: item.rating === true ? null : true, item: item})"
                 />
             </div>
             <ChatMessageFlat v-if="item.flat"
@@ -18,6 +21,7 @@
                              :class="$style.flat"
             />
         </div>
+
         <VButton v-if="item.link"
                  :href="item.link"
                  size="size-40"
@@ -54,6 +58,9 @@ export default {
         classList() {
             return [
                 this.$style[`_${this.item.type}`],
+                {
+                    [this.$style._rated]: typeof this.item.rating == 'boolean',
+                },
             ];
         },
     },
@@ -75,7 +82,12 @@ export default {
 
         @include hover {
             .rate {
+                width: 52px;
                 opacity: 1;
+            }
+
+            .rateItem._dislike {
+                transform: translateX(calc(-100% - 4px)) rotate(-180deg);
             }
         }
 
@@ -95,6 +107,12 @@ export default {
             .bubble {
                 border-radius: 16px 16px 16px 4px;
                 background-color: $base-100;
+            }
+        }
+
+        &._rated {
+            .rate {
+                opacity: 1;
             }
         }
     }
@@ -136,7 +154,8 @@ export default {
         right: 12px;
         bottom: 0;
         display: flex;
-        padding: 4px;
+        width: 28px;
+        height: 28px;
         border-radius: 12px;
         background-color: $white;
         opacity: 0;
@@ -145,12 +164,17 @@ export default {
     }
 
     .rateItem {
-        &:not(:last-child) {
-            margin-right: 4px;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        transition: $default-transition;
+
+        &._active {
+            z-index: 1;
         }
 
         &._dislike {
-            transform: rotate(180deg);
+            transform: rotate(-180deg);
         }
     }
 
