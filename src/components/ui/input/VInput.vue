@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import gsap from 'gsap';
+import { gsap } from 'gsap/dist/gsap.min.js';
 
 // Utils
 import { masks, numberInputs, addMask, setCursor } from '~/assets/js/utils/mask-utils';

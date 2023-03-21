@@ -28,6 +28,22 @@ export default defineConfig({
             entry: resolve(__dirname, './src/main.js'),
             name: 'widget-sova',
             fileName: 'widget-sova',
+            formats: ['es'],
+        },
+
+        rollupOptions: {
+            external: ['vue/dist/vue.min.js', 'gsap/dist/gsap.min.js'],
+            output: {
+                globals: {
+                    'vue/dist/vue.min.js': 'Vue',
+                    'gsap/dist/gsap.min.js': 'gsap',
+                },
+
+                paths: {
+                    'vue/dist/vue.min.js': 'https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js',
+                    'gsap/dist/gsap.min.js': 'https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm',
+                },
+            },
         },
     },
 

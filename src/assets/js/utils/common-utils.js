@@ -1,7 +1,3 @@
-import { gsap } from 'gsap/dist/gsap.js';
-import { ScrollToPlugin } from 'gsap/dist/ScrollToPlugin.js';
-
-gsap.registerPlugin(ScrollToPlugin);
 let lockBodyLastPosition = null;
 
 export function scrollbarWidth() {
@@ -65,22 +61,17 @@ export function unlockBody(timeout = 0, scroll = true) {
 }
 
 export function scrollTo(id = false, offset = 0, force = false) {
-    const target = document.getElementById(id || '__nuxt');
-
-    if (target) {
-        const position = target.getBoundingClientRect().top + window.pageYOffset;
-
-        if (force) {
+    if (!id) {
+        window.scroll({ top: 0, left: 0, behavior: force ? 'instant' : 'smooth' });
+    } else {
+        const target = document.getElementById(id);
+        if (target) {
+            const position =
+                target.getBoundingClientRect().top + window.pageYOffset;
             window.scroll({
                 top: position - offset,
                 left: 0,
-                behavior: 'instant',
-            });
-        } else {
-            gsap.to(window, {
-                duration: .5,
-                scrollTo:
-                    { y: position, offsetY: offset },
+                behavior: force ? 'instant' : 'smooth',
             });
         }
     }

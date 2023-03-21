@@ -1,5 +1,3 @@
-export const leadingZero = num => num < 10 ? `0${num}` : num;
-
 export function splitThousands(val) {
     if (isNaN(val)) {
         return val;
@@ -12,14 +10,6 @@ export function splitThousands(val) {
         .toString()
         .replace(/\D/g, '')
         .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-export function roundToMillions(num, accuracy = 1) {
-    if (num === undefined || num === null) {
-        return '';
-    }
-
-    return (Number(num) / 1000000).toFixed(accuracy);
 }
 
 export function onlyNumbers(val) {

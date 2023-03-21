@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import gsap from 'gsap';
+import { gsap } from 'gsap/dist/gsap.min.js';
 
 export default {
     name: 'Expander',

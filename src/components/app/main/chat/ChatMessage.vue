@@ -18,8 +18,8 @@
                              :class="$style.flat"
             />
         </div>
-        <VButton v-if="item.flat && item.flat.link"
-                 :href="item.flat.link"
+        <VButton v-if="item.link"
+                 :href="item.link"
                  size="size-40"
                  blank
                  :class="$style.link"
