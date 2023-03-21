@@ -52,6 +52,9 @@ import { gsap } from 'gsap/dist/gsap.min.js';
 // Utils
 import { masks, numberInputs, addMask, setCursor } from '~/assets/js/utils/mask-utils';
 
+const defaultBorderXSize = 35;
+const defaultBorderYSize = 70;
+
 /**
  * Позволяет пользователю ввести данные с помощью клавитуры.<br>
  * Можно использовать вместе с утилитами из validate-utils, для проверки корректности ввода, по заданному параметру.
@@ -173,8 +176,11 @@ export default {
             /** Border */
             mouseTween: null,
             roundTween: null,
+            focusTween: null,
             borderX: 0,
             borderY: 0,
+            borderXSize: `${defaultBorderXSize}%`,
+            borderYSize: `${defaultBorderYSize}%`,
         };
     },
 
@@ -247,7 +253,7 @@ export default {
         borderStyle() {
             return [
                 {
-                    maskImage: `radial-gradient(35% 35px at ${this.borderX}% ${this.borderY}%, black 60%, transparent)`,
+                    maskImage: `radial-gradient(${this.borderXSize} ${this.borderYSize} at ${this.borderX}% ${this.borderY}%, black 60%, transparent)`,
                 },
             ];
         },
@@ -338,6 +344,7 @@ export default {
          */
         onFocus(e) {
             this.isFocused = true;
+            this.tweenOnFocus();
 
             // Automatically add '+7' characters
             if (this.mask && this.mask === 'phone' && !this.inputValue) {
@@ -360,6 +367,7 @@ export default {
          */
         onBlur(e) {
             this.isFocused = false;
+            this.tweenOnFocus(true);
 
             /**
              * Передаёт родителю, что компонент больше не находится в focus.
@@ -388,7 +396,7 @@ export default {
         },
 
         tweenAround() {
-            if (this.roundTween || this.value) {
+            if (this.roundTween || this.value || this.isFocused) {
                 return;
             }
 
@@ -453,11 +461,11 @@ export default {
         },
 
         tweenOnMouse(e, elRect) {
-            this.stopTweenAround();
-
-            if (!elRect) {
+            if (this.isFocused) {
                 return;
             }
+
+            this.stopTweenAround();
 
             const xPerc = (e.clientX - elRect.left) / elRect.width * 100;
             const yPerc = (e.clientY - elRect.top) / elRect.height * 100;
@@ -485,6 +493,34 @@ export default {
             this.mouseTween = gsap.to(tweenObj, options);
         },
 
+        tweenOnFocus(reverse) {
+            this.stopTweenAround();
+            this.stopTweenOnMouse();
+            this.stopTweenFocus();
+
+            const tweenObj = {
+                x: parseInt(this.borderXSize, 10),
+                y: parseInt(this.borderYSize, 10),
+            };
+            const tweenObjNew = {
+                x: reverse ? defaultBorderXSize : 200,
+                y: reverse ? defaultBorderYSize : 200,
+            };
+
+            const options = {
+                duration: 1.5,
+                ...tweenObjNew,
+                onUpdate: () => {
+                    this.borderXSize = `${tweenObj.x}%`;
+                    this.borderYSize = `${tweenObj.y}%`;
+                },
+
+                ease: 'power3.out',
+            };
+
+            this.focusTween = gsap.to(tweenObj, options);
+        },
+
         stopTweenOnMouse() {
             this.mouseTween?.kill();
             this.mouseTween = null;
@@ -493,6 +529,11 @@ export default {
         stopTweenAround() {
             this.roundTween?.kill();
             this.roundTween = null;
+        },
+
+        stopTweenFocus() {
+            this.focusTween?.kill();
+            this.focusTween = null;
         },
     },
 };
@@ -579,11 +620,11 @@ export default {
             .border {
                 opacity: 0;
             }
-        }
 
-        &._focused {
-            .native {
-                border-color: $primary-500;
+            &._focused {
+                .native {
+                    border-color: $primary-500;
+                }
             }
         }
 
