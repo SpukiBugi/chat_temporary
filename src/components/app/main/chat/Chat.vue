@@ -55,6 +55,13 @@ export default {
         Expander,
     },
 
+    props: {
+        withOptions: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
     data() {
         return {
             /** Flags */

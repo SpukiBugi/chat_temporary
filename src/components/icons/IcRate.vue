@@ -7,6 +7,6 @@
 
 <script>
 export default {
-    name: 'IRate',
+    name: 'IcRate',
 };
 </script>

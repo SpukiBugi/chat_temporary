@@ -1,13 +1,44 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget :class="[$style.App, $style.reset]">
-        <Avatar :class="$style.circle" />
+        <Menu :state="state"
+              :class="$style.menu"
+              @set-state="state = $event"
+              @go-step="onGoStep"
+        >
+            <template #avatar>
+                <Avatar v-if="state === 'normal' || state === 'open'"
+                        :has-status="hasStatus"
+                        status-type="menu"
+                />
+            </template>
+        </Menu>
 
-        <Main />
+        <transition name="widget-sova-main-appear">
+            <div
+                v-if="state === 'main'"
+                :class="$style.mainWrap"
+            >
+                <Main
+                    :current-step="currentStep"
+                    :class="$style.main"
+                    @set-state="state = $event"
+                    @go-step="onGoStep"
+                >
+                    <template #avatar>
+                        <Avatar v-if="state === 'main'"
+                                :has-status="hasStatus"
+                                status-type="chat"
+                        />
+                    </template>
+                </Main>
+            </div>
+        </transition>
     </my-widget>
 </template>
 
 <script>
+import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
 import Main from '@/components/app/Main.vue';
 
@@ -15,8 +46,69 @@ export default {
     name: 'AudioGuideExample',
 
     components: {
+        Menu,
         Avatar,
         Main,
+    },
+
+    data() {
+        return {
+            // normal || open || main
+            state: 'normal',
+
+            /** Steps */
+            stepId: 'Chat',
+            steps: [
+                {
+                    id: 'Chat',
+                    component: () => import('@/components/app/main/chat/Chat.vue'),
+                    height: 'auto',
+                },
+                {
+                    id: 'Rate',
+                    component: () => import('@/components/app/main/rate/Rate.vue'),
+                    height: '284px',
+                },
+                {
+                    id: 'Call',
+                    component: () => import('@/components/app/main/call/Call.vue'),
+                    height: '284px',
+                },
+                {
+                    id: 'Telegram',
+                    component: () => import('@/components/app/main/telegram/Telegram.vue'),
+                    height: '284px',
+                },
+                {
+                    id: 'Whatsapp',
+                    component: () => import('@/components/app/main/whatsapp/Whatsapp.vue'),
+                    height: '284px',
+                },
+                {
+                    id: 'ChatWithOptions',
+                    component: () => import('@/components/app/main/chat/Chat.vue'),
+                    height: 'auto',
+                    withOptions: true,
+                },
+            ],
+        };
+    },
+
+    computed: {
+        hasStatus() {
+            return this.state === 'open' || this.state === 'main';
+        },
+
+        currentStep() {
+            return this.steps.find(el => el.id === this.stepId);
+        },
+    },
+
+    methods: {
+        onGoStep(val) {
+            this.state = 'main';
+            this.stepId = val;
+        },
     },
 };
 </script>
@@ -26,7 +118,8 @@ export default {
         //
     }
 
-    .circle {
+    .mainWrap,
+    .menu {
         position: fixed;
         right: 32px;
         bottom: 32px;
@@ -192,4 +285,22 @@ export default {
     }
 
     /** End Reset */
+</style>
+
+
+<style lang="scss">
+    .widget-sova-main-appear-enter-active {
+        transform-origin: 100% 100%;
+        transition: transform .5s ease;
+    }
+
+    .widget-sova-main-appear-leave-active {
+        transform-origin: 100% 100%;
+        transition: transform .3s ease;
+    }
+
+    .widget-sova-main-appear-enter,
+    .widget-sova-main-appear-leave-active {
+        transform: scale(0);
+    }
 </style>

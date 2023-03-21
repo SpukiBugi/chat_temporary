@@ -1,5 +1,5 @@
 <template>
-    <div :class="[$style.expander, {'_hidden': !isOpen ,'_changing': changing}]" :style="{height: premountHeight}">
+    <div :class="[$style.expander, {'_hidden': !isOpen ,'_changing': changing}]" :style="{[field]: premountSize}">
         <slot />
     </div>
 </template>
@@ -36,9 +36,14 @@ export default {
             default: 'power1.out',
         },
 
-        hideHeight: {
+        hideSize: {
             type: [Number, String],
             default: 0,
+        },
+
+        field: {
+            type: String,
+            default: 'height',
         },
     },
 
@@ -51,12 +56,12 @@ export default {
     },
 
     computed: {
-        premountHeight() {
+        premountSize() {
             if (this.isMounted) {
                 return '';
             }
 
-            return this.isOpen ? 'auto' : this.hideHeight;
+            return this.isOpen ? 'auto' : this.hideSize;
         },
     },
 
@@ -68,7 +73,7 @@ export default {
                 gsap.to(this.$el, {
                     duration: this.duration,
                     delay: this.enterDelay,
-                    height: 'auto',
+                    [this.field]: 'auto',
                     ease: this.ease,
                     onComplete: () => {
                         this.changing = false;
@@ -78,7 +83,7 @@ export default {
                 gsap.to(this.$el, {
                     duration: this.duration,
                     delay: this.leaveDelay,
-                    height: this.hideHeight,
+                    [this.field]: this.hideSize,
                     ease: this.ease,
                     onComplete: () => {
                         this.changing = false;
@@ -92,7 +97,7 @@ export default {
         this.isMounted = true;
 
         this.$nextTick(() => {
-            this.$el.style.height = this.isOpen ? 'auto' : this.hideHeight;
+            this.$el.style[this.field] = this.isOpen ? 'auto' : this.hideSize;
         });
     },
 };
@@ -103,6 +108,7 @@ export default {
         &:global(._changing),
         &:global(._hidden) {
             overflow: hidden;
+            pointer-events: none;
         }
     }
 </style>

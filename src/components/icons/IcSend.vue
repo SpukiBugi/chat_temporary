@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name: 'ISend',
+    name: 'IcSend',
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.Menu">
+    <div :class="$style.MainMenu">
         <VButton
             v-for="item in items"
             :key="item.link"
@@ -14,15 +14,15 @@
 
 <script>
 export default {
-    name: 'Menu',
+    name: 'MainMenu',
 
     data() {
         return {
             items: [
-                {
-                    label: 'Оценить сайт',
-                    link: 'Rate',
-                },
+                // {
+                //     label: 'Оценить сайт',
+                //     link: 'Rate',
+                // },
                 {
                     label: 'Звонок',
                     link: 'Call',
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style lang='scss' module>
-    .Menu {
+    .MainMenu {
         display: flex;
         gap: 6px;
     }

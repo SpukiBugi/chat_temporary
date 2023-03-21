@@ -5,7 +5,9 @@ import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        vue(),
+        vue({
+            devtools: true,
+        }),
     ],
 
     resolve: {
@@ -32,15 +34,15 @@ export default defineConfig({
         },
 
         rollupOptions: {
-            external: ['vue/dist/vue.min.js', 'gsap/dist/gsap.min.js'],
+            external: ['vue/dist/vue.js', 'gsap/dist/gsap.min.js'],
             output: {
                 globals: {
-                    'vue/dist/vue.min.js': 'Vue',
+                    'vue/dist/vue.js': 'Vue',
                     'gsap/dist/gsap.min.js': 'gsap',
                 },
 
                 paths: {
-                    'vue/dist/vue.min.js': 'https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js',
+                    'vue/dist/vue.js': 'https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js',
                     'gsap/dist/gsap.min.js': 'https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm',
                 },
             },
