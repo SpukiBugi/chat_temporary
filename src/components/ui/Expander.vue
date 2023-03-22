@@ -37,8 +37,8 @@ export default {
         },
 
         hideSize: {
-            type: [Number, String],
-            default: 0,
+            type: String,
+            default: '0',
         },
 
         field: {

@@ -11,7 +11,11 @@
         </div>
 
         <transition name="fade">
-            <div v-show="hasStatus" :class="[$style.status, $style[`_${statusType}`]]"></div>
+            <div v-show="hasStatus"
+                 :class="[$style.status, $style[`_${statusType}`]]"
+                 class="widget-sova-app-avatar-status"
+            >
+            </div>
         </transition>
     </div>
 </template>

@@ -19,19 +19,20 @@
                 v-if="state === 'main'"
                 :class="$style.mainWrap"
             >
-                <Main
-                    :current-step="currentStep"
-                    :class="$style.main"
-                    @set-state="state = $event"
-                    @go-step="onGoStep"
-                >
-                    <template #avatar>
-                        <Avatar v-if="state === 'main'"
-                                :has-status="hasStatus"
-                                status-type="chat"
-                        />
-                    </template>
-                </Main>
+                <div class="widget-sova-app-main">
+                    <Main
+                        :current-step="currentStep"
+                        :class="$style.main"
+                        @set-state="state = $event"
+                        @go-step="onGoStep"
+                    />
+                </div>
+                <div :class="$style.avatar" class="widget-sova-app-avatar">
+                    <Avatar v-if="state === 'main'"
+                            status-type="chat"
+                            :has-status="hasStatus"
+                    />
+                </div>
             </div>
         </transition>
     </my-widget>
@@ -123,6 +124,72 @@ export default {
         position: fixed;
         right: 32px;
         bottom: 32px;
+    }
+
+    .avatar {
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        transform: translate3d(-50%, 0, 0);
+    }
+</style>
+
+
+<style lang="scss">
+    .widget-sova-main-appear-enter-active {
+        transition: all .5s ease;
+
+        .widget-sova-app-main {
+            transform-origin: 100% 100%;
+            transition: transform .5s ease;
+        }
+
+        .widget-sova-app-avatar {
+            transition: all .5s ease;
+        }
+
+        .widget-sova-app-avatar-status {
+            transition: opacity .5s ease;
+        }
+    }
+
+    .widget-sova-main-appear-leave-active {
+        transition: all .3s ease;
+
+        .widget-sova-app-main {
+            transform-origin: 100% 100%;
+            transition: transform .3s ease;
+        }
+
+        .widget-sova-app-avatar {
+            transition: all .3s ease;
+        }
+
+        .widget-sova-app-avatar-status {
+            transition: opacity .3s ease;
+        }
+    }
+
+    .widget-sova-main-appear-enter,
+    .widget-sova-main-appear-leave-active {
+        .widget-sova-app-main {
+            transform: scale(0);
+        }
+
+        .widget-sova-app-avatar {
+            top: calc(100% - 8px);
+            left: calc(100% - 8px);
+            width: 48px;
+            height: 48px;
+            transform: translate3d(-100%, -100%, 0);
+        }
+
+        .widget-sova-app-avatar-status {
+            opacity: 0;
+        }
     }
 </style>
 
@@ -285,22 +352,4 @@ export default {
     }
 
     /** End Reset */
-</style>
-
-
-<style lang="scss">
-    .widget-sova-main-appear-enter-active {
-        transform-origin: 100% 100%;
-        transition: transform .5s ease;
-    }
-
-    .widget-sova-main-appear-leave-active {
-        transform-origin: 100% 100%;
-        transition: transform .3s ease;
-    }
-
-    .widget-sova-main-appear-enter,
-    .widget-sova-main-appear-leave-active {
-        transform: scale(0);
-    }
 </style>

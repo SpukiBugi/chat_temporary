@@ -1,19 +1,22 @@
 <template>
     <div
-        :class="[$style.Menu, $style[`_${state}`], {[$style._text]: activeText}]"
+        :class="[$style.Menu, $style[`_${state}`], {[$style._chatOpening]: isChatOpening}]"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
         <div :class="$style.blur">
-            <div :class="$style.inner">
-                <div :class="$style.avatar">
-                    <slot name="avatar" />
-                </div>
+            <Expander :is-open="state === 'open'"
+                      field="width"
+                      ease="back.out(1)"
+                      :duration="0.5"
+                      hide-size="48px"
+                      :class="[$style.expander, $style._weight]"
+            >
+                <div :class="$style.inner">
+                    <div :class="$style.avatar">
+                        <slot name="avatar" />
+                    </div>
 
-                <Expander :is-open="state === 'open'"
-                          field="width"
-                          :class="$style.expander"
-                >
                     <div
                         :class="$style.controls"
                         @mouseleave="onControlsLeave"
@@ -22,7 +25,7 @@
                              :key="control.icon"
                              :class="$style.control"
                              @mouseenter="onControlEnter(control)"
-                             @click="control.onClick"
+                             @click="onControlClick(control)"
                         >
                             <VIcon
                                 :name="control.icon"
@@ -30,8 +33,8 @@
                             />
                         </div>
                     </div>
-                </Expander>
-            </div>
+                </div>
+            </Expander>
         </div>
 
         <div
@@ -70,21 +73,23 @@ export default {
 
     data() {
         return {
+            isChatOpening: false,
+
             controls: [
                 {
                     icon: 'IcMessage',
                     text: 'Получить ответ',
-                    onClick: () => this.$emit('go-step', 'Chat'),
+                    step: 'Chat',
                 },
                 {
                     icon: 'IcPhone',
                     text: 'Заказать звонок',
-                    onClick: () => this.$emit('go-step', 'Call'),
+                    step: 'Call',
                 },
                 {
                     icon: 'IcMenu',
                     text: 'Весь функционал',
-                    onClick: () => this.$emit('go-step', 'ChatWithOptions'),
+                    step: 'ChatWithOptions',
                 },
             ],
 
@@ -110,6 +115,19 @@ export default {
         onControlsLeave() {
             this.activeText = '';
         },
+
+        onControlClick(control) {
+            this.isChatOpening = true;
+            this.$emit('set-state', 'normal');
+
+            setTimeout(() => {
+                this.$emit('go-step', control.step);
+
+                setTimeout(() => {
+                    this.isChatOpening = false;
+                }, 500);
+            }, 500);
+        },
     },
 };
 </script>
@@ -128,18 +146,24 @@ export default {
                 height: 48px;
             }
         }
+
+        &._chatOpening {
+            pointer-events: none;
+        }
     }
 
     .blur {
+        overflow: hidden;
         padding: 8px;
         border-radius: 40px;
         background: rgba(25, 27, 30, .06);
-        backdrop-filter: blur(16px);
         transition: $default-transition;
+        backdrop-filter: blur(16px);
     }
 
     .inner {
         display: flex;
+        align-items: center;
         padding: 4px;
         border-radius: 24px;
         background-color: $primary-500;
@@ -147,13 +171,22 @@ export default {
     }
 
     .avatar {
+        flex-shrink: 0;
         width: 40px;
         height: 40px;
         transition: $default-transition;
     }
 
     .expander {
-        overflow: hidden;
+        &._weight {
+            overflow: visible;
+        }
+
+        &:global(._changing) {
+            .control {
+                transition-duration: 0s;
+            }
+        }
     }
 
     .controls {
