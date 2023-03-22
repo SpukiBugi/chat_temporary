@@ -1,44 +1,37 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget :class="[$style.App, $style.reset]">
-        <Menu :state="state"
-              :class="$style.menu"
-              @set-state="state = $event"
-              @go-step="onGoStep"
-        >
-            <template #avatar>
-                <Avatar v-if="state === 'normal' || state === 'open'"
-                        :has-status="hasStatus"
-                        status-type="menu"
-                />
-            </template>
-        </Menu>
+        <Menu
+            ref="menu"
+            :class="$style.menu"
+            @open="onOpen"
+            @go-step="onGoStep"
+        />
 
-        <transition name="widget-sova-main-appear">
-            <div
-                v-if="state === 'main'"
-                :class="$style.mainWrap"
-            >
-                <div class="widget-sova-app-main">
-                    <Main
-                        :current-step="currentStep"
-                        :class="$style.main"
-                        @set-state="state = $event"
-                        @go-step="onGoStep"
-                    />
-                </div>
-                <div :class="$style.avatar" class="widget-sova-app-avatar">
-                    <Avatar v-if="state === 'main'"
-                            status-type="chat"
-                            :has-status="hasStatus"
-                    />
-                </div>
+        <div ref="mainContainer" :class="[$style.mainContainer, {[$style._open]: isOpen}]">
+            <div ref="mainWrap" :class="$style.mainWrap">
+                <Main
+                    ref="main"
+                    :current-step="currentStep"
+                    :class="$style.main"
+                    @close="onClose"
+                    @go-step="onGoStep"
+                />
             </div>
-        </transition>
+            <div ref="avatarWrap" :class="$style.avatarWrap">
+                <Avatar
+                    ref="avatar"
+                    status-type="chat"
+                    :has-status="isOpen"
+                />
+            </div>
+        </div>
     </my-widget>
 </template>
 
 <script>
+import { gsap } from 'gsap/dist/gsap.js';
+
 import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
 import Main from '@/components/app/Main.vue';
@@ -54,8 +47,7 @@ export default {
 
     data() {
         return {
-            // normal || open || main
-            state: 'normal',
+            isOpen: false,
 
             /** Steps */
             stepId: 'Chat',
@@ -96,10 +88,6 @@ export default {
     },
 
     computed: {
-        hasStatus() {
-            return this.state === 'open' || this.state === 'main';
-        },
-
         currentStep() {
             return this.steps.find(el => el.id === this.stepId);
         },
@@ -107,8 +95,100 @@ export default {
 
     methods: {
         onGoStep(val) {
-            this.state = 'main';
             this.stepId = val;
+        },
+
+        onOpen() {
+            this.isOpen = true;
+            const duration = .4;
+            const timeline = gsap.timeline();
+
+            timeline.to(this.$refs.avatarWrap, {
+                opacity: 1,
+            });
+
+            timeline.to(this.$refs.menu.$el, {
+                opacity: 0,
+                duration: .3,
+            }, 0);
+
+            timeline.to(this.$refs.avatarWrap, {
+                duration: duration,
+                top: '8px',
+                left: '50%',
+                width: '64px',
+                height: '64px',
+                transform: 'translate3d(-32px, 0, 0)',
+            }, 0);
+
+            timeline.to(this.$refs.mainWrap, {
+                duration: duration,
+                transform: 'scale(1)',
+            }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.head, {
+                opacity: 0,
+            }, {
+                opacity: 1,
+                duration: .3,
+                delay: duration,
+            }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.componentWrap, {
+                opacity: 0,
+                transform: 'scale(.8)',
+            }, {
+                transform: 'scale(1)',
+                opacity: 1,
+                duration: .3,
+                delay: duration,
+            }, 0);
+        },
+
+        onClose() {
+            this.isOpen = false;
+            const duration = .3;
+            const timeline = gsap.timeline();
+
+            timeline.to(this.$refs.main.$refs.head, {
+                opacity: 0,
+                duration: .3,
+            }, 0);
+
+            timeline.to(this.$refs.main.$refs.componentWrap, {
+                opacity: 0,
+                duration: .3,
+            }, 0);
+
+            timeline.to(this.$refs.mainWrap, {
+                duration: duration,
+                transform: 'scale(0)',
+            }, 0);
+
+            timeline.to(this.$refs.avatarWrap, {
+                duration: duration,
+                top: 'calc(100% - 8px)',
+                left: 'calc(100% - 8px)',
+                width: '48px',
+                height: '48px',
+                transform: 'translate3d(-48px, -48px, 0)',
+            }, 0);
+
+            timeline.set(this.$refs.menu.$refs.inner, {
+                opacity: 0,
+            }, 0);
+
+            timeline.set(this.$refs.menu.$el, {
+                opacity: 1,
+            }, .1);
+
+            timeline.set(this.$refs.menu.$refs.inner, {
+                opacity: 1,
+            }, duration);
+
+            timeline.set(this.$refs.avatarWrap, {
+                opacity: 0,
+            }, duration);
         },
     },
 };
@@ -119,77 +199,39 @@ export default {
         //
     }
 
-    .mainWrap,
+    .mainContainer,
     .menu {
         position: fixed;
         right: 32px;
         bottom: 32px;
     }
 
-    .avatar {
+    .mainContainer {
+        pointer-events: none;
+
+        &._open {
+            pointer-events: all;
+
+            .menu {
+                pointer-events: none;
+            }
+        }
+    }
+
+    .mainWrap {
+        transform: scale(0);
+        transform-origin: 100% 100%;
+    }
+
+    .avatarWrap {
         position: absolute;
-        top: 8px;
-        left: 50%;
-        width: 64px;
-        height: 64px;
+        top: calc(100% - 8px);
+        left: calc(100% - 8px);
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        transform: translate3d(-50%, 0, 0);
-    }
-</style>
-
-
-<style lang="scss">
-    .widget-sova-main-appear-enter-active {
-        transition: all .5s ease;
-
-        .widget-sova-app-main {
-            transform-origin: 100% 100%;
-            transition: transform .5s ease;
-        }
-
-        .widget-sova-app-avatar {
-            transition: all .5s ease;
-        }
-
-        .widget-sova-app-avatar-status {
-            transition: opacity .5s ease;
-        }
-    }
-
-    .widget-sova-main-appear-leave-active {
-        transition: all .3s ease;
-
-        .widget-sova-app-main {
-            transform-origin: 100% 100%;
-            transition: transform .3s ease;
-        }
-
-        .widget-sova-app-avatar {
-            transition: all .3s ease;
-        }
-
-        .widget-sova-app-avatar-status {
-            transition: opacity .3s ease;
-        }
-    }
-
-    .widget-sova-main-appear-enter,
-    .widget-sova-main-appear-leave-active {
-        .widget-sova-app-main {
-            transform: scale(0);
-        }
-
-        .widget-sova-app-avatar {
-            top: calc(100% - 8px);
-            left: calc(100% - 8px);
-            width: 48px;
-            height: 48px;
-            transform: translate3d(-100%, -100%, 0);
-        }
-
-        .widget-sova-app-avatar-status {
-            opacity: 0;
-        }
+        opacity: 0;
+        transform: translate3d(-100%, -100%, 0);
     }
 </style>
 

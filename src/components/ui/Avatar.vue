@@ -13,7 +13,6 @@
         <transition name="fade">
             <div v-show="hasStatus"
                  :class="[$style.status, $style[`_${statusType}`]]"
-                 class="widget-sova-app-avatar-status"
             >
             </div>
         </transition>
@@ -51,6 +50,8 @@ export default {
         position: relative;
         width: 100%;
         height: 100%;
+        pointer-events: none;
+        will-change: transform;
     }
 
     .status {
@@ -80,7 +81,6 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        isolation: isolate;
     }
 
     .video {

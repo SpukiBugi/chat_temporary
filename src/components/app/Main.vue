@@ -1,34 +1,38 @@
 <template>
-    <transition name="widget-sova-fade" mode="out-in">
-        <div :key="currentHeight" :class="[$style.Main]">
-            <div :class="$style.wrapper">
-                <div :class="$style.head">
-                    <VButton :class="$style.about">Обо мне</VButton>
-                    <VIcon name="IcCloseCircle"
-                           size="size-20"
-                           :class="$style.close"
-                           @click="$emit('set-state', 'normal')"
-                    />
-                </div>
+    <div :class="[$style.Main]">
+        <div :class="$style.wrapper">
+            <div ref="head" :class="$style.head">
+                <VButton :class="$style.about">Обо мне</VButton>
+                <VIcon name="IcCloseCircle"
+                       size="size-20"
+                       :class="$style.close"
+                       @click="$emit('close')"
+                />
+            </div>
 
+            <div ref="componentWrap"
+                 :class="$style.componentWrap"
+                 :style="{height: currentStep.height}"
+            >
                 <transition name="widget-sova-fade" mode="out-in">
                     <component
                         :is="currentStep.component"
                         :with-options="currentStep.withOptions"
-                        :style="{height: currentStep.height}"
                         @go-step="$emit('go-step', $event)"
                     />
                 </transition>
-
-                <Expander :is-open="isMenuOpen">
-                    <MainMenu
-                        :class="$style.menu"
-                        @go-step="$emit('go-step', $event)"
-                    />
-                </Expander>
             </div>
+
+            <Expander :is-open="isMenuOpen">
+                <MainMenu
+                    ref="mainMenu"
+                    :class="$style.menu"
+                    class="widget-sova-main-menu"
+                    @go-step="$emit('go-step', $event)"
+                />
+            </Expander>
         </div>
-    </transition>
+    </div>
 </template>
 
 <script>

@@ -34,16 +34,16 @@ export default defineConfig({
         },
 
         rollupOptions: {
-            external: ['vue/dist/vue.js', 'gsap/dist/gsap.min.js'],
+            external: ['vue/dist/vue.js', 'gsap/dist/gsap.js'],
             output: {
                 globals: {
                     'vue/dist/vue.js': 'Vue',
-                    'gsap/dist/gsap.min.js': 'gsap',
+                    'gsap/dist/gsap.js': 'gsap',
                 },
 
                 paths: {
                     'vue/dist/vue.js': 'https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js',
-                    'gsap/dist/gsap.min.js': 'https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm',
+                    'gsap/dist/gsap.js': 'https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm',
                 },
             },
         },

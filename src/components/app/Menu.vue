@@ -1,20 +1,22 @@
 <template>
     <div
-        :class="[$style.Menu, $style[`_${state}`], {[$style._chatOpening]: isChatOpening}]"
+        :class="[$style.Menu, {[$style._chatOpening]: isChatOpening, [$style._open]: isOpen}]"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
-        <div :class="$style.blur">
-            <Expander :is-open="state === 'open'"
+        <div ref="main" :class="$style.main">
+            <Expander :is-open="isOpen"
                       field="width"
                       ease="back.out(1)"
                       :duration="0.5"
                       hide-size="48px"
                       :class="[$style.expander, $style._weight]"
             >
-                <div :class="$style.inner">
-                    <div :class="$style.avatar">
-                        <slot name="avatar" />
+                <div ref="inner" :class="$style.inner">
+                    <div :class="$style.avatarWrap">
+                        <Avatar :has-status="isOpen"
+                                status-type="menu"
+                        />
                     </div>
 
                     <div
@@ -55,25 +57,21 @@
 </template>
 
 <script>
+import Avatar from '@/components/ui/Avatar.vue';
 import Expander from '@/components/ui/Expander.vue';
 
 export default {
     name: 'Menu',
 
     components: {
+        Avatar,
         Expander,
-    },
-
-    props: {
-        state: {
-            type: String,
-            required: true,
-        },
     },
 
     data() {
         return {
             isChatOpening: false,
+            isOpen: false,
 
             controls: [
                 {
@@ -99,13 +97,11 @@ export default {
 
     methods: {
         onMouseEnter() {
-            this.$emit('set-state', 'open');
+            this.isOpen = true;
         },
 
         onMouseLeave() {
-            if (this.state === 'open') {
-                this.$emit('set-state', 'normal');
-            }
+            this.isOpen = false;
         },
 
         onControlEnter(control) {
@@ -118,10 +114,11 @@ export default {
 
         onControlClick(control) {
             this.isChatOpening = true;
-            this.$emit('set-state', 'normal');
+            this.isOpen = false;
+            this.$emit('go-step', control.step);
 
             setTimeout(() => {
-                this.$emit('go-step', control.step);
+                this.$emit('open');
 
                 setTimeout(() => {
                     this.isChatOpening = false;
@@ -136,14 +133,19 @@ export default {
     .Menu {
         position: relative;
 
-        &._normal {
+        &._open {
             .inner {
-                padding: 0;
+                padding: 4px;
             }
 
-            .avatar {
-                width: 48px;
-                height: 48px;
+            .avatarWrap {
+                width: 40px;
+                height: 40px;
+            }
+
+            .control {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -152,29 +154,30 @@ export default {
         }
     }
 
-    .blur {
+    .main {
+        position: relative;
         overflow: hidden;
         padding: 8px;
         border-radius: 40px;
         background: rgba(25, 27, 30, .06);
-        transition: $default-transition;
         backdrop-filter: blur(16px);
+        will-change: transform;
     }
 
     .inner {
         display: flex;
         align-items: center;
-        padding: 4px;
+        padding: 0;
         border-radius: 24px;
         background-color: $primary-500;
-        transition: $default-transition;
+        transition: padding $default-transition;
     }
 
-    .avatar {
+    .avatarWrap {
         flex-shrink: 0;
-        width: 40px;
-        height: 40px;
-        transition: $default-transition;
+        width: 48px;
+        height: 48px;
+        transition: width $default-transition, height $default-transition;
     }
 
     .expander {
@@ -184,17 +187,19 @@ export default {
 
         &:global(._changing) {
             .control {
-                transition-duration: 0s;
+                transition: all $default-transition, background-color 0s linear;
             }
         }
     }
 
     .controls {
+        overflow: hidden;
         display: flex;
         align-items: center;
         height: 100%;
         padding-right: 12px;
         padding-left: 16px;
+        transition: $default-transition;
     }
 
     .control {
@@ -206,6 +211,8 @@ export default {
         height: 32px;
         border-radius: 12px;
         color: $white;
+        opacity: 0;
+        transform: translateY(50%);
         transition: $default-transition;
         cursor: pointer;
         user-select: none;
@@ -234,7 +241,7 @@ export default {
         padding: 8px 8px 64px;
         border-radius: 28px 28px 40px 40px;
         background: rgba(25, 27, 30, .06);
-        backdrop-filter: blur(16px);
+        // backdrop-filter: blur(16px);
         will-change: transform;
     }
 
