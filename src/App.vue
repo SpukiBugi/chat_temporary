@@ -229,11 +229,13 @@ export default {
             timeline.set(this.$refs.menu.$refs.main, {
                 padding: '0',
                 margin: 8,
+                duration: .2,
             }, 0);
 
             timeline.set(this.$refs.menu.$refs.main, {
                 padding: '',
                 margin: '',
+                duration: .2,
             }, duration + 1);
             //
         },

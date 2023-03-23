@@ -14,21 +14,13 @@
                  :class="$style.componentWrap"
             >
                 <div
-                    v-if="currentStep"
                     ref="componentHeight"
                     :class="$style.componentHeight"
                 >
-                    <transition
-                        :css="false"
-                        mode="out-in"
-                        @before-leave="beforeLeave"
-                        @leave="leave"
-                        @before-enter="beforeEnter"
-                        @enter="enter"
-                        @after-enter="afterEnter"
-                    >
+                    <transition name="widget-sova-fade" mode="out-in">
                         <component
                             :is="currentStep.component"
+                            v-if="currentStep"
                             ref="componentStep"
                             v-bind="stepProps"
                             @go-step="$emit('go-step', $event)"
@@ -84,6 +76,7 @@ export default {
     data() {
         return {
             isMenuHiddenChat: false,
+            resizeObserver: null,
         };
     },
 
@@ -93,50 +86,32 @@ export default {
         },
     },
 
+    mounted() {
+        this.startObserver();
+    },
+
+    beforeDestroy() {
+        this.stopObserver();
+    },
+
     methods: {
-        beforeLeave(el) {
-            const content = this.$refs.componentHeight;
-            content.style.overflow = 'hidden';
-            content.style.height = `${this.$refs.componentHeight.clientHeight}px`;
-        },
+        startObserver() {
+            this.resizeObserver = new ResizeObserver(entries => {
+                for (const entry of entries) {
+                    const height = entry.contentRect.height;
 
-        leave(el, done) {
-            gsap.to(this.$refs.componentHeight, {
-                opacity: 0,
-                duration: .3,
-                onComplete: done,
+                    if (height !== 0) {
+                        gsap.to(this.$refs.componentWrap, {
+                            height: `${height}px`,
+                        });
+                    }
+                }
             });
+            this.resizeObserver.observe(this.$refs.componentHeight);
         },
 
-        beforeEnter(el) {
-            el.style.position = 'absolute';
-            el.style.height = 'auto';
-            el.style.width = '100%';
-        },
-
-        enter(el, done) {
-            setTimeout(() => {
-                const height = getComputedStyle(el).height;
-
-                gsap.to(this.$refs.componentHeight, {
-                    opacity: 1,
-                    height: height,
-                    duration: .3,
-                    onComplete: done,
-                    ease: 'power2.out',
-                });
-            }, 100);
-        },
-
-        afterEnter(el) {
-            const content = this.$refs.componentHeight;
-            content.style.overflow = '';
-            content.style.height = '';
-
-            el.style.position = '';
-            el.style.height = '';
-            el.style.width = '';
-            el.style.opacity = '';
+        stopObserver() {
+            this.resizeObserver?.unobserve(this.$refs.componentHeight);
         },
     },
 };
@@ -187,11 +162,15 @@ export default {
 
     .componentWrap {
         position: relative;
+        overflow: hidden;
         width: 100%;
+        // transition: height $default-transition;
     }
 
     .componentHeight {
-        position: relative;
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
     }
 
