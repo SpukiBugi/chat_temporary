@@ -137,7 +137,7 @@ export default {
                             rating: true,
                         },
                     });
-                }, 4000);
+                }, 1000);
             });
         },
 

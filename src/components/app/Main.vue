@@ -72,13 +72,13 @@ export default {
 
 <style lang='scss' module>
     .Main {
+        @include backdrop;
+
         position: relative;
         overflow: hidden;
         width: 356px;
         padding: 40px 8px 8px;
         border-radius: 32px;
-        background: rgba(25, 27, 30, .06);
-        backdrop-filter: blur(16px);
         mask-image: url('/mask.svg');
     }
 

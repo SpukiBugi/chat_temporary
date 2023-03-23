@@ -1,13 +1,19 @@
 <template>
     <div :class="$style.Avatar">
         <div :class="$style.videoWrap">
-            <video src="/bot.mp4"
-                   autoplay
-                   loop
-                   playsinline
-                   muted
-                   :class="$style.video"
-            />
+            <video
+                autoplay
+                loop
+                playsinline
+                muted
+                :class="$style.video"
+            >
+                <source src="/bot.mp4" type="video/mp4" />
+            </video>
+            <!-- <img src="/bot.gif"
+                 alt="bot"
+                 :class="$style.video"
+            > -->
         </div>
 
         <transition name="fade">
@@ -51,7 +57,6 @@ export default {
         width: 100%;
         height: 100%;
         pointer-events: none;
-        will-change: transform;
     }
 
     .status {
@@ -81,6 +86,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        isolation: isolate;
     }
 
     .video {

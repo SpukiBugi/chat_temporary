@@ -39,9 +39,7 @@
             </Expander>
         </div>
 
-        <div
-            :class="$style.text"
-        >
+        <div :class="$style.text">
             <transition name="widget-sova-appear" mode="out-in">
                 <div v-if="activeText"
                      :key="activeText"
@@ -115,6 +113,7 @@ export default {
         onControlClick(control) {
             this.isChatOpening = true;
             this.isOpen = false;
+            this.activeText = '';
             this.$emit('go-step', control.step);
 
             setTimeout(() => {
@@ -155,13 +154,13 @@ export default {
     }
 
     .main {
+        @include backdrop;
+
         position: relative;
         overflow: hidden;
         padding: 8px;
         border-radius: 40px;
-        background: rgba(25, 27, 30, .06);
-        backdrop-filter: blur(16px);
-        will-change: transform;
+        transition: all .3s ease;
     }
 
     .inner {
@@ -238,11 +237,10 @@ export default {
     }
 
     .textBlur {
+        @include backdrop;
+
         padding: 8px 8px 64px;
         border-radius: 28px 28px 40px 40px;
-        background: rgba(25, 27, 30, .06);
-        // backdrop-filter: blur(16px);
-        will-change: transform;
     }
 
     .textInner {

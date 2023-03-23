@@ -1,6 +1,6 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
-    <my-widget :class="[$style.App, $style.reset]">
+    <my-widget :class="[$style.App, {'is-ios': isIos}]">
         <Menu
             ref="menu"
             :class="$style.menu"
@@ -90,6 +90,13 @@ export default {
     computed: {
         currentStep() {
             return this.steps.find(el => el.id === this.stepId);
+        },
+
+        isIos() {
+            return navigator.vendor?.indexOf('Apple') > -1 &&
+                navigator.userAgent &&
+                navigator.userAgent.indexOf('CriOS') == -1 &&
+                navigator.userAgent.indexOf('FxiOS') == -1;
         },
     },
 
@@ -189,6 +196,18 @@ export default {
             timeline.set(this.$refs.avatarWrap, {
                 opacity: 0,
             }, duration);
+
+            /** Помогает избежать мерцания из-за backdrop-filter */
+            timeline.set(this.$refs.menu.$refs.main, {
+                padding: '0',
+                margin: 8,
+            }, 0);
+
+            timeline.set(this.$refs.menu.$refs.main, {
+                padding: '',
+                margin: '',
+            }, duration + 1);
+            //
         },
     },
 };
