@@ -1,0 +1,143 @@
+<template>
+    <div :class="$style.ChatOptions">
+        <VScrollBox ref="scrollbox"
+                    :class="$style.scrollable"
+        >
+            <div :class="$style.list">
+                <div v-for="(option, key) in options"
+                     :key="`options-${key}`"
+                     :class="$style.option"
+                >
+                    <div :class="$style.head">
+                        <div :class="$style.headIcn" :style="{backgroundImage: `url(${option.icon})`}"></div>
+                        <div :class="$style.headTitle" v-html="option.title"></div>
+                    </div>
+                    <div :class="$style.questions">
+                        <VButton v-for="(question, qKey) in option.questions"
+                                 :key="question + qKey"
+                                 :class="$style.question"
+                                 @click="$emit('question-click', question)"
+                        >
+                            {{ question }}
+                        </VButton>
+                    </div>
+                </div>
+            </div>
+        </VScrollBox>
+
+        <div :class="$style.fade"></div>
+    </div>
+</template>
+
+<script>
+import VScrollBox from '@/components/ui/scrollbox/VScrollBox.vue';
+
+export default {
+    name: 'ChatOptions',
+
+    components: {
+        VScrollBox,
+    },
+
+    data() {
+        return {
+            options: [
+                {
+                    title: 'Проекты',
+                    icon: '/home.svg',
+                    questions: [
+                        'Где расположены проекты?',
+                        'Какая инфраструктура у Заневского?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                    ],
+                },
+                {
+                    title: 'Квартиры',
+                    icon: '/key.svg',
+                    questions: [
+                        'Где расположены проекты?',
+                        'Какая инфраструктура у Заневского?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                        'Где расположены проекты?',
+                        'Какая инфраструктура у Заневского?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                        'Golden City',
+                        'Grand House',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                        'Есть проекты с панорамными окнами?',
+                        'Какая средняя площадь квартир?',
+                    ],
+                },
+            ],
+        };
+    },
+
+    methods: {
+
+    },
+};
+</script>
+
+<style lang='scss' module>
+    .ChatOptions {
+        position: relative;
+    }
+
+    .scrollable {
+        max-height: 552px;
+    }
+
+    .list {
+        padding: 76px 16px 20px;
+    }
+
+    .option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:not(:last-child) {
+            margin-bottom: 28px;
+        }
+    }
+
+    .head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .headIcn {
+        width: 16px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .questions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        column-gap: 6px;
+        row-gap: 8px;
+    }
+
+    .fade {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 32px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+    }
+</style>

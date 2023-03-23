@@ -1,7 +1,7 @@
 <template>
     <div
         :class="$style.RateHello"
-        @click="$emit('go-step', 'Chat')"
+        @click="$emit('go-step', {name: 'Chat'})"
     >
         <VIcon name="IcRateFinish" :class="$style.message" />
     </div>

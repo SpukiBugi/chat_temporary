@@ -13,6 +13,8 @@
                 <Main
                     ref="main"
                     :current-step="currentStep"
+                    :is-main-open="isOpen"
+                    :step-props="stepProps"
                     :class="$style.main"
                     @close="onClose"
                     @go-step="onGoStep"
@@ -23,6 +25,7 @@
                     ref="avatar"
                     status-type="chat"
                     :has-status="isOpen"
+                    :show-pic="isRelink && isOpen"
                 />
             </div>
         </div>
@@ -37,7 +40,7 @@ import Avatar from '@/components/ui/Avatar.vue';
 import Main from '@/components/app/Main.vue';
 
 export default {
-    name: 'AudioGuideExample',
+    name: 'App',
 
     components: {
         Menu,
@@ -50,7 +53,8 @@ export default {
             isOpen: false,
 
             /** Steps */
-            stepId: 'Chat',
+            stepId: '',
+            stepProps: {},
             steps: [
                 {
                     id: 'Chat',
@@ -98,11 +102,16 @@ export default {
                 navigator.userAgent.indexOf('CriOS') == -1 &&
                 navigator.userAgent.indexOf('FxiOS') == -1;
         },
+
+        isRelink() {
+            return this.stepId === 'Call' || this.stepId === 'Telegram' || this.stepId === 'Whatsapp';
+        },
     },
 
     methods: {
-        onGoStep(val) {
-            this.stepId = val;
+        onGoStep(step) {
+            this.stepProps = step.props || {};
+            this.stepId = step.id;
         },
 
         onOpen() {
@@ -150,6 +159,16 @@ export default {
                 duration: .3,
                 delay: duration,
             }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.mainMenu.$el, {
+                opacity: 0,
+                transform: 'scale(.8)',
+            }, {
+                transform: 'scale(1)',
+                opacity: 1,
+                duration: .3,
+                delay: duration,
+            }, 0);
         },
 
         onClose() {
@@ -163,6 +182,11 @@ export default {
             }, 0);
 
             timeline.to(this.$refs.main.$refs.componentWrap, {
+                opacity: 0,
+                duration: .3,
+            }, 0);
+
+            timeline.to(this.$refs.main.$refs.mainMenu.$el, {
                 opacity: 0,
                 duration: .3,
             }, 0);
@@ -195,6 +219,10 @@ export default {
 
             timeline.set(this.$refs.avatarWrap, {
                 opacity: 0,
+            }, duration);
+
+            timeline.set(this, {
+                stepId: '',
             }, duration);
 
             /** Помогает избежать мерцания из-за backdrop-filter */

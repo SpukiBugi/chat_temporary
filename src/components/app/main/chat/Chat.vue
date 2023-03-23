@@ -1,7 +1,13 @@
 <template>
     <div :class="$style.Chat">
+        <ChatOptions
+            v-if="withOptions && !hasSend"
+            :class="$style.options"
+            @question-click="onQuestionClick"
+        />
+
         <ChatMessages
-            v-if="history.length || isLoading"
+            v-else-if="history.length || isLoading"
             :history="history"
             :is-loading="isLoading"
             :class="$style.messages"
@@ -44,15 +50,15 @@
 </template>
 
 <script>
-import ChatMessages from '@/components/app/main/chat/ChatMessages.vue';
 import testHistory from '@/assets/json/testHistory';
-import Expander from '../../../ui/Expander.vue';
+import Expander from '@/components/ui/Expander.vue';
 
 export default {
     name: 'Chat',
 
     components: {
-        ChatMessages,
+        ChatOptions: () => import('@/components/app/main/chat/ChatOptions.vue'),
+        ChatMessages: () => import('@/components/app/main/chat/ChatMessages.vue'),
         Expander,
     },
 
@@ -67,6 +73,7 @@ export default {
         return {
             /** Flags */
             isLoading: false,
+            hasSend: false,
 
             /** Info */
             history: [] || testHistory,
@@ -80,6 +87,19 @@ export default {
     computed: {
         isSendGray() {
             return this.isLoading || !this.value;
+        },
+
+        isMenuHiddenChat() {
+            return this.withOptions || this.hasSend;
+        },
+    },
+
+    watch: {
+        isMenuHiddenChat: {
+            handler(val) {
+                this.$emit('set-menu-hidden-chat', val);
+            },
+            immediate: true,
         },
     },
 
@@ -96,6 +116,7 @@ export default {
             }
 
             this.isLoading = true;
+            this.hasSend = true;
             const question = this.value;
             this.value = '';
             this.message = '';
@@ -146,6 +167,11 @@ export default {
             this.history.splice(index, 1, { ...item, rating: value });
             /** Запрос на изменение */
             //
+        },
+
+        onQuestionClick(e) {
+            this.value = e;
+            this.onSubmit();
         },
     },
 };

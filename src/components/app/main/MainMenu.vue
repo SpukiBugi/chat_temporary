@@ -2,10 +2,10 @@
     <div :class="$style.MainMenu">
         <VButton
             v-for="item in items"
-            :key="item.link"
+            :key="item.label"
             color="base-100"
             :class="$style.btn"
-            @click="$emit('go-step', item.link)"
+            @click="$emit('go-step', item.step)"
         >
             {{ item.label }}
         </VButton>
@@ -21,19 +21,19 @@ export default {
             items: [
                 // {
                 //     label: 'Оценить сайт',
-                //     link: 'Rate',
+                //     step: { id: 'Rate' },
                 // },
                 {
                     label: 'Звонок',
-                    link: 'Call',
+                    step: { id: 'Call' },
                 },
                 {
                     label: 'Whatsapp',
-                    link: 'Whatsapp',
+                    step: { id: 'Whatsapp' },
                 },
                 {
                     label: 'Telegram',
-                    link: 'Telegram',
+                    step: { id: 'Telegram' },
                 },
             ],
         };

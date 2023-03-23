@@ -10,13 +10,18 @@
             >
                 <source src="/bot.mp4" type="video/mp4" />
             </video>
-            <!-- <img src="/bot.gif"
-                 alt="bot"
-                 :class="$style.video"
-            > -->
+
+            <transition name="widget-sova-fade">
+                <img
+                    v-if="showPic"
+                    src="/fanera.jpg"
+                    alt="avatar"
+                    :class="$style.image"
+                >
+            </transition>
         </div>
 
-        <transition name="fade">
+        <transition name="widget-sova-fade">
             <div v-show="hasStatus"
                  :class="[$style.status, $style[`_${statusType}`]]"
             >
@@ -38,6 +43,11 @@ export default {
         statusType: {
             type: String,
             default: 'menu',
+        },
+
+        showPic: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -82,6 +92,7 @@ export default {
     }
 
     .videoWrap {
+        position: relative;
         overflow: hidden;
         width: 100%;
         height: 100%;
@@ -89,8 +100,15 @@ export default {
         isolation: isolate;
     }
 
-    .video {
+    .video,
+    .image {
         width: 100%;
         height: 100%;
+    }
+
+    .image {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 </style>

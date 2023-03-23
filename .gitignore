@@ -1,4 +1,5 @@
-dist
+/dist/*
+!/dist/index.html
 dist-ssr
 *.local
 

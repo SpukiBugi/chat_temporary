@@ -35,7 +35,7 @@
             {{ label }}
         </span>
 
-        <transition name="fade-fast">
+        <transition name="widget-sova-fade">
             <InputHint
                 v-if="msg"
                 :color="color"

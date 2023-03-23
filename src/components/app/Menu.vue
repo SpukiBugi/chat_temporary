@@ -75,17 +75,17 @@ export default {
                 {
                     icon: 'IcMessage',
                     text: 'Получить ответ',
-                    step: 'Chat',
+                    step: { id: 'Chat' },
                 },
                 {
                     icon: 'IcPhone',
                     text: 'Заказать звонок',
-                    step: 'Call',
+                    step: { id: 'Call' },
                 },
                 {
                     icon: 'IcMenu',
                     text: 'Весь функционал',
-                    step: 'ChatWithOptions',
+                    step: { id: 'Chat', props: { withOptions: true } },
                 },
             ],
 
