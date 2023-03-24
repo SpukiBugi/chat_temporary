@@ -1,3 +1,5 @@
+export const leadingZero = num => num < 10 ? `0${num}` : num;
+
 export function splitThousands(val) {
     if (isNaN(val)) {
         return val;

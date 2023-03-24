@@ -6,14 +6,25 @@
                     :class="$style.scrollable"
         >
             <div :class="$style.list">
-                <ChatMessage
+                <template
                     v-for="item in currentList"
-                    :key="item.id"
-                    :item="item"
-                    :class="$style.message"
-                    @set-rating="$emit('set-rating', $event)"
-                    @project-click="$emit('project-click', $event)"
-                />
+                >
+                    <div v-if="item.type === 'date'"
+                         :key="item.id"
+                         :class="$style.date"
+                    >
+                        {{ item.date|formatDateTime('$j $e') }}
+                    </div>
+                    <ChatMessage
+                        v-else
+                        :key="item.id"
+                        :item="item"
+                        :class="$style.message"
+                        @set-rating="$emit('set-rating', $event)"
+                        @project-click="$emit('project-click', $event)"
+                        @repeat-click="$emit('repeat-click')"
+                    />
+                </template>
 
                 <ChatPreload
                     v-if="isLoading"
@@ -63,7 +74,7 @@ export default {
     computed: {
         currentList() {
             if (this.isLong) {
-                return this.history;
+                return this.splitByDate(this.history);
             }
 
             if (this.isLoading) {
@@ -97,6 +108,22 @@ export default {
             const container = this.$refs.scrollbox.$refs.wrapper;
             container.scrollTop = container.scrollHeight;
         },
+
+        splitByDate(items) {
+            let currentDate = null;
+            const list = [];
+
+            items.forEach((element, key) => {
+                if (element.date !== currentDate) {
+                    list.push({ id: `date-${key}`, type: 'date', date: element.date });
+                    currentDate = element.date;
+                }
+
+                list.push(element);
+            });
+
+            return list;
+        },
     },
 };
 </script>
@@ -122,6 +149,21 @@ export default {
     }
 
     .message {
+        &:not(:last-child) {
+            margin-bottom: 12px;
+        }
+    }
+
+    .date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        font-size: 11px;
+        line-height: 14px;
+        letter-spacing: -.01em;
+        color: $base-500;
+
         &:not(:last-child) {
             margin-bottom: 12px;
         }

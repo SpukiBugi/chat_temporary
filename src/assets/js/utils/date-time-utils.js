@@ -1,4 +1,4 @@
-import { leadingZero } from 'assets/js/utils/numbers-utils';
+import { leadingZero } from '@/assets/js/utils/numbers-utils';
 
 export const dayByIndex = (index, short) => {
     const fullList = [

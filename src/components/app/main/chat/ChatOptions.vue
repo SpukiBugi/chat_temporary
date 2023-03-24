@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.ChatOptions">
+    <div :class="[$style.ChatOptions, {[$style._showSwitch]: isShowSwitch}]">
         <VScrollBox ref="scrollbox"
                     :class="$style.scrollable"
         >
@@ -37,6 +37,13 @@ export default {
 
     components: {
         VScrollBox,
+    },
+
+    props: {
+        isShowSwitch: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -89,6 +96,12 @@ export default {
 <style lang='scss' module>
     .ChatOptions {
         position: relative;
+
+        &._showSwitch {
+            .list {
+                padding-top: 48px;
+            }
+        }
     }
 
     .scrollable {
@@ -96,7 +109,7 @@ export default {
     }
 
     .list {
-        padding: 76px 16px 20px;
+        padding: 8px 16px 20px;
     }
 
     .option {

@@ -2,6 +2,7 @@
     <div :class="$style.Chat">
         <ChatOptions
             v-if="isShowOptions"
+            :is-show-switch="isShowSwitch"
             :class="$style.options"
             @question-click="$emit('question-click', $event)"
         />
@@ -14,6 +15,7 @@
             :class="$style.messages"
             @set-rating="$emit('set-rating', $event)"
             @project-click="$emit('question-click', $event)"
+            @repeat-click="$emit('repeat-click')"
         />
 
         <div v-else :class="$style.hello">
@@ -85,6 +87,11 @@ export default {
             default: false,
         },
 
+        isShowSwitch: {
+            type: Boolean,
+            default: false,
+        },
+
         history: {
             type: Array,
             required: true,
@@ -121,7 +128,7 @@ export default {
     }
 
     .hello {
-        padding-top: 45px;
+        padding-top: 17px;
         padding-bottom: 20px;
         text-align: center;
         font-weight: 500;
@@ -139,7 +146,7 @@ export default {
     }
 
     .message {
-        padding: 4px 8px;
+        padding: 4px 6px;
         border-radius: 8px;
         border: 1px solid $primary-200;
         background-color: $primary-100;

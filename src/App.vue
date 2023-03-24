@@ -1,8 +1,11 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
-    <my-widget :class="[$style.App, {'is-ios': isIos}]">
+    <my-widget
+        :class="[$style.App, {'is-ios': isIos}]"
+    >
         <Menu
             ref="menu"
+            :is-main-open="isOpen"
             :class="$style.menu"
             @open="onOpen"
             @go-step="onGoStep"
@@ -52,6 +55,7 @@ export default {
 
     data() {
         return {
+            /** Flags */
             isOpen: false,
 
             /** Steps */

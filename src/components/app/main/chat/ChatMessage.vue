@@ -1,8 +1,11 @@
 <template>
     <div :class="[$style.ChatMessage, ...classList]">
         <div :class="$style.bubble">
-            <div :class="$style.bubbleText" v-html="item.text"></div>
-            <div v-if="item.type === 'answer'" :class="$style.rate">
+            <div :class="$style.bubbleText">
+                <span v-html="item.text"></span>
+                <span v-if="item.type === 'answer' && item.date" :class="$style.time">{{ item.date|formatDateTime('$G:$I') }}</span>
+            </div>
+            <div v-if="item.type === 'answer' && item.id !== 'error'" :class="$style.rate">
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
                              :color="item.rating === false ? 'primary-500' : 'base-100'"
@@ -30,6 +33,14 @@
                  :class="$style.link"
         >
             Смотреть
+        </VButton>
+
+        <VButton v-if="item.id === 'error'"
+                 size="size-40"
+                 :class="$style.link"
+                 @click="$emit('repeat-click')"
+        >
+            Спросить еще раз
         </VButton>
 
         <div v-show="item.projects && item.projects.length" :class="$style.projects">
@@ -100,6 +111,10 @@ export default {
             .rateItem._dislike {
                 transform: translateX(calc(-100% - 4px));
             }
+
+            .time {
+                opacity: 0;
+            }
         }
 
         &._question {
@@ -124,6 +139,10 @@ export default {
         &._rated {
             .rate {
                 opacity: 1;
+            }
+
+            .time {
+                opacity: 0;
             }
         }
     }
@@ -158,6 +177,16 @@ export default {
                 background-size: contain;
             }
         }
+    }
+
+    .time {
+        float: right;
+        margin-top: 4px;
+        margin-left: 12px;
+        font-size: 11px;
+        line-height: 14px;
+        color: $base-400;
+        transition: $default-transition;
     }
 
     .rate {

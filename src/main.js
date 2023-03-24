@@ -6,6 +6,8 @@ import '@/assets/scss/common.scss';
 
 /** js */
 import { splitThousands } from '@/assets/js/utils/numbers-utils';
+import { formatDateTime } from '@/assets/js/utils/date-time-utils';
+
 
 /** Components */
 import VIcon from '@/components/ui/icon/VIcon.vue';
@@ -20,6 +22,7 @@ const init = () => {
     /** Фильтры */
 
     Vue.filter('splitThousands', splitThousands);
+    Vue.filter('formatDateTime', formatDateTime);
 
     /** Глобальные компоненты */
     Vue.component('VIcon', VIcon);

@@ -12,7 +12,7 @@
 
             <transition name="widget-sova-fade">
                 <div
-                    v-show="history.length > 2"
+                    v-show="isShowSwitch"
                     :class="$style.switchElements"
                 >
                     <transition name="widget-sova-fade">
@@ -63,6 +63,7 @@
                             :is-long="isLong"
                             :is-show-options="isShowOptions"
                             :is-loading="isLoading"
+                            :is-show-switch="isShowSwitch"
                             :has-send="hasSend"
                             :history="history"
                             :value="value"
@@ -71,6 +72,8 @@
                             @set-value="value = $event"
                             @question-click="onQuestionClick"
                             @submit="onSubmit"
+                            @repeat-click="onRepeat"
+                            @set-rating="onSetRating"
                         />
                     </transition>
                 </div>
@@ -136,7 +139,7 @@ export default {
 
     computed: {
         isMenuHidden() {
-            return this.currentStep?.id === 'Chat' && (this.isShowOptions || this.history.length);
+            return this.currentStep.id === 'Chat' && (this.isShowOptions || this.history.length);
         },
 
         isSwitchLong() {
@@ -145,6 +148,10 @@ export default {
 
         isShowOptions() {
             return this.stepProps.isShowOptions && !this.hasSend && !this.hasUsedHistory;
+        },
+
+        isShowSwitch() {
+            return this.currentStep.id === 'Chat' && this.history.length > 2;
         },
     },
 
@@ -212,9 +219,9 @@ export default {
             const question = this.value;
             this.value = '';
             this.message = '';
+            this.history.push({ id: 'new', type: 'question', text: question, date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
 
             try {
-                this.history.push({ id: 'new', type: 'question', text: question });
                 const res = await this.getAnswer(question);
                 this.history[this.history.length - 1] = res.question;
                 this.history.push(res.answer);
@@ -225,7 +232,7 @@ export default {
                 }
             } catch (e) {
                 console.warn('[Chat/onSubmit] error: ', e);
-                this.message = 'Произошла ошибка.<br>Попробуйте отправить сообщение повторно';
+                this.history.push({ id: 'error', type: 'answer', text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»', date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
             }
 
             this.isLoading = false;
@@ -241,6 +248,7 @@ export default {
                             id: `q-${id}`,
                             type: 'question',
                             text: value,
+                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
                         },
                         answer: {
                             id: `a-${id}`,
@@ -248,6 +256,7 @@ export default {
                             type: 'answer',
                             text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
                             rating: true,
+                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
                         },
                     });
                 }, 1000);
@@ -256,6 +265,13 @@ export default {
 
         onQuestionClick(e) {
             this.value = e;
+            this.onSubmit();
+        },
+
+        onRepeat() {
+            this.history.pop();
+            const question = this.history.pop();
+            this.value = question.text;
             this.onSubmit();
         },
     },

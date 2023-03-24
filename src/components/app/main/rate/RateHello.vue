@@ -37,7 +37,7 @@ export default {
     .message {
         width: 100%;
         height: 176px;
-        margin-top: 40px;
+        margin-top: 12px;
     }
 
     .help {

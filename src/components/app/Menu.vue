@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="[$style.Menu, {[$style._chatOpening]: isChatOpening, [$style._open]: isOpen}]"
+        :class="[$style.Menu, {[$style._chatOpening]: isChatOpening, [$style._open]: isOpen, [$style._text]: activeText}]"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -66,10 +66,19 @@ export default {
         Expander,
     },
 
+    props: {
+        isMainOpen: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
     data() {
         return {
             isChatOpening: false,
             isOpen: false,
+            isHovering: false,
+            hasHovered: false,
 
             controls: [
                 {
@@ -90,16 +99,51 @@ export default {
             ],
 
             activeText: '',
+            autoInterval: null,
         };
+    },
+
+    computed: {
+        isAutoActive() {
+            return !this.isHovering && !this.isMainOpen && !this.activeText;
+        },
+    },
+
+    watch: {
+        isAutoActive: {
+            handler(val) {
+                if (val) {
+                    this.initAuto();
+                } else {
+                    clearInterval(this.autoInterval);
+                }
+            },
+            immediate: true,
+        },
+    },
+
+    mounted() {
+        this.initAuto();
+
+        if (!this.hasHovered) {
+            this.initInvite();
+        }
+    },
+
+    beforeDestroy() {
+        clearInterval(this.autoInterval);
     },
 
     methods: {
         onMouseEnter() {
             this.isOpen = true;
+            this.isHovering = true;
+            this.hasHovered = true;
         },
 
         onMouseLeave() {
             this.isOpen = false;
+            this.isHovering = false;
         },
 
         onControlEnter(control) {
@@ -123,6 +167,24 @@ export default {
                     this.isChatOpening = false;
                 }, 500);
             }, 500);
+        },
+
+        initInvite() {
+            setTimeout(() => {
+                if (!this.hasHovered) {
+                    this.activeText = 'За 4 секунды отвечу на любой вопрос';
+                }
+            }, 4000);
+        },
+
+        initAuto() {
+            clearInterval(this.autoInterval);
+
+            this.autoInterval = setInterval(() => {
+                if (this.isAutoActive) {
+                    this.isOpen = !this.isOpen;
+                }
+            }, 4000);
         },
     },
 };
@@ -150,6 +212,12 @@ export default {
 
         &._chatOpening {
             pointer-events: none;
+        }
+
+        &._text {
+            // .main {
+            //     border-radius: 40px 0 40px 40px;
+            // }
         }
     }
 

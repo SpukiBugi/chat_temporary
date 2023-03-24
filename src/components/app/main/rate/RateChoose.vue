@@ -122,7 +122,7 @@ export default {
     }
 
     .title {
-        margin-top: 46px;
+        margin-top: 18px;
         text-align: center;
         font-weight: 500;
         font-size: 15px;
