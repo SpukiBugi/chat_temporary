@@ -109,11 +109,6 @@ export default {
             default: () => ({}),
         },
 
-        isMainOpen: {
-            type: Boolean,
-            default: false,
-        },
-
         stepProps: {
             type: Object,
             default: () => ({}),
@@ -126,7 +121,7 @@ export default {
             isLong: false,
             isLoading: false,
             hasSend: false,
-            isShowOptions: false,
+            hasUsedHistory: false,
 
             /** Info */
             history: testHistory,
@@ -141,20 +136,15 @@ export default {
 
     computed: {
         isMenuHidden() {
-            return this.currentStep?.id === 'Chat' && (this.isShowOptions || this.hasSend);
+            return this.currentStep?.id === 'Chat' && (this.isShowOptions || this.history.length);
         },
 
         isSwitchLong() {
             return this.isLong && !this.isShowOptions;
         },
-    },
 
-    watch: {
-        stepProps: {
-            handler(val) {
-                this.isShowOptions = val.isShowOptions;
-            },
-            immediate: true,
+        isShowOptions() {
+            return this.stepProps.isShowOptions && !this.hasSend && !this.hasUsedHistory;
         },
     },
 
@@ -168,7 +158,7 @@ export default {
 
     methods: {
         switchLong(value) {
-            this.isShowOptions = false;
+            this.hasUsedHistory = true;
             this.isLong = value;
         },
 

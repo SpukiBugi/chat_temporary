@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.Chat">
         <ChatOptions
-            v-if="isShowOptions && !hasSend"
+            v-if="isShowOptions"
             :class="$style.options"
             @question-click="$emit('question-click', $event)"
         />

@@ -8,12 +8,14 @@
             @go-step="onGoStep"
         />
 
-        <div ref="mainContainer" :class="[$style.mainContainer, {[$style._open]: isOpen}]">
+        <div v-if="stepId"
+             ref="mainContainer"
+             :class="$style.mainContainer"
+        >
             <div ref="mainWrap" :class="$style.mainWrap">
                 <Main
                     ref="main"
                     :current-step="currentStep"
-                    :is-main-open="isOpen"
                     :step-props="stepProps"
                     :class="$style.main"
                     @close="onClose"
@@ -108,8 +110,10 @@ export default {
             this.stepId = step.id;
         },
 
-        onOpen() {
+        async onOpen() {
             this.isOpen = true;
+            await this.$nextTick();
+
             const duration = .4;
             const timeline = gsap.timeline();
 
@@ -247,18 +251,6 @@ export default {
         position: fixed;
         right: 32px;
         bottom: 32px;
-    }
-
-    .mainContainer {
-        pointer-events: none;
-
-        &._open {
-            pointer-events: all;
-
-            .menu {
-                pointer-events: none;
-            }
-        }
     }
 
     .mainWrap {
