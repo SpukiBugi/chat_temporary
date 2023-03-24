@@ -81,12 +81,6 @@ export default {
                     component: () => import('@/components/app/main/whatsapp/Whatsapp.vue'),
                     height: '284px',
                 },
-                {
-                    id: 'ChatWithOptions',
-                    component: () => import('@/components/app/main/chat/Chat.vue'),
-                    height: 'auto',
-                    withOptions: true,
-                },
             ],
         };
     },

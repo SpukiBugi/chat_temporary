@@ -26,6 +26,7 @@
             v-if="isYOverflowing"
             ref="yRail"
             :class="[$style.scrollbar, $style._vertical]"
+            class="v-scrollbox__scrollbar _vertical"
             @mousedown="onRailClick($event, 'y')"
         >
             <div

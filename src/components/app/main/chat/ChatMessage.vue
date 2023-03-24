@@ -6,6 +6,7 @@
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
                              :color="item.rating === false ? 'primary-500' : 'base-100'"
+                             rotate
                              :class="[$style.rateItem, $style._dislike, {[$style._active]: item.rating === false }]"
                              @click="$emit('set-rating', {value: item.rating === false ? null : false, item: item})"
                 />
@@ -30,6 +31,16 @@
         >
             Смотреть
         </VButton>
+
+        <div v-show="item.projects && item.projects.length" :class="$style.projects">
+            <VButton v-for="(project, key) in item.projects"
+                     :key="project + key"
+                     :class="$style.project"
+                     @click="$emit('project-click', project)"
+            >
+                {{ project }}
+            </VButton>
+        </div>
     </div>
 </template>
 
@@ -87,7 +98,7 @@ export default {
             }
 
             .rateItem._dislike {
-                transform: translateX(calc(-100% - 4px)) rotate(-180deg);
+                transform: translateX(calc(-100% - 4px));
             }
         }
 
@@ -172,13 +183,18 @@ export default {
         &._active {
             z-index: 1;
         }
-
-        &._dislike {
-            transform: rotate(-180deg);
-        }
     }
 
     .link {
         margin-top: 8px;
+    }
+
+    .projects {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        margin-top: 12px;
+        column-gap: 6px;
+        row-gap: 8px;
     }
 </style>

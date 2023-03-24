@@ -7,6 +7,6 @@
 
 <script>
 export default {
-    name: 'ILike',
+    name: 'IcLike',
 };
 </script>

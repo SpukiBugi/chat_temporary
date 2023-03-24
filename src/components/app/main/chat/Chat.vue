@@ -1,17 +1,19 @@
 <template>
     <div :class="$style.Chat">
         <ChatOptions
-            v-if="withOptions && !hasSend"
+            v-if="isShowOptions && !hasSend"
             :class="$style.options"
-            @question-click="onQuestionClick"
+            @question-click="$emit('question-click', $event)"
         />
 
         <ChatMessages
             v-else-if="history.length || isLoading"
             :history="history"
             :is-loading="isLoading"
+            :is-long="isLong"
             :class="$style.messages"
-            @set-rating="onSetRating"
+            @set-rating="$emit('set-rating', $event)"
+            @project-click="$emit('question-click', $event)"
         />
 
         <div v-else :class="$style.hello">
@@ -31,12 +33,13 @@
             </div>
         </Expander>
 
-        <form :class="$style.inputWrap" @submit.prevent="onSubmit">
+        <form :class="$style.inputWrap" @submit.prevent="$emit('submit')">
             <VInput
-                v-model="value"
+                :value="value"
                 :autocomplete="false"
                 placeholder="Напишите любой вопрос..."
                 :class="$style.input"
+                @input="$emit('set-value', $event)"
             />
 
             <button :class="[$style.send, {[$style._gray]: isSendGray}]">
@@ -50,7 +53,6 @@
 </template>
 
 <script>
-import testHistory from '@/assets/json/testHistory';
 import Expander from '@/components/ui/Expander.vue';
 
 export default {
@@ -63,24 +65,44 @@ export default {
     },
 
     props: {
-        withOptions: {
+        isLong: {
             type: Boolean,
             default: false,
+        },
+
+        isShowOptions: {
+            type: Boolean,
+            default: false,
+        },
+
+        isLoading: {
+            type: Boolean,
+            default: false,
+        },
+
+        hasSend: {
+            type: Boolean,
+            default: false,
+        },
+
+        history: {
+            type: Array,
+            required: true,
+        },
+
+        value: {
+            type: String,
+            default: '',
+        },
+
+        message: {
+            type: String,
+            default: '',
         },
     },
 
     data() {
         return {
-            /** Flags */
-            isLoading: false,
-            hasSend: false,
-
-            /** Info */
-            history: [] || testHistory,
-
-            /** Form */
-            value: '',
-            message: '',
         };
     },
 
@@ -88,102 +110,18 @@ export default {
         isSendGray() {
             return this.isLoading || !this.value;
         },
-
-        isMenuHiddenChat() {
-            return this.withOptions || this.hasSend;
-        },
-    },
-
-    watch: {
-        isMenuHiddenChat: {
-            handler(val) {
-                this.$emit('set-menu-hidden-chat', val);
-            },
-            immediate: true,
-        },
-    },
-
-    methods: {
-        async onSubmit() {
-            if (this.isLoading) {
-                this.message = 'Отправить сообщение можно после получения ответа';
-
-                return;
-            }
-
-            if (!this.value) {
-                return;
-            }
-
-            this.isLoading = true;
-            this.hasSend = true;
-            const question = this.value;
-            this.value = '';
-            this.message = '';
-
-            try {
-                this.history.push({ id: 'new', type: 'question', text: question });
-                const res = await this.getAnswer(question);
-                this.history[this.history.length - 1] = res.question;
-                this.history.push(res.answer);
-                this.message = '';
-
-                if (this.history.length === 2) {
-                    this.message = 'Не тот ответ? Попробуйте переформулировать вопрос';
-                }
-            } catch (e) {
-                console.warn('[Chat/onSubmit] error: ', e);
-                this.message = 'Произошла ошибка.<br>Попробуйте отправить сообщение повторно';
-            }
-
-            this.isLoading = false;
-        },
-
-        getAnswer(value) {
-            const id = String(Math.random());
-
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve({
-                        question: {
-                            id: `q-${id}`,
-                            type: 'question',
-                            text: value,
-                        },
-                        answer: {
-                            id: `a-${id}`,
-                            question_id: `q-${id}`,
-                            type: 'answer',
-                            text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
-                            rating: true,
-                        },
-                    });
-                }, 1000);
-            });
-        },
-
-        onSetRating({ value, item }) {
-            const index = this.history.findIndex(el => el.id === item.id);
-            this.history.splice(index, 1, { ...item, rating: value });
-            /** Запрос на изменение */
-            //
-        },
-
-        onQuestionClick(e) {
-            this.value = e;
-            this.onSubmit();
-        },
     },
 };
 </script>
 
 <style lang='scss' module>
     .Chat {
+        position: relative;
         width: 100%;
     }
 
     .hello {
-        margin-top: 45px;
+        padding-top: 45px;
         padding-bottom: 20px;
         text-align: center;
         font-weight: 500;

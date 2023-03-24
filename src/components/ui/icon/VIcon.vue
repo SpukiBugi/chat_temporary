@@ -53,6 +53,11 @@ export default {
             height: 16px;
         }
 
+        &._size-14 {
+            width: 14px;
+            height: 14px;
+        }
+
         &._size-12 {
             width: 12px;
             height: 12px;

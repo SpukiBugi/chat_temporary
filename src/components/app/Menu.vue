@@ -85,7 +85,7 @@ export default {
                 {
                     icon: 'IcMenu',
                     text: 'Весь функционал',
-                    step: { id: 'Chat', props: { withOptions: true } },
+                    step: { id: 'Chat', props: { isShowOptions: true } },
                 },
             ],
 

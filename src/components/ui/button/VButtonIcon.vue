@@ -7,6 +7,7 @@
     >
         <VIcon :name="name"
                :size="iconSize"
+               :class="$style.icon"
         />
     </component>
 </template>
@@ -50,6 +51,11 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        rotate: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -63,6 +69,7 @@ export default {
                     [this.$style[`_${this.size}`]]: this.size,
                     [this.$style[`_${this.color}`]]: this.color,
                     [this.$style._disabled]: this.disabled,
+                    [this.$style._rotate]: this.rotate,
                 },
             ];
         },
@@ -104,6 +111,12 @@ export default {
         transition: $default-transition;
         cursor: pointer;
         user-select: none;
+
+        &._rotate {
+            .icon {
+                transform: rotate(180deg);
+            }
+        }
 
         /** Sizes */
         &._size-20 {
