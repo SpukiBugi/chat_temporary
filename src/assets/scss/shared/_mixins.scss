@@ -66,11 +66,5 @@
 }
 
 @mixin backdrop {
-    backdrop-filter: blur(16px);
-    background: rgba(25, 27, 30, .06);
-
-    :global(.is-ios) & {
-        backdrop-filter: none;
-        background: rgba(157, 168, 185, .28);
-    }
+    background: rgba(157, 168, 185, .28);
 }

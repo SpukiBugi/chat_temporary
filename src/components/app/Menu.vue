@@ -250,32 +250,19 @@ export default {
         overflow: hidden;
         padding: 8px;
         border-radius: 40px;
-        backdrop-filter: blur(8px);
-        background: rgba(25, 27, 30, .06);
         transition: all .3s ease;
-
-        :global(.is-ios) & {
-            background: none;
-            backdrop-filter: none;
-        }
     }
 
     .mainBlur {
         position: absolute;
         top: 0;
         left: 0;
-        display: none;
         width: 100%;
         height: 100%;
         border-radius: 40px;
+        background: rgba(157, 168, 185, .2);
+        filter: blur(2px);
         transition: all .3s ease;
-
-        :global(.is-ios) & {
-            display: block;
-            backdrop-filter: none;
-            background: rgba(157, 168, 185, .2);
-            filter: blur(2px);
-        }
     }
 
     .inner {
@@ -348,15 +335,8 @@ export default {
         z-index: -1;
         padding: 8px;
         border-radius: 28px 28px 0 28px;
-        background: rgba(25, 27, 30, .06);
-        backdrop-filter: blur(8px);
         pointer-events: none;
         transition: all $default-transition;
-
-        :global(.is-ios) & {
-            background: none;
-            backdrop-filter: none;
-        }
 
         &._link {
             pointer-events: all;
@@ -373,17 +353,11 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        display: none;
         width: 100%;
         height: 100%;
         border-radius: 28px 28px 0 28px;
-
-        :global(.is-ios) & {
-            display: block;
-            background: linear-gradient(135deg, rgba(157, 168, 185, .2) 0%, rgba(157, 168, 185, .2) 90%, transparent 100%);
-            backdrop-filter: none;
-            filter: blur(2px);
-        }
+        background: linear-gradient(-10deg, transparent 0, transparent 5px, rgba(157, 168, 185, .2) 7px, rgba(157, 168, 185, .2) 100%);
+        filter: blur(2px);
     }
 
     .textInner {
