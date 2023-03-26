@@ -5,6 +5,7 @@
         @mouseleave="onMouseLeave"
     >
         <div ref="main" :class="$style.main">
+            <div ref="mainBlur" :class="$style.mainBlur"></div>
             <Expander :is-open="isOpen"
                       field="width"
                       ease="back.out(1)"
@@ -27,7 +28,7 @@
                              :key="control.icon"
                              :class="$style.control"
                              @mouseenter="onControlEnter(control)"
-                             @click="onControlClick(control)"
+                             @click="goStep(control.step)"
                         >
                             <VIcon
                                 :name="control.icon"
@@ -39,18 +40,26 @@
             </Expander>
         </div>
 
-        <div :class="$style.text">
-            <transition name="widget-sova-appear" mode="out-in">
-                <div v-if="activeText"
-                     :key="activeText"
-                     :class="$style.textBlur"
-                >
-                    <div :class="$style.textInner"
-                         v-html="activeText"
+        <transition
+            name="widget-sova-appear"
+            mode="out-in"
+            @before-leave="onBeforeLeaveText"
+            @before-enter="onBeforeEnterText"
+        >
+            <div v-if="activeText"
+                 :key="activeText"
+                 :class="[$style.text, {[$style._link]: activeText === inviteText}]"
+                 @click="onTextClick"
+            >
+                <div :class="$style.textBlur"></div>
+                <div :class="$style.textInner">
+                    <div v-html="activeText"></div>
+                    <div v-if="activeText === inviteText"
+                         :class="$style.textIcn"
                     />
                 </div>
-            </transition>
-        </div>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -100,6 +109,7 @@ export default {
 
             activeText: '',
             autoInterval: null,
+            inviteText: 'За 4 секунды отвечу на любой вопрос',
         };
     },
 
@@ -144,6 +154,10 @@ export default {
         onMouseLeave() {
             this.isOpen = false;
             this.isHovering = false;
+
+            if (this.activeText === this.inviteText) {
+                this.activeText = '';
+            }
         },
 
         onControlEnter(control) {
@@ -154,11 +168,11 @@ export default {
             this.activeText = '';
         },
 
-        onControlClick(control) {
+        goStep(step) {
             this.isChatOpening = true;
             this.isOpen = false;
             this.activeText = '';
-            this.$emit('go-step', control.step);
+            this.$emit('go-step', step);
 
             setTimeout(() => {
                 this.$emit('open');
@@ -172,7 +186,7 @@ export default {
         initInvite() {
             setTimeout(() => {
                 if (!this.hasHovered) {
-                    this.activeText = 'За 4 секунды отвечу на любой вопрос';
+                    this.activeText = this.inviteText;
                 }
             }, 4000);
         },
@@ -185,6 +199,22 @@ export default {
                     this.isOpen = !this.isOpen;
                 }
             }, 4000);
+        },
+
+        onBeforeLeaveText() {
+            this.$refs.mainBlur.style['border-top-right-radius'] = '40px';
+            this.$refs.main.style['border-top-right-radius'] = '40px';
+        },
+
+        onBeforeEnterText() {
+            this.$refs.mainBlur.style['border-top-right-radius'] = 0;
+            this.$refs.main.style['border-top-right-radius'] = 0;
+        },
+
+        onTextClick() {
+            if (this.activeText === this.inviteText) {
+                this.goStep({ id: 'Chat' });
+            }
         },
     },
 };
@@ -213,22 +243,39 @@ export default {
         &._chatOpening {
             pointer-events: none;
         }
-
-        &._text {
-            // .main {
-            //     border-radius: 40px 0 40px 40px;
-            // }
-        }
     }
 
     .main {
-        @include backdrop;
-
         position: relative;
         overflow: hidden;
         padding: 8px;
         border-radius: 40px;
+        backdrop-filter: blur(8px);
+        background: rgba(25, 27, 30, .06);
         transition: all .3s ease;
+
+        :global(.is-ios) & {
+            background: none;
+            backdrop-filter: none;
+        }
+    }
+
+    .mainBlur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        width: 100%;
+        height: 100%;
+        border-radius: 40px;
+        transition: all .3s ease;
+
+        :global(.is-ios) & {
+            display: block;
+            backdrop-filter: none;
+            background: rgba(157, 168, 185, .2);
+            filter: blur(2px);
+        }
     }
 
     .inner {
@@ -297,21 +344,52 @@ export default {
     .text {
         position: absolute;
         right: 0;
-        bottom: 0;
+        bottom: calc(100% - 8px);
         z-index: -1;
-        overflow: hidden;
-        isolation: isolate;
+        padding: 8px;
+        border-radius: 28px 28px 0 28px;
+        background: rgba(25, 27, 30, .06);
+        backdrop-filter: blur(8px);
         pointer-events: none;
+        transition: all $default-transition;
+
+        :global(.is-ios) & {
+            background: none;
+            backdrop-filter: none;
+        }
+
+        &._link {
+            pointer-events: all;
+            cursor: pointer;
+            user-select: none;
+
+            &:hover {
+                color: $primary-500;
+            }
+        }
     }
 
     .textBlur {
-        @include backdrop;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        width: 100%;
+        height: 100%;
+        border-radius: 28px 28px 0 28px;
 
-        padding: 8px 8px 64px;
-        border-radius: 28px 28px 40px 40px;
+        :global(.is-ios) & {
+            display: block;
+            background: linear-gradient(135deg, rgba(157, 168, 185, .2) 0%, rgba(157, 168, 185, .2) 90%, transparent 100%);
+            backdrop-filter: none;
+            filter: blur(2px);
+        }
     }
 
     .textInner {
+        display: flex;
+        align-items: center;
+        gap: 4px;
         padding: 8px 12px;
         border-radius: 16px;
         background-color: $white;
@@ -320,5 +398,15 @@ export default {
         font-size: 13px;
         line-height: 16px;
         letter-spacing: -.015em;
+    }
+
+    .textIcn {
+        width: 13px;
+        height: 13px;
+        margin-top: 2px;
+        background-image: url("/link.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 </style>

@@ -71,22 +71,18 @@ export default {
 
     .status {
         position: absolute;
+        right: -4px;
+        bottom: -2px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
         background: linear-gradient(180deg, #148200 0%, #baeab1 100%);
 
         &._menu {
-            right: -4px;
-            bottom: -2px;
-            width: 16px;
-            height: 16px;
             border: 4px solid $primary-500;
         }
 
         &._chat {
-            right: -2px;
-            bottom: 0;
-            width: 18px;
-            height: 18px;
             border: 4px solid $white;
         }
     }

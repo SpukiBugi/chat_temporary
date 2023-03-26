@@ -134,9 +134,7 @@ export default {
                 duration: duration,
                 top: '8px',
                 left: '50%',
-                width: '64px',
-                height: '64px',
-                transform: 'translate3d(-32px, 0, 0)',
+                transform: 'scale(1.4) translate(-50%)',
             }, 0);
 
             timeline.to(this.$refs.mainWrap, {
@@ -202,9 +200,7 @@ export default {
                 duration: duration,
                 top: 'calc(100% - 8px)',
                 left: 'calc(100% - 8px)',
-                width: '48px',
-                height: '48px',
-                transform: 'translate3d(-48px, -48px, 0)',
+                transform: 'scale(1) translate3d(-100%, -100%, 0)',
             }, 0);
 
             timeline.set(this.$refs.menu.$refs.inner, {
@@ -270,7 +266,9 @@ export default {
         height: 48px;
         border-radius: 50%;
         opacity: 0;
+        will-change: transform;
         transform: translate3d(-100%, -100%, 0);
+        transform-origin: top left;
     }
 </style>
 

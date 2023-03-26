@@ -127,7 +127,7 @@ export default {
             hasUsedHistory: false,
 
             /** Info */
-            history: testHistory,
+            history: [] || testHistory,
 
             /** Form */
             value: '',
