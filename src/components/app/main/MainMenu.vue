@@ -25,15 +25,15 @@ export default {
                 // },
                 {
                     label: 'Звонок',
-                    step: { id: 'Call' },
+                    step: 'Call',
                 },
                 {
                     label: 'Whatsapp',
-                    step: { id: 'Whatsapp' },
+                    step: 'Whatsapp',
                 },
                 {
                     label: 'Telegram',
-                    step: { id: 'Telegram' },
+                    step: 'Telegram',
                 },
             ],
         };

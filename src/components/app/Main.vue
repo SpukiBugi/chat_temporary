@@ -2,7 +2,7 @@
     <div :class="[$style.Main]">
         <div :class="$style.wrapper">
             <div ref="head" :class="$style.head">
-                <VButton :class="$style.about" @click="$emit('go-step', {id: 'Chat'})">Обо мне</VButton>
+                <VButton :class="$style.about" @click="$emit('go-step', 'Chat')">Обо мне</VButton>
                 <VIcon name="IcCloseCircle"
                        size="size-20"
                        :class="$style.close"
@@ -64,16 +64,15 @@
                             :is-show-options="isShowOptions"
                             :is-loading="isLoading"
                             :is-show-switch="isShowSwitch"
-                            :has-send="hasSend"
                             :history="history"
                             :value="value"
                             :message="message"
                             @go-step="$emit('go-step', $event)"
-                            @set-value="value = $event"
-                            @question-click="onQuestionClick"
-                            @submit="onSubmit"
-                            @repeat-click="onRepeat"
-                            @set-rating="onSetRating"
+                            @set-value="$emit('set-value', $event)"
+                            @value-click="$emit('value-click', $event)"
+                            @submit="$emit('submit')"
+                            @repeat-click="$emit('repeat-click')"
+                            @set-rating="$emit('set-rating', $event)"
                         />
                     </transition>
                 </div>
@@ -96,7 +95,6 @@ import { gsap } from 'gsap/dist/gsap.js';
 
 import Expander from '@/components/ui/Expander.vue';
 import MainMenu from '@/components/app/main/MainMenu.vue';
-import testHistory from '@/assets/json/testHistory';
 
 export default {
     name: 'Main',
@@ -107,12 +105,27 @@ export default {
     },
 
     props: {
-        currentStep: {
-            type: Object,
-            default: () => ({}),
+        isLoading: {
+            type: Boolean,
+            default: false,
         },
 
-        stepProps: {
+        history: {
+            type: Array,
+            required: true,
+        },
+
+        value: {
+            type: String,
+            default: '',
+        },
+
+        message: {
+            type: String,
+            default: '',
+        },
+
+        currentStep: {
             type: Object,
             default: () => ({}),
         },
@@ -122,36 +135,26 @@ export default {
         return {
             /** Flags */
             isLong: false,
-            isLoading: false,
-            hasSend: false,
-            hasUsedHistory: false,
-
-            /** Info */
-            history: [] || testHistory,
-
-            /** Form */
-            value: '',
-            message: '',
 
             resizeObserver: null,
         };
     },
 
     computed: {
+        isShowOptions() {
+            return this.currentStep.id === 'Options';
+        },
+
         isMenuHidden() {
-            return this.currentStep.id === 'Chat' && (this.isShowOptions || this.history.length);
+            return this.isShowOptions || (this.currentStep.id === 'Chat' && this.history.length);
         },
 
         isSwitchLong() {
             return this.isLong && !this.isShowOptions;
         },
 
-        isShowOptions() {
-            return this.stepProps.isShowOptions && !this.hasSend && !this.hasUsedHistory;
-        },
-
         isShowSwitch() {
-            return this.currentStep.id === 'Chat' && this.history.length > 2;
+            return (this.currentStep.id === 'Chat' || this.currentStep.id === 'Options') && this.history.length > 2;
         },
     },
 
@@ -165,7 +168,7 @@ export default {
 
     methods: {
         switchLong(value) {
-            this.hasUsedHistory = true;
+            this.$emit('go-step', 'Chat');
             this.isLong = value;
         },
 
@@ -194,85 +197,6 @@ export default {
 
         stopObserver() {
             this.resizeObserver?.unobserve(this.$refs.componentHeight);
-        },
-
-        onSetRating({ value, item }) {
-            const index = this.history.findIndex(el => el.id === item.id);
-            this.history.splice(index, 1, { ...item, rating: value });
-            /** Запрос на изменение */
-            //
-        },
-
-        async onSubmit() {
-            if (this.isLoading) {
-                this.message = 'Отправить сообщение можно после получения ответа';
-
-                return;
-            }
-
-            if (!this.value) {
-                return;
-            }
-
-            this.isLoading = true;
-            this.hasSend = true;
-            const question = this.value;
-            this.value = '';
-            this.message = '';
-            this.history.push({ id: 'new', type: 'question', text: question, date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
-
-            try {
-                const res = await this.getAnswer(question);
-                this.history[this.history.length - 1] = res.question;
-                this.history.push(res.answer);
-                this.message = '';
-
-                if (this.history.length === 2) {
-                    this.message = 'Не тот ответ? Попробуйте переформулировать вопрос';
-                }
-            } catch (e) {
-                console.warn('[Chat/onSubmit] error: ', e);
-                this.history.push({ id: 'error', type: 'answer', text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»', date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
-            }
-
-            this.isLoading = false;
-        },
-
-        getAnswer(value) {
-            const id = String(Math.random());
-
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve({
-                        question: {
-                            id: `q-${id}`,
-                            type: 'question',
-                            text: value,
-                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
-                        },
-                        answer: {
-                            id: `a-${id}`,
-                            question_id: `q-${id}`,
-                            type: 'answer',
-                            text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
-                            rating: true,
-                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
-                        },
-                    });
-                }, 1000);
-            });
-        },
-
-        onQuestionClick(e) {
-            this.value = e;
-            this.onSubmit();
-        },
-
-        onRepeat() {
-            this.history.pop();
-            const question = this.history.pop();
-            this.value = question.text;
-            this.onSubmit();
         },
     },
 };

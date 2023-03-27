@@ -47,7 +47,7 @@
             <VButton v-for="(project, key) in item.projects"
                      :key="project + key"
                      :class="$style.project"
-                     @click="$emit('project-click', project)"
+                     @click="$emit('value-click', project)"
             >
                 {{ project }}
             </VButton>

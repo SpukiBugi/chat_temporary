@@ -4,7 +4,8 @@
             v-if="isShowOptions"
             :is-show-switch="isShowSwitch"
             :class="$style.options"
-            @question-click="$emit('question-click', $event)"
+            @value-click="$emit('value-click', $event)"
+            @go-step="$emit('go-step', $event)"
         />
 
         <ChatMessages
@@ -14,7 +15,7 @@
             :is-long="isLong"
             :class="$style.messages"
             @set-rating="$emit('set-rating', $event)"
-            @project-click="$emit('question-click', $event)"
+            @value-click="$emit('value-click', $event)"
             @repeat-click="$emit('repeat-click')"
         />
 
@@ -78,11 +79,6 @@ export default {
         },
 
         isLoading: {
-            type: Boolean,
-            default: false,
-        },
-
-        hasSend: {
             type: Boolean,
             default: false,
         },

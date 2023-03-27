@@ -27,7 +27,7 @@
                     >
                         <div v-for="control in controls"
                              :key="control.icon"
-                             :class="$style.control"
+                             :class="[$style.control, {[$style._notif]: control.step === 'Chat' && hasNew}]"
                              @mouseenter="onControlEnter(control)"
                              @click="goStep(control.step)"
                         >
@@ -49,15 +49,12 @@
         >
             <div v-if="activeText"
                  :key="activeText"
-                 :class="[$style.text, {[$style._link]: activeText === inviteText}]"
+                 :class="[$style.text, {[$style._link]: activeText === inviteText || activeText === newText}]"
                  @click="onTextClick"
             >
                 <div :class="$style.textBlur"></div>
                 <div :class="$style.textInner">
                     <div v-html="activeText"></div>
-                    <div v-if="activeText === inviteText"
-                         :class="$style.textIcn"
-                    />
                 </div>
             </div>
         </transition>
@@ -81,6 +78,11 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        hasNew: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -94,23 +96,24 @@ export default {
                 {
                     icon: 'IcMessage',
                     text: 'Получить ответ',
-                    step: { id: 'Chat' },
+                    step: 'Chat',
                 },
                 {
                     icon: 'IcPhone',
                     text: 'Заказать звонок',
-                    step: { id: 'Call' },
+                    step: 'Call',
                 },
                 {
                     icon: 'IcMenu',
                     text: 'Весь функционал',
-                    step: { id: 'Chat', props: { isShowOptions: true } },
+                    step: 'Options',
                 },
             ],
 
             activeText: '',
             autoInterval: null,
-            inviteText: 'За 4 секунды отвечу на любой вопрос',
+            inviteText: `За 4 секунды отвечу на любой вопрос<span class="${this.$style.textLink}"></span>`,
+            newText: `1 новое сообщение – <span class="${this.$style.textLink}">смотреть</span>`,
         };
     },
 
@@ -127,6 +130,18 @@ export default {
                     this.initAuto();
                 } else {
                     clearInterval(this.autoInterval);
+                }
+            },
+            immediate: true,
+        },
+
+        hasNew: {
+            handler(val) {
+                if (val) {
+                    this.activeText = this.newText;
+                    this.isOpen = true;
+                } else if (this.activeText === this.newText) {
+                    this.activeText = '';
                 }
             },
             immediate: true,
@@ -210,7 +225,7 @@ export default {
 
         initInvite() {
             setTimeout(() => {
-                if (!this.hasInteracted) {
+                if (!this.hasInteracted && !this.activeText) {
                     this.activeText = this.inviteText;
                 }
             }, 4000);
@@ -241,7 +256,7 @@ export default {
         },
 
         onTextClick() {
-            if (this.activeText === this.inviteText) {
+            if (this.activeText === this.inviteText || this.activeText === this.newText) {
                 this.goStep({ id: 'Chat' });
             }
         },
@@ -347,13 +362,38 @@ export default {
         cursor: pointer;
         user-select: none;
 
+        &:after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            border: 1px solid $primary-500;
+            background-color: $white;
+            opacity: 0;
+            transition: $default-transition;
+        }
+
         &:hover {
             background-color: $primary-600;
             color: $primary-300;
+
+            &:after {
+                border-color: $primary-600;
+                background-color: $primary-300;
+            }
         }
 
         &:not(:last-child) {
             margin-right: 4px;
+        }
+
+        &._notif {
+            &:after {
+                opacity: 1;
+            }
         }
     }
 
@@ -407,6 +447,7 @@ export default {
     }
 
     .textInner {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 4px;
@@ -424,13 +465,24 @@ export default {
         }
     }
 
-    .textIcn {
-        width: 13px;
-        height: 13px;
-        margin-top: 2px;
-        background-image: url("/link.svg");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
+    .textLink {
+        position: relative;
+        color: $primary-500;
+        transition: $default-transition;
+
+        &:after {
+            content: '';
+            position: relative;
+            top: 2px;
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            margin-left: 4px;
+            border-radius: 3px;
+            background-image: url('/link.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
     }
 </style>

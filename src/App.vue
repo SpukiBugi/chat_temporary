@@ -2,6 +2,7 @@
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget
         :class="[$style.App, $style[`_${animationType}`]]"
+        :style="styleList"
     >
         <transition name="fade">
             <div v-show="stepId"
@@ -14,6 +15,7 @@
         <Menu
             ref="menu"
             :is-main-open="isOpen"
+            :has-new="hasNew"
             :class="$style.menu"
             class="widget-sova-app__menu"
             @open="onOpen"
@@ -31,10 +33,18 @@
                 <Main
                     ref="main"
                     :current-step="currentStep"
-                    :step-props="stepProps"
+                    :is-loading="isLoading"
+                    :history="history"
+                    :value="value"
+                    :message="message"
                     :class="$style.main"
                     @close="onClose"
                     @go-step="onGoStep"
+                    @set-value="value = $event"
+                    @value-click="onValueClick"
+                    @submit="onSubmit"
+                    @repeat-click="onRepeat"
+                    @set-rating="onSetRating"
                 />
             </div>
             <div ref="avatarWrap" :class="$style.avatarWrap">
@@ -52,6 +62,7 @@
 <script>
 import { gsap } from 'gsap/dist/gsap.js';
 import { debounce } from '@/assets/js/utils/common-utils';
+import testHistory from '@/assets/json/testHistory';
 
 import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
@@ -70,13 +81,21 @@ export default {
         return {
             /** Flags */
             isOpen: false,
+            isLoading: false,
+            hasNew: localStorage.getItem('widgetSovaHasNew') === 'true',
+
+            /** Form */
+            value: '',
+            message: '',
+
+            /** Info */
+            history: [] || testHistory,
 
             animationType: 'bottom',
             debouncedResize: debounce(this.onResize, 100),
 
             /** Steps */
             stepId: '',
-            stepProps: {},
             steps: [
                 {
                     id: 'Chat',
@@ -103,6 +122,11 @@ export default {
                     component: () => import('@/components/app/main/whatsapp/Whatsapp.vue'),
                     height: '284px',
                 },
+                {
+                    id: 'Options',
+                    component: () => import('@/components/app/main/chat/Chat.vue'),
+                    height: 'auto',
+                },
             ],
         };
     },
@@ -114,6 +138,19 @@ export default {
 
         isRelink() {
             return this.stepId === 'Call' || this.stepId === 'Telegram' || this.stepId === 'Whatsapp';
+        },
+
+        styleList() {
+            return [
+                {
+                    '--primary-100': '#EAF5FF',
+                    '--primary-200': '#B9DAFF',
+                    '--primary-300': '#6497FF',
+                    '--primary-500': '#1F44FF',
+                    '--primary-600': '#1233EE',
+                    '--primary-900': '#1431BF',
+                },
+            ];
         },
     },
 
@@ -134,22 +171,16 @@ export default {
 
     methods: {
         onGoStep(step) {
-            this.stepProps = step.props || {};
-            this.stepId = step.id;
+            this.stepId = step;
+
+            if (step === 'Chat') {
+                this.hasNew = false;
+                localStorage.setItem('widgetSovaHasNew', 'false');
+            }
         },
 
         onResize() {
             this.checkAnimationType();
-        },
-
-        checkAnimationType() {
-            const menuRect = this.$refs.menu.$el.getBoundingClientRect();
-
-            if (menuRect?.top < window.innerHeight / 2) {
-                this.animationType = 'top';
-            } else {
-                this.animationType = 'bottom';
-            }
         },
 
         async onOpen() {
@@ -170,6 +201,18 @@ export default {
                 this.closeAnimMob();
             } else {
                 this.closeAnimDesk();
+            }
+        },
+
+        /** Анимации */
+
+        checkAnimationType() {
+            const menuRect = this.$refs.menu.$el.getBoundingClientRect();
+
+            if (menuRect?.top < window.innerHeight / 2) {
+                this.animationType = 'top';
+            } else {
+                this.animationType = 'bottom';
             }
         },
 
@@ -371,6 +414,94 @@ export default {
                 top: '',
             }, duration);
         },
+
+        /** Конец Анимации */
+
+        /** Чат */
+        async onSubmit() {
+            if (this.isLoading) {
+                this.message = 'Отправить сообщение можно после получения ответа';
+
+                return;
+            }
+
+            if (!this.value) {
+                return;
+            }
+
+            this.isLoading = true;
+            const question = this.value;
+            this.value = '';
+            this.message = '';
+            this.history.push({ id: 'new', type: 'question', text: question, date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
+
+            try {
+                const res = await this.getAnswer(question);
+                this.history[this.history.length - 1] = res.question;
+                this.history.push(res.answer);
+                this.message = '';
+
+                if (this.history.length === 2) {
+                    this.message = 'Не тот ответ? Попробуйте переформулировать вопрос';
+                }
+
+                if (!this.isOpen) {
+                    this.hasNew = true;
+                    localStorage.setItem('widgetSovaHasNew', 'true');
+                }
+            } catch (e) {
+                console.warn('[Chat/onSubmit] error: ', e);
+                this.history.push({ id: 'error', type: 'answer', text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»', date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
+            }
+
+            this.isLoading = false;
+        },
+
+        getAnswer(value) {
+            const id = String(Math.random());
+
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({
+                        question: {
+                            id: `q-${id}`,
+                            type: 'question',
+                            text: value,
+                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
+                        },
+                        answer: {
+                            id: `a-${id}`,
+                            question_id: `q-${id}`,
+                            type: 'answer',
+                            text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
+                            rating: true,
+                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
+                        },
+                    });
+                }, 3000);
+            });
+        },
+
+        onValueClick(e) {
+            this.value = e;
+            this.onSubmit();
+        },
+
+        onRepeat() {
+            this.history.pop();
+            const question = this.history.pop();
+            this.value = question.text;
+            this.onSubmit();
+        },
+
+        onSetRating({ value, item }) {
+            const index = this.history.findIndex(el => el.id === item.id);
+            this.history.splice(index, 1, { ...item, rating: value });
+            /** Запрос на изменение */
+            //
+        },
+
+        /** Конец Чата */
     },
 };
 </script>

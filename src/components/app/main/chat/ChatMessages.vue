@@ -21,7 +21,7 @@
                         :item="item"
                         :class="$style.message"
                         @set-rating="$emit('set-rating', $event)"
-                        @project-click="$emit('project-click', $event)"
+                        @value-click="$emit('value-click', $event)"
                         @repeat-click="$emit('repeat-click')"
                     />
                 </template>

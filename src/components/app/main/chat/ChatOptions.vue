@@ -16,7 +16,7 @@
                         <VButton v-for="(question, qKey) in option.questions"
                                  :key="question + qKey"
                                  :class="$style.question"
-                                 @click="$emit('question-click', question)"
+                                 @click="onQuestionClick(question)"
                         >
                             {{ question }}
                         </VButton>
@@ -88,7 +88,10 @@ export default {
     },
 
     methods: {
-
+        onQuestionClick(question) {
+            this.$emit('value-click', question);
+            this.$emit('go-step', 'Chat');
+        },
     },
 };
 </script>
