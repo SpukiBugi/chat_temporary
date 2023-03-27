@@ -1,21 +1,33 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
     <my-widget
-        :class="[$style.App]"
+        :class="[$style.App, $style[`_${animationType}`]]"
     >
+        <transition name="fade">
+            <div v-show="stepId"
+                 :class="$style.overlay"
+                 @click="onClose"
+            >
+            </div>
+        </transition>
+
         <Menu
             ref="menu"
             :is-main-open="isOpen"
             :class="$style.menu"
+            class="widget-sova-app__menu"
             @open="onOpen"
             @go-step="onGoStep"
         />
 
-        <div v-if="stepId"
-             ref="mainContainer"
-             :class="$style.mainContainer"
+        <div
+            ref="mainContainer"
+            :class="[$style.mainContainer, {[$style._active]: stepId}]"
         >
-            <div ref="mainWrap" :class="$style.mainWrap">
+            <div v-if="stepId"
+                 ref="mainWrap"
+                 :class="$style.mainWrap"
+            >
                 <Main
                     ref="main"
                     :current-step="currentStep"
@@ -39,6 +51,7 @@
 
 <script>
 import { gsap } from 'gsap/dist/gsap.js';
+import { debounce } from '@/assets/js/utils/common-utils';
 
 import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
@@ -57,6 +70,9 @@ export default {
         return {
             /** Flags */
             isOpen: false,
+
+            animationType: 'bottom',
+            debouncedResize: debounce(this.onResize, 100),
 
             /** Steps */
             stepId: '',
@@ -101,16 +117,63 @@ export default {
         },
     },
 
+    watch: {
+        device() {
+            this.onClose();
+        },
+    },
+
+    mounted() {
+        this.checkAnimationType();
+        window.addEventListener('resize', this.debouncedResize);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('resize', this.debouncedResize);
+    },
+
     methods: {
         onGoStep(step) {
             this.stepProps = step.props || {};
             this.stepId = step.id;
         },
 
+        onResize() {
+            this.checkAnimationType();
+        },
+
+        checkAnimationType() {
+            const menuRect = this.$refs.menu.$el.getBoundingClientRect();
+
+            if (menuRect?.top < window.innerHeight / 2) {
+                this.animationType = 'top';
+            } else {
+                this.animationType = 'bottom';
+            }
+        },
+
         async onOpen() {
             this.isOpen = true;
             await this.$nextTick();
 
+            if (this.animationType === 'top') {
+                this.openAnimMob();
+            } else {
+                this.openAnimDesk();
+            }
+        },
+
+        onClose() {
+            this.isOpen = false;
+
+            if (this.animationType === 'top') {
+                this.closeAnimMob();
+            } else {
+                this.closeAnimDesk();
+            }
+        },
+
+        openAnimDesk() {
             const duration = .4;
             const timeline = gsap.timeline();
 
@@ -164,25 +227,69 @@ export default {
             }, 0);
         },
 
-        onClose() {
-            this.isOpen = false;
-            const duration = .3;
+        openAnimMob() {
+            const duration = .4;
             const timeline = gsap.timeline();
 
-            timeline.to(this.$refs.main.$refs.head, {
+            timeline.to(this.$refs.avatarWrap, {
+                opacity: 1,
+            });
+
+            timeline.set(this.$refs.menu.$el, {
                 opacity: 0,
-                duration: .3,
             }, 0);
 
-            timeline.to(this.$refs.main.$refs.componentWrap, {
-                opacity: 0,
-                duration: .3,
+            timeline.to(this.$refs.avatarWrap, {
+                duration: duration,
+                top: '8px',
+                left: '50%',
+                transform: 'scale(1.4) translate(-50%)',
             }, 0);
 
-            timeline.to(this.$refs.main.$refs.mainMenu.$el, {
-                opacity: 0,
-                duration: .3,
+            timeline.to(this.$refs.mainContainer, {
+                duration: duration,
+                top: '100%',
+                yPercent: -100,
             }, 0);
+
+            timeline.to(this.$refs.mainWrap, {
+                duration: duration,
+                transform: 'scale(1)',
+                delay: duration,
+            }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.head, {
+                opacity: 0,
+            }, {
+                opacity: 1,
+                duration: .3,
+                delay: duration * 2,
+            }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.componentWrap, {
+                opacity: 0,
+                transform: 'scale(.8)',
+            }, {
+                transform: 'scale(1)',
+                opacity: 1,
+                duration: .3,
+                delay: duration * 2,
+            }, 0);
+
+            timeline.fromTo(this.$refs.main.$refs.mainMenu.$el, {
+                opacity: 0,
+                transform: 'scale(.8)',
+            }, {
+                transform: 'scale(1)',
+                opacity: 1,
+                duration: .3,
+                delay: duration * 2,
+            }, 0);
+        },
+
+        closeAnimDesk() {
+            const duration = .3;
+            const timeline = gsap.timeline();
 
             timeline.to(this.$refs.mainWrap, {
                 duration: duration,
@@ -196,15 +303,15 @@ export default {
                 transform: 'scale(1) translate3d(-100%, -100%, 0)',
             }, 0);
 
-            timeline.set(this.$refs.menu.$refs.inner, {
+            timeline.set(this.$refs.menu.$refs.mainBlur, {
                 opacity: 0,
             }, 0);
 
             timeline.set(this.$refs.menu.$el, {
                 opacity: 1,
-            }, .1);
+            }, duration);
 
-            timeline.set(this.$refs.menu.$refs.inner, {
+            timeline.set(this.$refs.menu.$refs.mainBlur, {
                 opacity: 1,
             }, duration);
 
@@ -216,25 +323,139 @@ export default {
                 stepId: '',
             }, duration);
         },
+
+        closeAnimMob() {
+            const duration = .4;
+            const timeline = gsap.timeline();
+            const menuRect = this.$refs.menu.$el.getBoundingClientRect();
+
+            timeline.to(this.$refs.mainWrap, {
+                duration: .15,
+                transform: 'scale(0)',
+            }, 0);
+
+            timeline.to(this.$refs.mainContainer, {
+                duration: duration - .1,
+                top: menuRect?.top,
+                yPercent: 0,
+            }, .1);
+
+            timeline.to(this.$refs.avatarWrap, {
+                duration: duration - .1,
+                top: 8,
+                left: 'calc(100% - 20px)',
+                transform: 'scale(1) translate3d(-100%, 0, 0)',
+            }, .1);
+
+            timeline.set(this.$refs.menu.$refs.mainBlur, {
+                opacity: 0,
+            }, 0);
+
+            timeline.set(this.$refs.menu.$el, {
+                opacity: 1,
+            }, duration);
+
+            timeline.set(this.$refs.menu.$refs.mainBlur, {
+                opacity: 1,
+            }, duration);
+
+            timeline.set(this.$refs.avatarWrap, {
+                opacity: 0,
+            }, duration);
+
+            timeline.set(this, {
+                stepId: '',
+            }, duration);
+
+            timeline.set(this.$refs.mainContainer, {
+                top: '',
+            }, duration);
+        },
     },
 };
 </script>
 
 <style lang="scss" module>
     .App {
-        //
+
+        /** По дефолту на десктопе */
+        &._bottom {
+            .mainWrap {
+                transform-origin: 100% 100%;
+            }
+
+            .avatarWrap {
+                transform: scale(1) translate3d(-100%, -100%, 0);
+            }
+        }
+
+        /** По дефолту на мобилке */
+        &._top {
+            .mainContainer {
+                top: 76px;
+                bottom: auto;
+            }
+
+            .mainWrap {
+                transform-origin: 50% 40px;
+            }
+
+            .avatarWrap {
+                transform: scale(1) translate3d(-100%, 0, 0);
+            }
+        }
     }
 
-    .mainContainer,
     .menu {
         position: fixed;
         right: 32px;
         bottom: 32px;
+
+        @include respond-to(mobile) {
+            top: 76px;
+            right: 12px;
+            bottom: auto;
+        }
+    }
+
+    .overlay {
+        display: none;
+
+        @include respond-to(tablet) {
+            position: fixed;
+            top: 0;
+            right: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: rgba(#1e1e22, .8);
+        }
+    }
+
+    .mainContainer {
+        position: fixed;
+        right: 32px;
+        bottom: 32px;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+
+        @include respond-to(mobile) {
+            right: 0;
+            width: 100%;
+        }
+
+        &._active {
+            pointer-events: all;
+        }
     }
 
     .mainWrap {
         transform: scale(0);
-        transform-origin: 100% 100%;
+
+        @include respond-to(mobile) {
+            margin: 0 auto;
+        }
     }
 
     .avatarWrap {
@@ -246,8 +467,12 @@ export default {
         border-radius: 50%;
         opacity: 0;
         will-change: transform;
-        transform: translate3d(-100%, -100%, 0);
         transform-origin: top left;
+
+        @include respond-to(mobile) {
+            top: 8px;
+            left: calc(100% - 20px);
+        }
     }
 </style>
 

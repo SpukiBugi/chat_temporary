@@ -1,11 +1,21 @@
 // Для избежания вытекания стилей добавляем префикс widget-sova
 .widget-sova-fade-enter-active,
 .widget-sova-fade-leave-active {
-    transition: opacity .3s ease-in;
+    transition: opacity .3s ease;
 }
 
 .widget-sova-fade-enter,
 .widget-sova-fade-leave-active {
+    opacity: 0;
+}
+
+.widget-sova-fade-in-enter-active,
+.widget-sova-fade-in-leave-active {
+    transition: opacity .3s ease-in;
+}
+
+.widget-sova-fade-in-enter,
+.widget-sova-fade-in-leave-active {
     opacity: 0;
 }
 

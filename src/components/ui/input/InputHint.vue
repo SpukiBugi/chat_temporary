@@ -50,7 +50,7 @@ export default {
             color: $grey-light-color;
         }
 
-        @include respond-to(xs) {
+        @include respond-to(mobile) {
             font-size: 12px;
         }
     }

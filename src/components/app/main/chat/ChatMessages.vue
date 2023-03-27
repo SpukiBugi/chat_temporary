@@ -137,6 +137,10 @@ export default {
         max-height: 516px;
         margin-top: -16px;
 
+        @include respond-to(tablet) {
+            max-height: calc(100vh - 212px);
+        }
+
         :global(.v-scrollbox__scrollbar._vertical) {
             top: 16px;
         }

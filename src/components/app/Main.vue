@@ -285,9 +285,11 @@ export default {
         position: relative;
         overflow: hidden;
         width: 356px;
+        max-width: 100vw;
         padding: 40px 8px 8px;
         border-radius: 32px;
         mask-image: url('/mask.svg');
+        mask-position: center top;
     }
 
     .wrapper {

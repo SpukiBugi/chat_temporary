@@ -3,6 +3,7 @@
         :class="[$style.Menu, {[$style._chatOpening]: isChatOpening, [$style._open]: isOpen, [$style._text]: activeText}]"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
+        @click="onClick"
     >
         <div ref="main" :class="$style.main">
             <div ref="mainBlur" :class="$style.mainBlur"></div>
@@ -87,7 +88,7 @@ export default {
             isChatOpening: false,
             isOpen: false,
             isHovering: false,
-            hasHovered: false,
+            hasInteracted: false,
 
             controls: [
                 {
@@ -115,7 +116,7 @@ export default {
 
     computed: {
         isAutoActive() {
-            return !this.isHovering && !this.isMainOpen && !this.activeText;
+            return !this.isHovering && !this.isMainOpen && !this.activeText && this.device !== 'mobile';
         },
     },
 
@@ -133,9 +134,11 @@ export default {
     },
 
     mounted() {
-        this.initAuto();
+        if (this.device !== 'mobile') {
+            this.initAuto();
+        }
 
-        if (!this.hasHovered) {
+        if (!this.hasInteracted) {
             this.initInvite();
         }
     },
@@ -146,18 +149,40 @@ export default {
 
     methods: {
         onMouseEnter() {
+            if (this.device === 'mobile') {
+                return;
+            }
+
             this.isOpen = true;
             this.isHovering = true;
-            this.hasHovered = true;
+            this.hasInteracted = true;
         },
 
         onMouseLeave() {
+            if (this.device === 'mobile') {
+                return;
+            }
+
             this.isOpen = false;
             this.isHovering = false;
 
             if (this.activeText === this.inviteText) {
                 this.activeText = '';
             }
+        },
+
+        onClick() {
+            if (this.device !== 'mobile') {
+                return;
+            }
+
+            this.hasInteracted = true;
+
+            if (this.activeText === this.inviteText) {
+                this.activeText = '';
+            }
+
+            this.goStep(this.controls[0].step);
         },
 
         onControlEnter(control) {
@@ -180,12 +205,12 @@ export default {
                 setTimeout(() => {
                     this.isChatOpening = false;
                 }, 500);
-            }, 500);
+            }, this.device === 'mobile' ? 0 : 500);
         },
 
         initInvite() {
             setTimeout(() => {
-                if (!this.hasHovered) {
+                if (!this.hasInteracted) {
                     this.activeText = this.inviteText;
                 }
             }, 4000);
@@ -202,13 +227,17 @@ export default {
         },
 
         onBeforeLeaveText() {
-            this.$refs.mainBlur.style['border-top-right-radius'] = '40px';
-            this.$refs.main.style['border-top-right-radius'] = '40px';
+            if (this.device !== 'mobile') {
+                this.$refs.mainBlur.style['border-top-right-radius'] = '40px';
+                this.$refs.main.style['border-top-right-radius'] = '40px';
+            }
         },
 
         onBeforeEnterText() {
-            this.$refs.mainBlur.style['border-top-right-radius'] = 0;
-            this.$refs.main.style['border-top-right-radius'] = 0;
+            if (this.device !== 'mobile') {
+                this.$refs.mainBlur.style['border-top-right-radius'] = 0;
+                this.$refs.main.style['border-top-right-radius'] = 0;
+            }
         },
 
         onTextClick() {
@@ -338,6 +367,19 @@ export default {
         pointer-events: none;
         transition: all $default-transition;
 
+        @include respond-to(mobile) {
+            right: 73px;
+            bottom: 50%;
+            padding: 0;
+            border-radius: 28px;
+            transform: translateY(50%);
+
+            &:global(.widget-sova-appear-enter),
+            &:global(.widget-sova-appear-leave-active) {
+                transform: translate(20px, 50%);
+            }
+        }
+
         &._link {
             pointer-events: all;
             cursor: pointer;
@@ -358,6 +400,10 @@ export default {
         border-radius: 28px 28px 0 28px;
         background: linear-gradient(-10deg, transparent 0, transparent 5px, rgba(157, 168, 185, .2) 7px, rgba(157, 168, 185, .2) 100%);
         filter: blur(2px);
+
+        @include respond-to(mobile) {
+            display: none;
+        }
     }
 
     .textInner {
@@ -372,6 +418,10 @@ export default {
         font-size: 13px;
         line-height: 16px;
         letter-spacing: -.015em;
+
+        @media only screen and (max-width: 360px) {
+            font-size: 12px;
+        }
     }
 
     .textIcn {

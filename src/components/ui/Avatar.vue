@@ -11,7 +11,7 @@
                 <source src="/bot.mp4" type="video/mp4" />
             </video>
 
-            <transition name="widget-sova-fade">
+            <transition name="widget-sova-fade-in">
                 <img
                     v-if="showPic"
                     src="/fanera.jpg"

@@ -5,11 +5,13 @@
             :class="$style.inner"
         >
             <input
+                ref="input"
                 :aria-label="label"
                 :class="$style.native"
                 :tabindex="0"
                 :value="inputValue"
                 v-bind="attributes"
+                @keydown="onKeyDown"
                 @blur="onBlur"
                 @focus="onFocus"
                 @input="onInput"
@@ -367,7 +369,7 @@ export default {
          */
         onBlur(e) {
             this.isFocused = false;
-            this.tweenOnFocus(true);
+            this.tweenOnFocus({ reverse: true, onComplete: this.device === 'mobile' ? this.tweenAround : null });
 
             /**
              * Передаёт родителю, что компонент больше не находится в focus.
@@ -382,7 +384,20 @@ export default {
             }
         },
 
+        async onKeyDown(e) {
+            if (e.keyCode === 13) {
+                /** Ожидание чтобы не прервалась отправка значения */
+                setTimeout(() => {
+                    this.$refs.input.blur();
+                }, 500);
+            }
+        },
+
         onMouseMove(e) {
+            if (this.device === 'mobile') {
+                return;
+            }
+
             const elRect = this.$refs.border?.getBoundingClientRect();
             const mouseGap = 30;
 
@@ -493,7 +508,7 @@ export default {
             this.mouseTween = gsap.to(tweenObj, options);
         },
 
-        tweenOnFocus(reverse) {
+        tweenOnFocus(params = {}) {
             this.stopTweenAround();
             this.stopTweenOnMouse();
             this.stopTweenFocus();
@@ -503,8 +518,8 @@ export default {
                 y: parseInt(this.borderYSize, 10),
             };
             const tweenObjNew = {
-                x: reverse ? defaultBorderXSize : 200,
-                y: reverse ? defaultBorderYSize : 200,
+                x: params.reverse ? defaultBorderXSize : 200,
+                y: params.reverse ? defaultBorderYSize : 200,
             };
 
             const options = {
@@ -514,6 +529,8 @@ export default {
                     this.borderXSize = `${tweenObj.x}%`;
                     this.borderYSize = `${tweenObj.y}%`;
                 },
+
+                onComplete: params.onComplete,
 
                 ease: 'power3.out',
             };

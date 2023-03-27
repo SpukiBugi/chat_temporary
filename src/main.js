@@ -7,7 +7,7 @@ import '@/assets/scss/common.scss';
 /** js */
 import { splitThousands } from '@/assets/js/utils/numbers-utils';
 import { formatDateTime } from '@/assets/js/utils/date-time-utils';
-
+import device from '@/assets/js/device';
 
 /** Components */
 import VIcon from '@/components/ui/icon/VIcon.vue';
@@ -32,6 +32,7 @@ const init = () => {
     /** */
 
     Vue.config.ignoredElements = ['my-widget'];
+    Vue.use(device);
 
     new Vue({
         el: block,
