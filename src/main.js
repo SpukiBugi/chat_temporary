@@ -33,7 +33,7 @@ const addCss = () => {
 };
 
 const init = () => {
-    addCss();
+    // addCss();
     const block = document.createElement('div');
     document.body.appendChild(block);
 
