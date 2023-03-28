@@ -14,7 +14,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
     "gsap": "^3.11.4",
@@ -33,6 +34,7 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.14.2",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "push-dir": "^0.4.1"
   }
 }
