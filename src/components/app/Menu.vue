@@ -257,7 +257,7 @@ export default {
 
         onTextClick() {
             if (this.activeText === this.inviteText || this.activeText === this.newText) {
-                this.goStep({ id: 'Chat' });
+                this.goStep('Chat');
             }
         },
     },
