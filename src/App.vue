@@ -245,7 +245,7 @@ export default {
                 duration: duration,
                 top: '8px',
                 left: '50%',
-                transform: 'scale(1.4) translate(-50%)',
+                transform: 'scale(1.34) translate(-50%)',
             }, 0);
 
             timeline.to(this.$refs.mainWrap, {
@@ -298,7 +298,7 @@ export default {
                 duration: duration,
                 top: '8px',
                 left: '50%',
-                transform: 'scale(1.4) translate(-50%)',
+                transform: 'scale(1.34) translate(-50%)',
             }, 0);
 
             timeline.to(this.$refs.mainContainer, {

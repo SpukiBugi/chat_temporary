@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { formatDateTime } from '@/assets/js/utils/date-time-utils';
+
 import VScrollBox from '@/components/ui/scrollbox/VScrollBox.vue';
 import ChatMessage from '@/components/app/main/chat/ChatMessage.vue';
 import ChatPreload from '@/components/app/main/chat/ChatPreload.vue';
@@ -114,7 +116,7 @@ export default {
             const list = [];
 
             items.forEach((element, key) => {
-                if (element.date !== currentDate && element.date) {
+                if (element.date && formatDateTime(element.date, '$j $e') !== formatDateTime(currentDate, '$j $e')) {
                     list.push({ id: `date-${key}`, type: 'date', date: element.date });
                     currentDate = element.date;
                 }
