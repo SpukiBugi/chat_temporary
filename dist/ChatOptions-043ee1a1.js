@@ -1,5 +1,5 @@
-import { V as a } from "./VScrollBox-1bbf96ef.js";
-import { n as _ } from "./main-b4b8c2a2.js";
+import { V as a } from "./VScrollBox-12fe50c0.js";
+import { n as _ } from "./main-a457177b.js";
 import "https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js";
 import "https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm";
 const r = "_ChatOptions_866qv_7", h = "__showSwitch_866qv_10", d = "_list_866qv_10", u = "_scrollable_866qv_14", v = "_option_866qv_27", p = "_head_866qv_36", f = "_headIcn_866qv_42", m = "_questions_866qv_50", y = "_fade_866qv_59", $ = {

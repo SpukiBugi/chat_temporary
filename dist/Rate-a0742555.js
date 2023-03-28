@@ -1,4 +1,4 @@
-import { n as r } from "./main-b4b8c2a2.js";
+import { n as r } from "./main-a457177b.js";
 import "https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js";
 import "https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm";
 const a = "_content_8bfpc_7", c = {
@@ -11,15 +11,15 @@ const a = "_content_8bfpc_7", c = {
       rateSteps: [
         {
           id: "Hello",
-          component: () => import("./RateHello-1806fdd0.js")
+          component: () => import("./RateHello-20af6ffd.js")
         },
         {
           id: "Choose",
-          component: () => import("./RateChoose-e7cd7a54.js")
+          component: () => import("./RateChoose-6d4d091a.js")
         },
         {
           id: "Bye",
-          component: () => import("./RateBye-1ac1b1b3.js")
+          component: () => import("./RateBye-b7747e30.js")
         }
       ]
     };

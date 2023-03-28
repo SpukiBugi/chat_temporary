@@ -1,6 +1,6 @@
 import h from "https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js";
 import { gsap as c } from "https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm";
-function F(e, t, s) {
+function E(e, t, s) {
   let n;
   return function() {
     const r = this, o = arguments;
@@ -11,14 +11,14 @@ function F(e, t, s) {
     clearTimeout(n), n = setTimeout(l, t), a && e.apply(r, o);
   };
 }
-const H = "/bot.mp4", E = "/fanera.jpg", R = "_Avatar_h3gzp_7", N = "_status_h3gzp_14", D = "__menu_h3gzp_23", P = "__chat_h3gzp_26", X = "_videoWrap_h3gzp_30", q = "_video_h3gzp_30", G = "_image_h3gzp_40", Y = {
-  Avatar: R,
-  status: N,
-  _menu: D,
-  _chat: P,
-  videoWrap: X,
-  video: q,
-  image: G
+const H = "/bot.mp4", R = "/fanera.jpg", N = "_Avatar_h3gzp_7", D = "_status_h3gzp_14", P = "__menu_h3gzp_23", X = "__chat_h3gzp_26", q = "_videoWrap_h3gzp_30", G = "_video_h3gzp_30", Y = "_image_h3gzp_40", U = {
+  Avatar: N,
+  status: D,
+  _menu: P,
+  _chat: X,
+  videoWrap: q,
+  video: G,
+  image: Y
 };
 function u(e, t, s, n, i, r, o, l) {
   var a = typeof e == "function" ? e.options : e;
@@ -36,9 +36,9 @@ function u(e, t, s, n, i, r, o, l) {
   } : i), d)
     if (a.functional) {
       a._injectStyles = d;
-      var W = a.render;
-      a.render = function(j, y) {
-        return d.call(y), W(j, y);
+      var j = a.render;
+      a.render = function(F, y) {
+        return d.call(y), j(F, y);
       };
     } else {
       var v = a.beforeCreate;
@@ -49,7 +49,7 @@ function u(e, t, s, n, i, r, o, l) {
     options: a
   };
 }
-const U = {
+const Z = {
   name: "Avatar",
   props: {
     hasStatus: {
@@ -70,30 +70,30 @@ const U = {
   },
   methods: {}
 };
-var Z = function() {
+var K = function() {
   var t = this, s = t._self._c;
-  return s("div", { class: t.$style.Avatar }, [s("div", { class: t.$style.videoWrap }, [s("video", { class: t.$style.video, attrs: { autoplay: "", loop: "", playsinline: "", muted: "" }, domProps: { muted: !0 } }, [s("source", { attrs: { src: H, type: "video/mp4" } })]), s("transition", { attrs: { name: "widget-sova-fade-in" } }, [t.showPic ? s("img", { class: t.$style.image, attrs: { src: E, alt: "avatar" } }) : t._e()])], 1), s("transition", { attrs: { name: "widget-sova-fade" } }, [s("div", { directives: [{ name: "show", rawName: "v-show", value: t.hasStatus, expression: "hasStatus" }], class: [t.$style.status, t.$style[`_${t.statusType}`]] })])], 1);
-}, K = [];
+  return s("div", { class: t.$style.Avatar }, [s("div", { class: t.$style.videoWrap }, [s("video", { class: t.$style.video, attrs: { autoplay: "", loop: "", playsinline: "", muted: "" }, domProps: { muted: !0 } }, [s("source", { attrs: { src: H, type: "video/mp4" } })]), s("transition", { attrs: { name: "widget-sova-fade-in" } }, [t.showPic ? s("img", { class: t.$style.image, attrs: { src: R, alt: "avatar" } }) : t._e()])], 1), s("transition", { attrs: { name: "widget-sova-fade" } }, [s("div", { directives: [{ name: "show", rawName: "v-show", value: t.hasStatus, expression: "hasStatus" }], class: [t.$style.status, t.$style[`_${t.statusType}`]] })])], 1);
+}, J = [];
 const $ = {
-  $style: Y
+  $style: U
 };
-function J(e) {
+function Q(e) {
   for (var t in $)
     this[t] = $[t];
 }
-var Q = /* @__PURE__ */ u(
-  U,
+var tt = /* @__PURE__ */ u(
   Z,
   K,
-  !1,
   J,
+  !1,
+  Q,
   null,
   null,
   null
 );
-const A = Q.exports, tt = "_expander_kori7_7", et = {
-  expander: tt
-}, st = {
+const V = tt.exports, et = "_expander_kori7_7", st = {
+  expander: et
+}, nt = {
   name: "Expander",
   props: {
     isOpen: {
@@ -164,50 +164,50 @@ const A = Q.exports, tt = "_expander_kori7_7", et = {
     });
   }
 };
-var nt = function() {
+var it = function() {
   var t = this, s = t._self._c;
   return s("div", { class: [t.$style.expander, { _hidden: !t.isOpen, _changing: t.changing }], style: { [t.field]: t.premountSize } }, [t._t("default")], 2);
-}, it = [];
+}, ot = [];
 const g = {
-  $style: et
+  $style: st
 };
-function ot(e) {
+function at(e) {
   for (var t in g)
     this[t] = g[t];
 }
-var at = /* @__PURE__ */ u(
-  st,
+var rt = /* @__PURE__ */ u(
   nt,
   it,
-  !1,
   ot,
+  !1,
+  at,
   null,
   null,
   null
 );
-const V = at.exports, rt = "_Menu_8jpxx_7", lt = "__open_8jpxx_10", ct = "_inner_8jpxx_10", ut = "_avatarWrap_8jpxx_13", pt = "_control_8jpxx_17", ht = "__chatOpening_8jpxx_21", dt = "_main_8jpxx_25", _t = "_mainBlur_8jpxx_33", mt = "_expander_8jpxx_61", ft = "__weight_8jpxx_61", vt = "_controls_8jpxx_68", yt = "__notif_8jpxx_117", $t = "_text_8jpxx_121", gt = "__link_8jpxx_143", bt = "_textBlur_8jpxx_152", wt = "_textInner_8jpxx_168", xt = "_textLink_8jpxx_188", St = {
-  Menu: rt,
-  _open: lt,
-  inner: ct,
-  avatarWrap: ut,
-  control: pt,
-  _chatOpening: ht,
-  main: dt,
-  mainBlur: _t,
-  expander: mt,
-  _weight: ft,
-  controls: vt,
-  _notif: yt,
-  text: $t,
-  _link: gt,
-  textBlur: bt,
-  textInner: wt,
-  textLink: xt
-}, Tt = {
+const W = rt.exports, lt = "_Menu_8jpxx_7", ct = "__open_8jpxx_10", ut = "_inner_8jpxx_10", pt = "_avatarWrap_8jpxx_13", ht = "_control_8jpxx_17", dt = "__chatOpening_8jpxx_21", _t = "_main_8jpxx_25", mt = "_mainBlur_8jpxx_33", ft = "_expander_8jpxx_61", vt = "__weight_8jpxx_61", yt = "_controls_8jpxx_68", $t = "__notif_8jpxx_117", gt = "_text_8jpxx_121", bt = "__link_8jpxx_143", wt = "_textBlur_8jpxx_152", xt = "_textInner_8jpxx_168", St = "_textLink_8jpxx_188", Tt = {
+  Menu: lt,
+  _open: ct,
+  inner: ut,
+  avatarWrap: pt,
+  control: ht,
+  _chatOpening: dt,
+  main: _t,
+  mainBlur: mt,
+  expander: ft,
+  _weight: vt,
+  controls: yt,
+  _notif: $t,
+  text: gt,
+  _link: bt,
+  textBlur: wt,
+  textInner: xt,
+  textLink: St
+}, kt = {
   name: "Menu",
   components: {
-    Avatar: A,
-    Expander: V
+    Avatar: V,
+    Expander: W
   },
   props: {
     isMainOpen: {
@@ -317,7 +317,7 @@ const V = at.exports, rt = "_Menu_8jpxx_7", lt = "__open_8jpxx_10", ct = "_inner
     }
   }
 };
-var kt = function() {
+var Mt = function() {
   var t = this, s = t._self._c;
   return s("div", { class: [t.$style.Menu, { [t.$style._chatOpening]: t.isChatOpening, [t.$style._open]: t.isOpen, [t.$style._text]: t.activeText }], on: { mouseenter: t.onMouseEnter, mouseleave: t.onMouseLeave, click: t.onClick } }, [s("div", { ref: "main", class: t.$style.main }, [s("div", { ref: "mainBlur", class: t.$style.mainBlur }), s("Expander", { class: [t.$style.expander, t.$style._weight], attrs: { "is-open": t.isOpen, field: "width", ease: "back.out(1)", duration: 0.5, "hide-size": "48px" } }, [s("div", { ref: "inner", class: t.$style.inner }, [s("div", { class: t.$style.avatarWrap }, [s("Avatar", { attrs: { "has-status": t.isOpen, "status-type": "menu" } })], 1), s("div", { class: t.$style.controls, on: { mouseleave: t.onControlsLeave } }, t._l(t.controls, function(n) {
     return s("div", { key: n.icon, class: [t.$style.control, { [t.$style._notif]: n.step === "Chat" && t.hasNew }], on: { mouseenter: function(i) {
@@ -326,28 +326,28 @@ var kt = function() {
       return t.goStep(n.step);
     } } }, [s("VIcon", { attrs: { name: n.icon, size: "size-20" } })], 1);
   }), 0)])])], 1), s("transition", { attrs: { name: "widget-sova-appear", mode: "out-in" }, on: { "before-leave": t.onBeforeLeaveText, "before-enter": t.onBeforeEnterText } }, [t.activeText ? s("div", { key: t.activeText, class: [t.$style.text, { [t.$style._link]: t.activeText === t.inviteText || t.activeText === t.newText }], on: { click: t.onTextClick } }, [s("div", { class: t.$style.textBlur }), s("div", { class: t.$style.textInner }, [s("div", { domProps: { innerHTML: t._s(t.activeText) } })])]) : t._e()])], 1);
-}, Mt = [];
+}, Ct = [];
 const b = {
-  $style: St
+  $style: Tt
 };
 function It(e) {
   for (var t in b)
     this[t] = b[t];
 }
-var Ct = /* @__PURE__ */ u(
-  Tt,
+var zt = /* @__PURE__ */ u(
   kt,
   Mt,
+  Ct,
   !1,
   It,
   null,
   null,
   null
 );
-const zt = Ct.exports, Ot = "_MainMenu_1tb1b_7", Bt = "_btn_1tb1b_12", Lt = {
-  MainMenu: Ot,
-  btn: Bt
-}, At = {
+const Ot = zt.exports, Bt = "_MainMenu_1tb1b_7", Lt = "_btn_1tb1b_12", At = {
+  MainMenu: Bt,
+  btn: Lt
+}, Vt = {
   name: "MainMenu",
   data() {
     return {
@@ -373,49 +373,49 @@ const zt = Ct.exports, Ot = "_MainMenu_1tb1b_7", Bt = "_btn_1tb1b_12", Lt = {
   },
   methods: {}
 };
-var Vt = function() {
+var Wt = function() {
   var t = this, s = t._self._c;
   return s("div", { class: t.$style.MainMenu }, t._l(t.items, function(n) {
     return s("VButton", { key: n.label, class: t.$style.btn, attrs: { color: "base-100" }, on: { click: function(i) {
       return t.$emit("go-step", n.step);
     } } }, [t._v(" " + t._s(n.label) + " ")]);
   }), 1);
-}, Wt = [];
+}, jt = [];
 const w = {
-  $style: Lt
+  $style: At
 };
-function jt(e) {
+function Ft(e) {
   for (var t in w)
     this[t] = w[t];
 }
-var Ft = /* @__PURE__ */ u(
-  At,
+var Et = /* @__PURE__ */ u(
   Vt,
   Wt,
-  !1,
   jt,
+  !1,
+  Ft,
   null,
   null,
   null
 );
-const Ht = Ft.exports, Et = "_Main_1lmob_7", Rt = "_wrapper_1lmob_19", Nt = "_head_1lmob_27", Dt = "_close_1lmob_38", Pt = "_switchBorder_1lmob_54", Xt = "_longSwitch_1lmob_62", qt = "_longSwitchInner_1lmob_74", Gt = "__short_1lmob_85", Yt = "_longSwitchIcn_1lmob_90", Ut = "__long_1lmob_93", Zt = "_componentWrap_1lmob_103", Kt = "_componentHeight_1lmob_108", Jt = "_menu_1lmob_115", Qt = {
-  Main: Et,
-  wrapper: Rt,
-  head: Nt,
-  close: Dt,
-  switchBorder: Pt,
-  longSwitch: Xt,
-  longSwitchInner: qt,
-  _short: Gt,
-  longSwitchIcn: Yt,
-  _long: Ut,
-  componentWrap: Zt,
-  componentHeight: Kt,
-  menu: Jt
-}, te = {
+const Ht = Et.exports, Rt = "_Main_1lmob_7", Nt = "_wrapper_1lmob_19", Dt = "_head_1lmob_27", Pt = "_close_1lmob_38", Xt = "_switchBorder_1lmob_54", qt = "_longSwitch_1lmob_62", Gt = "_longSwitchInner_1lmob_74", Yt = "__short_1lmob_85", Ut = "_longSwitchIcn_1lmob_90", Zt = "__long_1lmob_93", Kt = "_componentWrap_1lmob_103", Jt = "_componentHeight_1lmob_108", Qt = "_menu_1lmob_115", te = {
+  Main: Rt,
+  wrapper: Nt,
+  head: Dt,
+  close: Pt,
+  switchBorder: Xt,
+  longSwitch: qt,
+  longSwitchInner: Gt,
+  _short: Yt,
+  longSwitchIcn: Ut,
+  _long: Zt,
+  componentWrap: Kt,
+  componentHeight: Jt,
+  menu: Qt
+}, ee = {
   name: "Main",
   components: {
-    Expander: V,
+    Expander: W,
     MainMenu: Ht
   },
   props: {
@@ -495,7 +495,7 @@ const Ht = Ft.exports, Et = "_Main_1lmob_7", Rt = "_wrapper_1lmob_19", Nt = "_he
     }
   }
 };
-var ee = function() {
+var se = function() {
   var t = this, s = t._self._c;
   return s("div", { class: [t.$style.Main] }, [s("div", { class: t.$style.wrapper }, [s("div", { ref: "head", class: t.$style.head }, [s("VButton", { class: t.$style.about, on: { click: function(n) {
     return t.$emit("go-step", "Chat");
@@ -518,41 +518,41 @@ var ee = function() {
   } } }) : t._e()], 1)], 1)]), s("Expander", { attrs: { "is-open": !t.isMenuHidden } }, [s("MainMenu", { ref: "mainMenu", staticClass: "widget-sova-main-menu", class: t.$style.menu, on: { "go-step": function(n) {
     return t.$emit("go-step", n);
   } } })], 1)], 1)]);
-}, se = [];
+}, ne = [];
 const x = {
-  $style: Qt
+  $style: te
 };
-function ne(e) {
+function ie(e) {
   for (var t in x)
     this[t] = x[t];
 }
-var ie = /* @__PURE__ */ u(
-  te,
+var oe = /* @__PURE__ */ u(
   ee,
   se,
-  !1,
   ne,
+  !1,
+  ie,
   null,
   null,
   null
 );
-const oe = ie.exports, ae = "_App_g0f3a_8", re = "__bottom_g0f3a_12", le = "_mainWrap_g0f3a_12", ce = "_avatarWrap_g0f3a_15", ue = "__top_g0f3a_18", pe = "_mainContainer_g0f3a_18", he = "_menu_g0f3a_29", de = "_overlay_g0f3a_42", _e = "__active_g0f3a_71", me = {
-  App: ae,
-  _bottom: re,
-  mainWrap: le,
-  avatarWrap: ce,
-  _top: ue,
-  mainContainer: pe,
-  menu: he,
-  overlay: de,
-  _active: _e
+const ae = oe.exports, re = "_App_g0f3a_8", le = "__bottom_g0f3a_12", ce = "_mainWrap_g0f3a_12", ue = "_avatarWrap_g0f3a_15", pe = "__top_g0f3a_18", he = "_mainContainer_g0f3a_18", de = "_menu_g0f3a_29", _e = "_overlay_g0f3a_42", me = "__active_g0f3a_71", fe = {
+  App: re,
+  _bottom: le,
+  mainWrap: ce,
+  avatarWrap: ue,
+  _top: pe,
+  mainContainer: he,
+  menu: de,
+  overlay: _e,
+  _active: me
 };
-const fe = {
+const ve = {
   name: "App",
   components: {
-    Menu: zt,
-    Avatar: A,
-    Main: oe
+    Menu: Ot,
+    Avatar: V,
+    Main: ae
   },
   props: {
     id: {
@@ -576,38 +576,38 @@ const fe = {
       /** Info */
       history: [],
       animationType: "bottom",
-      debouncedResize: F(this.onResize, 100),
+      debouncedResize: E(this.onResize, 100),
       /** Steps */
       stepId: "",
       steps: [
         {
           id: "Chat",
-          component: () => import("./Chat-840866a2.js"),
+          component: () => import("./Chat-6a8330a4.js"),
           height: "auto"
         },
         {
           id: "Rate",
-          component: () => import("./Rate-4859e6ae.js"),
+          component: () => import("./Rate-a0742555.js"),
           height: "284px"
         },
         {
           id: "Call",
-          component: () => import("./Call-fbe265cf.js"),
+          component: () => import("./Call-44def453.js"),
           height: "284px"
         },
         {
           id: "Telegram",
-          component: () => import("./Telegram-71748e01.js"),
+          component: () => import("./Telegram-c85d87bc.js"),
           height: "284px"
         },
         {
           id: "Whatsapp",
-          component: () => import("./Whatsapp-6dd0bd26.js"),
+          component: () => import("./Whatsapp-37c3033c.js"),
           height: "284px"
         },
         {
           id: "Options",
-          component: () => import("./Chat-840866a2.js"),
+          component: () => import("./Chat-6a8330a4.js"),
           height: "auto"
         }
       ]
@@ -845,32 +845,32 @@ const fe = {
     /** Конец Чата */
   }
 };
-var ve = function() {
+var ye = function() {
   var t = this, s = t._self._c;
   return s("my-widget", { class: [t.$style.App, t.$style[`_${t.animationType}`]], style: t.styleList }, [s("transition", { attrs: { name: "fade" } }, [s("div", { directives: [{ name: "show", rawName: "v-show", value: t.stepId, expression: "stepId" }], class: t.$style.overlay, on: { click: t.onClose } })]), s("Menu", { ref: "menu", staticClass: "widget-sova-app__menu", class: t.$style.menu, attrs: { "is-main-open": t.isOpen, "has-new": t.hasNew }, on: { open: t.onOpen, "go-step": t.onGoStep } }), s("div", { ref: "mainContainer", class: [t.$style.mainContainer, { [t.$style._active]: t.stepId }] }, [t.stepId ? s("div", { ref: "mainWrap", class: t.$style.mainWrap }, [s("Main", { ref: "main", class: t.$style.main, attrs: { "current-step": t.currentStep, "is-loading": t.isLoading, history: t.history, value: t.value, message: t.message }, on: { close: t.onClose, "go-step": t.onGoStep, "set-value": function(n) {
     t.value = n;
   }, "value-click": t.onValueClick, submit: t.onSubmit, "repeat-click": t.onRepeat, "set-rating": t.onSetRating } })], 1) : t._e(), s("div", { ref: "avatarWrap", class: t.$style.avatarWrap }, [s("Avatar", { ref: "avatar", attrs: { "status-type": "chat", "has-status": t.isOpen, "show-pic": t.isRelink && t.isOpen } })], 1)])], 1);
-}, ye = [];
+}, $e = [];
 const S = {
-  $style: me
+  $style: fe
 };
-function $e(e) {
+function ge(e) {
   for (var t in S)
     this[t] = S[t];
 }
-var ge = /* @__PURE__ */ u(
-  fe,
+var be = /* @__PURE__ */ u(
   ve,
   ye,
-  !1,
   $e,
+  !1,
+  ge,
   null,
   null,
   null
 );
-const be = ge.exports;
+const we = be.exports;
 const _ = (e) => e < 10 ? `0${e}` : e;
-function we(e) {
+function xe(e) {
   return isNaN(e) ? e : (e = Math.floor(Number(e)), (e < 0 ? "-" : "") + e.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " "));
 }
 const T = (e, t) => t ? [
@@ -931,10 +931,10 @@ const T = (e, t) => t ? [
     "Дек"
   ];
   return t ? r[e] : s ? i[e] : n[e];
-}, xe = (e) => !isNaN(Date.parse(e)), Se = (e, t) => {
+}, Se = (e) => !isNaN(Date.parse(e)), Te = (e, t) => {
   if (!e)
     return "";
-  const s = xe(e) ? new Date(e) : new Date(), n = {
+  const s = Se(e) ? new Date(e) : new Date(), n = {
     // Date
     $d: _(s.getDate()),
     // Day of the month, 2 digits with leading zeros. // '01' to '31'
@@ -988,7 +988,7 @@ const T = (e, t) => t ? [
   return i.forEach((o) => {
     r = r.replace(o, n[o]);
   }), r;
-}, Te = (e) => {
+}, ke = (e) => {
   const t = new e(), s = {
     mobile: 768,
     tablet: 1024,
@@ -1014,18 +1014,18 @@ const T = (e, t) => t ? [
       }), n();
     }
   });
-}, ke = { install: Te }, Me = (e, t) => {
+}, Me = { install: ke }, Ce = (e, t) => {
   const s = e[t];
   return s ? typeof s == "function" ? s() : Promise.resolve(s) : new Promise((n, i) => {
     (typeof queueMicrotask == "function" ? queueMicrotask : setTimeout)(i.bind(null, new Error("Unknown variable dynamic import: " + t)));
   });
-}, Ie = "_VIcon_10wm4_7", Ce = {
+}, Ie = "_VIcon_10wm4_7", ze = {
   VIcon: Ie,
   "_size-20": "__size-20_10wm4_10",
   "_size-16": "__size-16_10wm4_14",
   "_size-14": "__size-14_10wm4_18",
   "_size-12": "__size-12_10wm4_22"
-}, ze = {
+}, Oe = {
   name: "VIcon",
   props: {
     name: {
@@ -1046,39 +1046,39 @@ const T = (e, t) => t ? [
       ];
     },
     component() {
-      return () => Me(/* @__PURE__ */ Object.assign({ "../../icons/IcCloseCircle.vue": () => import("./IcCloseCircle-8439a0b5.js"), "../../icons/IcHistory.vue": () => import("./IcHistory-a7515e23.js"), "../../icons/IcLike.vue": () => import("./IcLike-23585163.js"), "../../icons/IcMenu.vue": () => import("./IcMenu-93790b3b.js"), "../../icons/IcMessage.vue": () => import("./IcMessage-a116aa73.js"), "../../icons/IcPhone.vue": () => import("./IcPhone-f25fb4e2.js"), "../../icons/IcRate.vue": () => import("./IcRate-32d0fd3a.js"), "../../icons/IcRateFinish.vue": () => import("./IcRateFinish-cd14c0a8.js"), "../../icons/IcSend.vue": () => import("./IcSend-488c220a.js") }), `../../icons/${this.name}.vue`);
+      return () => Ce(/* @__PURE__ */ Object.assign({ "../../icons/IcCloseCircle.vue": () => import("./IcCloseCircle-a260cb32.js"), "../../icons/IcHistory.vue": () => import("./IcHistory-d357ec92.js"), "../../icons/IcLike.vue": () => import("./IcLike-2a7540fd.js"), "../../icons/IcMenu.vue": () => import("./IcMenu-76e0c9bb.js"), "../../icons/IcMessage.vue": () => import("./IcMessage-a8f714e4.js"), "../../icons/IcPhone.vue": () => import("./IcPhone-693c8d1c.js"), "../../icons/IcRate.vue": () => import("./IcRate-9f21ac3d.js"), "../../icons/IcRateFinish.vue": () => import("./IcRateFinish-152e8c8e.js"), "../../icons/IcSend.vue": () => import("./IcSend-8f1c446a.js") }), `../../icons/${this.name}.vue`);
     }
   }
 };
-var Oe = function() {
+var Be = function() {
   var t = this, s = t._self._c;
   return s(t.component, { tag: "component", staticClass: "v-icon", class: [t.$style.VIcon, ...t.classList], nativeOn: { click: function(n) {
     return t.$emit("click");
   } } });
-}, Be = [];
+}, Le = [];
 const k = {
-  $style: Ce
+  $style: ze
 };
-function Le(e) {
+function Ae(e) {
   for (var t in k)
     this[t] = k[t];
 }
-var Ae = /* @__PURE__ */ u(
-  ze,
+var Ve = /* @__PURE__ */ u(
   Oe,
   Be,
-  !1,
   Le,
+  !1,
+  Ae,
   null,
   null,
   null
 );
-const Ve = Ae.exports, We = "_VButton_1prz2_7", je = "__disabled_1prz2_52", Fe = {
-  VButton: We,
+const We = Ve.exports, je = "_VButton_1prz2_7", Fe = "__disabled_1prz2_52", Ee = {
+  VButton: je,
   "_size-40": "__size-40_1prz2_19",
   "_size-24": "__size-24_1prz2_28",
   "_primary-100": "__primary-100_1prz2_37",
-  _disabled: je,
+  _disabled: Fe,
   "_base-100": "__base-100_1prz2_56"
 }, He = {
   name: "VButton",
@@ -1127,36 +1127,36 @@ const Ve = Ae.exports, We = "_VButton_1prz2_7", je = "__disabled_1prz2_52", Fe =
   },
   methods: {}
 };
-var Ee = function() {
+var Re = function() {
   var t = this, s = t._self._c;
   return s(t.component, t._g(t._b({ tag: "component", class: [t.$style.VButton, ...t.classList] }, "component", t.linkProperties, !1), t.$listeners), [t._t("default")], 2);
-}, Re = [];
+}, Ne = [];
 const M = {
-  $style: Fe
+  $style: Ee
 };
-function Ne(e) {
+function De(e) {
   for (var t in M)
     this[t] = M[t];
 }
-var De = /* @__PURE__ */ u(
+var Pe = /* @__PURE__ */ u(
   He,
-  Ee,
   Re,
-  !1,
   Ne,
+  !1,
+  De,
   null,
   null,
   null
 );
-const Pe = De.exports, Xe = "_VButtonIcon_14k1m_7", qe = "__rotate_14k1m_19", Ge = "_icon_14k1m_19", Ye = "__disabled_14k1m_42", Ue = {
-  VButtonIcon: Xe,
-  _rotate: qe,
-  icon: Ge,
+const Xe = Pe.exports, qe = "_VButtonIcon_14k1m_7", Ge = "__rotate_14k1m_19", Ye = "_icon_14k1m_19", Ue = "__disabled_14k1m_42", Ze = {
+  VButtonIcon: qe,
+  _rotate: Ge,
+  icon: Ye,
   "_size-20": "__size-20_14k1m_22",
   "_base-100": "__base-100_14k1m_27",
-  _disabled: Ye,
+  _disabled: Ue,
   "_primary-500": "__primary-500_14k1m_46"
-}, Ze = {
+}, Ke = {
   name: "VButtonIcon",
   props: {
     name: {
@@ -1216,34 +1216,34 @@ const Pe = De.exports, Xe = "_VButtonIcon_14k1m_7", qe = "__rotate_14k1m_19", Ge
   },
   methods: {}
 };
-var Ke = function() {
+var Je = function() {
   var t = this, s = t._self._c;
   return s(t.component, t._g(t._b({ tag: "component", class: [t.$style.VButtonIcon, ...t.classList] }, "component", t.linkProperties, !1), t.$listeners), [s("VIcon", { class: t.$style.icon, attrs: { name: t.name, size: t.iconSize } })], 1);
-}, Je = [];
-const I = {
-  $style: Ue
+}, Qe = [];
+const C = {
+  $style: Ze
 };
-function Qe(e) {
-  for (var t in I)
-    this[t] = I[t];
+function ts(e) {
+  for (var t in C)
+    this[t] = C[t];
 }
-var ts = /* @__PURE__ */ u(
-  Ze,
+var es = /* @__PURE__ */ u(
   Ke,
   Je,
-  !1,
   Qe,
+  !1,
+  ts,
   null,
   null,
   null
 );
-const es = ts.exports, C = {
+const ss = es.exports, I = {
   "#": { pattern: /\d/ },
   S: { pattern: /[a-zA-Z]/ },
   A: { pattern: /[0-9a-zA-Z]/ },
   U: { pattern: /[a-zA-Z]/, transform: (e) => e.toLocaleUpperCase() },
   L: { pattern: /[a-zA-Z]/, transform: (e) => e.toLocaleLowerCase() }
-}, ss = [
+}, ns = [
   "phone",
   "date",
   "time",
@@ -1256,7 +1256,7 @@ const es = ts.exports, C = {
   "percent",
   "year",
   "month"
-], ns = {
+], is = {
   phone: "+7 (###) ###-##-##",
   date: "##/##/####",
   time: "##:##",
@@ -1274,12 +1274,12 @@ function f(e, t, s = !0) {
   let n = 0, i = 0, r = "";
   for (; n < t.length && i < e.length; ) {
     let o = t[n];
-    const l = C[o], a = e[i];
+    const l = I[o], a = e[i];
     l ? (l.pattern.test(a) && (r += l.transform ? l.transform(a) : a, n++), i++) : (l && (n++, o = t[n]), s && (r += o), a === o && i++, n++);
   }
   for (; n < t.length; ) {
     const o = t[n];
-    if (C[o])
+    if (I[o])
       break;
     n++;
   }
@@ -1290,25 +1290,25 @@ function z(e, t) {
     e.setSelectionRange(t, t);
   }, 0));
 }
-const is = "_VInput_9sn78_7", os = "__medium_9sn78_14", as = "__showLabel_9sn78_14", rs = "__active_9sn78_14", ls = "__keep_9sn78_14", cs = "_label_9sn78_14", us = "_premask_9sn78_18", ps = "_native_9sn78_20", hs = "__base_9sn78_28", ds = "_inner_9sn78_43", _s = "_border_9sn78_55", ms = "__focused_9sn78_58", fs = "__success_9sn78_61", vs = "__error_9sn78_65", ys = "__disabled_9sn78_69", $s = "_nativeSelect_9sn78_73", gs = "_icon_9sn78_135", bs = {
-  VInput: is,
-  _medium: os,
-  _showLabel: as,
-  _active: rs,
-  _keep: ls,
-  label: cs,
-  premask: us,
-  native: ps,
-  _base: hs,
-  inner: ds,
-  border: _s,
-  _focused: ms,
-  _success: fs,
-  _error: vs,
-  _disabled: ys,
-  nativeSelect: $s,
-  icon: gs
-}, O = 35, B = 70, ws = {
+const os = "_VInput_9sn78_7", as = "__medium_9sn78_14", rs = "__showLabel_9sn78_14", ls = "__active_9sn78_14", cs = "__keep_9sn78_14", us = "_label_9sn78_14", ps = "_premask_9sn78_18", hs = "_native_9sn78_20", ds = "__base_9sn78_28", _s = "_inner_9sn78_43", ms = "_border_9sn78_55", fs = "__focused_9sn78_58", vs = "__success_9sn78_61", ys = "__error_9sn78_65", $s = "__disabled_9sn78_69", gs = "_nativeSelect_9sn78_73", bs = "_icon_9sn78_135", ws = {
+  VInput: os,
+  _medium: as,
+  _showLabel: rs,
+  _active: ls,
+  _keep: cs,
+  label: us,
+  premask: ps,
+  native: hs,
+  _base: ds,
+  inner: _s,
+  border: ms,
+  _focused: fs,
+  _success: vs,
+  _error: ys,
+  _disabled: $s,
+  nativeSelect: gs,
+  icon: bs
+}, O = 35, B = 70, xs = {
   name: "VInput",
   props: {
     /**
@@ -1446,7 +1446,7 @@ const is = "_VInput_9sn78_7", os = "__medium_9sn78_14", as = "__showLabel_9sn78_
         type: "text",
         disabled: this.disabled
       };
-      return this.label && (e.ariaLabel = this.label), this.mask && (e.maxlength = this.currentMask.length), this.type && (this.mask ? e.type = ss.includes(this.mask) ? "tel" : "text" : e.type = this.type), this.autocomplete || (e.autocomplete = "off"), e;
+      return this.label && (e.ariaLabel = this.label), this.mask && (e.maxlength = this.currentMask.length), this.type && (this.mask ? e.type = ns.includes(this.mask) ? "tel" : "text" : e.type = this.type), this.autocomplete || (e.autocomplete = "off"), e;
     },
     borderStyle() {
       return [
@@ -1459,7 +1459,7 @@ const is = "_VInput_9sn78_7", os = "__medium_9sn78_14", as = "__showLabel_9sn78_
   created() {
     if (this.mask)
       try {
-        if (this.currentMask = ns[this.mask], !this.currentMask)
+        if (this.currentMask = is[this.mask], !this.currentMask)
           throw new Error(`VInput: mask-utils: mask ${this.mask} not found`);
       } catch (e) {
         console.log(e);
@@ -1607,35 +1607,40 @@ const is = "_VInput_9sn78_7", os = "__medium_9sn78_14", as = "__showLabel_9sn78_
     }
   }
 };
-var xs = function() {
+var Ss = function() {
   var t = this, s = t._self._c;
   return s("div", { class: [t.$style.VInput, t.classList] }, [s("div", { ref: "inner", class: t.$style.inner }, [s("input", t._b({ ref: "input", class: t.$style.native, attrs: { "aria-label": t.label, tabindex: 0 }, domProps: { value: t.inputValue }, on: { keydown: t.onKeyDown, blur: t.onBlur, focus: t.onFocus, input: t.onInput } }, "input", t.attributes, !1)), s("div", { ref: "border", class: t.$style.border, style: t.borderStyle }), t.premask ? s("div", { class: t.$style.premask, domProps: { innerHTML: t._s(t.currentPremask) } }) : t._e()]), s("span", { class: t.$style.label }, [t._v(" " + t._s(t.label) + " ")]), s("transition", { attrs: { name: "widget-sova-fade" } }, [t.msg ? s("InputHint", { attrs: { color: t.color } }, [t._v(" " + t._s(t.msg) + " ")]) : t._e()], 1)], 1);
-}, Ss = [];
+}, Ts = [];
 const L = {
-  $style: bs
+  $style: ws
 };
-function Ts(e) {
+function ks(e) {
   for (var t in L)
     this[t] = L[t];
 }
-var ks = /* @__PURE__ */ u(
-  ws,
+var Ms = /* @__PURE__ */ u(
   xs,
   Ss,
-  !1,
   Ts,
+  !1,
+  ks,
   null,
   null,
   null
 );
-const Ms = ks.exports, Is = () => {
+const Cs = Ms.exports, Is = () => {
+  console.log("meta", "production");
+  const e = document.createElement("link");
+  e.rel = "stylesheet", e.type = "text/css", e.href = "https://cdn.jsdelivr.net/gh/SpukiBugi/chat_temporary/dist/style.css", document.head.appendChild(e), console.log("link", e);
+}, A = () => {
+  console.log("wtfff"), Is();
   const e = document.createElement("div");
-  document.body.appendChild(e), h.filter("splitThousands", we), h.filter("formatDateTime", Se), h.component("VIcon", Ve), h.component("VButton", Pe), h.component("VButtonIcon", es), h.component("VInput", Ms), h.config.ignoredElements = ["my-widget"], h.use(ke);
+  document.body.appendChild(e), h.filter("splitThousands", xe), h.filter("formatDateTime", Te), h.component("VIcon", We), h.component("VButton", Xe), h.component("VButtonIcon", ss), h.component("VInput", Cs), h.config.ignoredElements = ["my-widget"], h.use(Me);
   const s = document.querySelector("#widget-sova").dataset.id;
   new h({
     el: e,
     components: {
-      App: be
+      App: we
     },
     props: {
       id: s
@@ -1646,8 +1651,8 @@ const Ms = ks.exports, Is = () => {
     template: '<App :id="id" />'
   });
 };
-document.addEventListener("DOMContentLoaded", Is());
+document.readyState === "complete" ? (console.log("wtfffc"), A()) : (console.log("wtfffl"), document.addEventListener("DOMContentLoaded", A()));
 export {
-  V as E,
+  W as E,
   u as n
 };

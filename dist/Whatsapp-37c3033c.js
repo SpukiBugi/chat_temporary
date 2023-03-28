@@ -1,5 +1,5 @@
 import { i as n } from "./vue-qrcode.esm-70d426a8.js";
-import { n as o } from "./main-b4b8c2a2.js";
+import { n as o } from "./main-a457177b.js";
 import "https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js";
 import "https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm";
 const r = "_Whatsapp_n14ab_7", _ = "_image_n14ab_13", c = "_text_n14ab_19", l = {

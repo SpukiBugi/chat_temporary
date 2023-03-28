@@ -1,4 +1,4 @@
-import { n as o, E as l } from "./main-b4b8c2a2.js";
+import { n as o, E as l } from "./main-a457177b.js";
 import "https://cdn.jsdelivr.net/npm/vue@2.7.0/dist/vue.esm.browser.min.js";
 import "https://cdn.jsdelivr.net/npm/gsap@3.11.4/+esm";
 const i = "_Chat_1xtne_7", r = "_hello_1xtne_12", c = "_helloBottom_1xtne_22", p = "_messageWrap_1xtne_26", u = "_message_1xtne_26", _ = "_toGray_1xtne_1", m = "_inputWrap_1xtne_51", y = "_send_1xtne_56", d = "__gray_1xtne_80", h = {
@@ -14,8 +14,8 @@ const i = "_Chat_1xtne_7", r = "_hello_1xtne_12", c = "_helloBottom_1xtne_22", p
 }, g = {
   name: "Chat",
   components: {
-    ChatOptions: () => import("./ChatOptions-268a5052.js"),
-    ChatMessages: () => import("./ChatMessages-78c2ec84.js"),
+    ChatOptions: () => import("./ChatOptions-043ee1a1.js"),
+    ChatMessages: () => import("./ChatMessages-aab35df7.js"),
     Expander: l
   },
   props: {

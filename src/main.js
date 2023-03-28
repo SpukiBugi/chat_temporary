@@ -15,7 +15,25 @@ import VButton from '@/components/ui/button/VButton.vue';
 import VButtonIcon from '@/components/ui/button/VButtonIcon.vue';
 import VInput from '@/components/ui/input/VInput.vue';
 
+const addCss = () => {
+    if (import.meta.env.MODE !== 'production') {
+        return;
+    }
+
+    // create a link element
+    const link = document.createElement('link');
+
+    // set the attributes for the link element
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'https://cdn.jsdelivr.net/gh/SpukiBugi/chat_temporary/dist/style.css';
+
+    // append the link element to the head element
+    document.head.appendChild(link);
+};
+
 const init = () => {
+    addCss();
     const block = document.createElement('div');
     document.body.appendChild(block);
 
@@ -54,4 +72,8 @@ const init = () => {
     });
 };
 
-document.addEventListener('DOMContentLoaded', init());
+if (document.readyState === 'complete') {
+    init();
+} else {
+    document.addEventListener('DOMContentLoaded', init());
+}
