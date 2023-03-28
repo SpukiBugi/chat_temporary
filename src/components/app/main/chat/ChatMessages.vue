@@ -114,7 +114,7 @@ export default {
             const list = [];
 
             items.forEach((element, key) => {
-                if (element.date !== currentDate) {
+                if (element.date !== currentDate && element.date) {
                     list.push({ id: `date-${key}`, type: 'date', date: element.date });
                     currentDate = element.date;
                 }

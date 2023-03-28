@@ -34,16 +34,23 @@ const init = () => {
     Vue.config.ignoredElements = ['my-widget'];
     Vue.use(device);
 
+
+    const script = document.querySelector('#widget-sova');
+    const id = script.dataset.id;
+
     new Vue({
         el: block,
         components: {
             App,
         },
+        props: {
+            id,
+        },
         data() {
             return {
             };
         },
-        template: '<App />',
+        template: '<App :id="id" />',
     });
 };
 
