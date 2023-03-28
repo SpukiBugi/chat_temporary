@@ -43,7 +43,7 @@
             Спросить еще раз
         </VButton>
 
-        <div v-show="item.projects && item.projects.length" :class="$style.projects">
+        <div v-show="item.projects && item.projects !== 'NONE' && item.projects.length" :class="$style.projects">
             <VButton v-for="(project, key) in item.projects"
                      :key="project + key"
                      :class="$style.project"

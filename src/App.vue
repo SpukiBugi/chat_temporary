@@ -77,6 +77,18 @@ export default {
         Main,
     },
 
+    props: {
+        id: {
+            type: String,
+            default: '00000000-0000-0000-0000-000000000000',
+        },
+
+        api: {
+            type: String,
+            default: 'http://185.105.108.90:8000/v1/',
+        },
+    },
+
     data() {
         return {
             /** Flags */
@@ -433,12 +445,15 @@ export default {
             const question = this.value;
             this.value = '';
             this.message = '';
-            this.history.push({ id: 'new', type: 'question', text: question, date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
+            const id = String(Math.random());
+            this.history.push({ id: id, type: 'question', text: question, date: 'Tue Mar 21 2023 11:23:58 GMT+0300' });
 
             try {
                 const res = await this.getAnswer(question);
-                this.history[this.history.length - 1] = res.question;
-                this.history.push(res.answer);
+                // this.history[this.history.length - 1] = res.question;
+                console.log('res', res);
+                res.type = 'answer';
+                this.history.push(res);
                 this.message = '';
 
                 if (this.history.length === 2) {
@@ -458,28 +473,41 @@ export default {
         },
 
         getAnswer(value) {
-            const id = String(Math.random());
+            // const id = String(Math.random());
 
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve({
-                        question: {
-                            id: `q-${id}`,
-                            type: 'question',
-                            text: value,
-                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
-                        },
-                        answer: {
-                            id: `a-${id}`,
-                            question_id: `q-${id}`,
-                            type: 'answer',
-                            text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
-                            rating: true,
-                            date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
-                        },
-                    });
-                }, 3000);
-            });
+            // return new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve({
+            //             question: {
+            //                 id: `q-${id}`,
+            //                 type: 'question',
+            //                 text: value,
+            //                 date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
+            //             },
+            //             answer: {
+            //                 id: `a-${id}`,
+            //                 question_id: `q-${id}`,
+            //                 type: 'answer',
+            //                 text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
+            //                 rating: true,
+            //                 date: 'Tue Mar 21 2023 11:23:58 GMT+0300',
+            //             },
+            //         });
+            //     }, 3000);
+            // });
+            const sendValues = {
+                company_id: this.id,
+                question: value,
+                user_id: 1,
+            };
+
+            return fetch(`${this.api}messages`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sendValues),
+            }).then(response => response.json());
         },
 
         onValueClick(e) {
