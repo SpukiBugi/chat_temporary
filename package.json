@@ -13,8 +13,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "PROXY_URL=https://spukibugi.github.io/chat_temporary/ vite build",
+    "build": "vite build",
     "preview": "vite preview",
+    "gen_gh": "PROXY_URL=https://spukibugi.github.io/chat_temporary/ vite build",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
