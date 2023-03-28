@@ -1,6 +1,6 @@
 <template>
     <!-- Кастомный тег чтобы можно было наложить reset стили без указания класса -->
-    <my-widget
+    <widget-sova
         :class="[$style.App, $style[`_${animationType}`]]"
         :style="styleList"
     >
@@ -56,7 +56,7 @@
                 />
             </div>
         </div>
-    </my-widget>
+    </widget-sova>
 </template>
 
 <script>
@@ -167,8 +167,10 @@ export default {
     },
 
     watch: {
-        device() {
-            this.onClose();
+        device(newVal, oldVal) {
+            if (newVal === 'mobile' || oldVal === 'mobile') {
+                this.onClose();
+            }
         },
     },
 
@@ -200,9 +202,9 @@ export default {
             await this.$nextTick();
 
             if (this.animationType === 'top') {
-                this.openAnimMob();
+                this.openAnimTop();
             } else {
-                this.openAnimDesk();
+                this.openAnimBottom();
             }
         },
 
@@ -210,9 +212,9 @@ export default {
             this.isOpen = false;
 
             if (this.animationType === 'top') {
-                this.closeAnimMob();
+                this.closeAnimTop();
             } else {
-                this.closeAnimDesk();
+                this.closeAnimBottom();
             }
         },
 
@@ -228,7 +230,7 @@ export default {
             }
         },
 
-        openAnimDesk() {
+        openAnimBottom() {
             const duration = .4;
             const timeline = gsap.timeline();
 
@@ -282,7 +284,7 @@ export default {
             }, 0);
         },
 
-        openAnimMob() {
+        openAnimTop() {
             const duration = .4;
             const timeline = gsap.timeline();
 
@@ -342,7 +344,7 @@ export default {
             }, 0);
         },
 
-        closeAnimDesk() {
+        closeAnimBottom() {
             const duration = .3;
             const timeline = gsap.timeline();
 
@@ -379,7 +381,7 @@ export default {
             }, duration);
         },
 
-        closeAnimMob() {
+        closeAnimTop() {
             const duration = .4;
             const timeline = gsap.timeline();
             const menuRect = this.$refs.menu.$el.getBoundingClientRect();
@@ -464,7 +466,12 @@ export default {
                 }
             } catch (e) {
                 console.warn('[Chat/onSubmit] error: ', e);
-                this.history.push({ id: 'error', type: 'answer', text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»', date: new Date(Date.now()) });
+                this.history.push({
+                    id: 'error',
+                    type: 'answer',
+                    text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»',
+                    date: new Date(Date.now()),
+                });
             }
 
             this.isLoading = false;
@@ -623,165 +630,4 @@ export default {
             left: calc(100% - 20px);
         }
     }
-</style>
-
-<style lang="scss">
-    /** Reset */
-    my-widget {
-        box-sizing: border-box;
-        font-family: $base-font;
-        font-size: $base-font-size;
-        color: $body-color;
-        -ms-text-size-adjust: 100%;
-        -webkit-text-size-adjust: 100%;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        -webkit-tap-highlight-color: transparent;
-
-        * {
-            box-sizing: border-box;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        p {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        ul {
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-left: 0;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        button,
-        input,
-        optgroup,
-        select,
-        textarea {
-            margin: 0; /* 2 */
-            padding: 0;
-            border: none;
-            background-color: transparent;
-            outline: none;
-            font-family: inherit;
-            font-size: 100%; /* 1 */
-            line-height: 1.15; /* 1 */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        input {
-            outline: none;
-
-            &[type=number]::-webkit-inner-spin-button,
-            &[type=number]::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            &[disabled],
-            fieldset[disabled] {
-                -webkit-text-fill-color: $base-100;
-                opacity: 1;
-            }
-
-            &::-ms-clear {
-                display: none;
-            }
-        }
-
-        textarea {
-            resize: none;
-        }
-
-        pre,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin: 0;
-            font-weight: normal;
-            font-size: initial;
-        }
-
-        address {
-            font-style: normal;
-        }
-
-        input:-webkit-autofill,
-        input:-webkit-autofill:focus {
-            transition: background-color 600000s 0s, color 600000s 0s;
-        }
-
-        b,
-        strong {
-            font-weight: bolder;
-        }
-
-        sub,
-        sup {
-            position: relative;
-            vertical-align: baseline;
-            font-size: 75%;
-            line-height: 0;
-        }
-
-        sub {
-            bottom: -.25em;
-        }
-
-        sup {
-            top: -.5em;
-        }
-
-        button,
-        input { /* 1 */
-            overflow: visible;
-        }
-
-        button,
-        select { /* 1 */
-            text-transform: none;
-        }
-
-        button,
-        [type="button"],
-        [type="reset"],
-        [type="submit"] {
-            -webkit-appearance: button;
-        }
-
-        button::-moz-focus-inner,
-        [type="button"]::-moz-focus-inner,
-        [type="reset"]::-moz-focus-inner,
-        [type="submit"]::-moz-focus-inner {
-            padding: 0;
-            border-style: none;
-        }
-
-        button:-moz-focusring,
-        [type="button"]:-moz-focusring,
-        [type="reset"]:-moz-focusring,
-        [type="submit"]:-moz-focusring {
-            outline: 1px dotted ButtonText;
-        }
-
-        fieldset {
-            padding: .35em .75em .625em;
-        }
-    }
-
-    /** End Reset */
 </style>

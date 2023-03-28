@@ -523,7 +523,7 @@ export default {
             };
 
             const options = {
-                duration: 1.5,
+                duration: params.reverse ? 1 : 3,
                 ...tweenObjNew,
                 onUpdate: () => {
                     this.borderXSize = `${tweenObj.x}%`;

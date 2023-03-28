@@ -152,10 +152,6 @@ export default {
     },
 
     mounted() {
-        if (this.device !== 'mobile') {
-            this.initAuto();
-        }
-
         if (!this.hasInteracted) {
             this.initInvite();
         }

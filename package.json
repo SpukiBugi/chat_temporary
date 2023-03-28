@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "PROXY_URL=https://spukibugi.github.io/chat_temporary/ vite build",
     "preview": "vite preview",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },

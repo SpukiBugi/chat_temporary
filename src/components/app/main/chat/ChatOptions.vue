@@ -51,7 +51,8 @@ export default {
             options: [
                 {
                     title: 'Проекты',
-                    icon: '/home.svg',
+                    // TODO: Возможно потом нужно будет убрать
+                    icon: `${import.meta.env.BASE_URL}home.svg`,
                     questions: [
                         'Где расположены проекты?',
                         'Какая инфраструктура у Заневского?',
@@ -61,7 +62,8 @@ export default {
                 },
                 {
                     title: 'Квартиры',
-                    icon: '/key.svg',
+                    // TODO: Возможно потом нужно будет убрать
+                    icon: `${import.meta.env.BASE_URL}key.svg`,
                     questions: [
                         'Где расположены проекты?',
                         'Какая инфраструктура у Заневского?',
@@ -133,11 +135,16 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 16px;
+        letter-spacing: -.015em;
     }
 
     .headIcn {
         width: 16px;
         height: 16px;
+        margin-bottom: 4px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
