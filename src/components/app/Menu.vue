@@ -265,8 +265,6 @@ export default {
 
 <style lang='scss' module>
     .Menu {
-        position: relative;
-
         &._open {
             .inner {
                 padding: 4px;

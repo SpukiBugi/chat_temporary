@@ -532,6 +532,8 @@ export default {
 </script>
 
 <style lang="scss" module>
+    $zIndex: 1000;
+
     .App {
 
         /** По дефолту на десктопе */
@@ -566,6 +568,7 @@ export default {
         position: fixed;
         right: 32px;
         bottom: 32px;
+        z-index: $zIndex;
 
         @include respond-to(mobile) {
             top: 76px;
@@ -581,6 +584,7 @@ export default {
             position: fixed;
             top: 0;
             right: 0;
+            z-index: $zIndex;
             display: block;
             width: 100%;
             height: 100%;
@@ -592,6 +596,7 @@ export default {
         position: fixed;
         right: 32px;
         bottom: 32px;
+        z-index: $zIndex;
         display: flex;
         justify-content: center;
         pointer-events: none;
