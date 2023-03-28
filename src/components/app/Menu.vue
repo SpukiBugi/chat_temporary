@@ -15,7 +15,10 @@
                       :class="[$style.expander, $style._weight]"
             >
                 <div ref="inner" :class="$style.inner">
-                    <div :class="$style.avatarWrap">
+                    <div
+                        :class="$style.avatarWrap"
+                        @click="goStep('Chat')"
+                    >
                         <Avatar :has-status="isOpen"
                                 status-type="menu"
                         />
@@ -319,10 +322,13 @@ export default {
     }
 
     .avatarWrap {
+        position: relative;
         flex-shrink: 0;
         width: 48px;
         height: 48px;
         transition: width $default-transition, height $default-transition;
+        cursor: pointer;
+        user-select: none;
     }
 
     .expander {
