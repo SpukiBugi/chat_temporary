@@ -29,3 +29,19 @@
     opacity: 0;
     transform: translateY(20px);
 }
+
+.widget-sova-carousel-enter-active,
+.widget-sova-carousel-leave-active {
+    transition: all .4s ease-out;
+}
+
+.widget-sova-carousel-enter {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+.widget-sova-carousel-leave-active {
+    position: absolute;
+    opacity: 0;
+    transform: translateY(-100%);
+}

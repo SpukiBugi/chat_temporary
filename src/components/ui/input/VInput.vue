@@ -1,6 +1,13 @@
 <template>
     <div :class="[$style.VInput, classList]">
         <div
+            :class="$style.shadow"
+            :style="borderStyle"
+        >
+            <div :class="$style.shadowInner"></div>
+        </div>
+
+        <div
             ref="inner"
             :class="$style.inner"
         >
@@ -16,6 +23,18 @@
                 @focus="onFocus"
                 @input="onInput"
             >
+
+            <div v-if="placeholder"
+                 :class="$style.placeholder"
+            >
+                <transition name="widget-sova-carousel">
+                    <span :key="currentPlaceholder"
+                          :class="$style.placeholderInner"
+                    >
+                        {{ currentPlaceholder }}
+                    </span>
+                </transition>
+            </div>
 
             <div
                 ref="border"
@@ -116,6 +135,11 @@ export default {
             default: '',
         },
 
+        placeholder: {
+            type: [String, Array],
+            default: '',
+        },
+
         /**
          * Позволяет отображать лейбл после ввода
          */
@@ -174,6 +198,10 @@ export default {
         return {
             isFocused: false,
             currentMask: '',
+
+            /** Placeholder */
+            currentPlaceholder: '',
+            placeholderInterval: null,
 
             /** Border */
             mouseTween: null,
@@ -272,6 +300,8 @@ export default {
                 console.log(e);
             }
         }
+
+        this.setPlaceholder();
     },
 
     mounted() {
@@ -283,6 +313,7 @@ export default {
         window.removeEventListener('mousemove', this.onMouseMove);
         this.stopTweenAround();
         this.stopTweenOnMouse();
+        clearInterval(this.placeholderInterval);
     },
 
     methods: {
@@ -552,6 +583,27 @@ export default {
             this.focusTween?.kill();
             this.focusTween = null;
         },
+
+        setPlaceholder() {
+            if (Array.isArray(this.placeholder)) {
+                let placeholderIndex = 0;
+                this.currentPlaceholder = this.placeholder[placeholderIndex];
+
+                this.placeholderInterval = setInterval(() => {
+                    if (placeholderIndex < (this.placeholder.length - 1)) {
+                        placeholderIndex++;
+                    } else {
+                        placeholderIndex = 0;
+                    }
+
+                    this.currentPlaceholder = this.placeholder[placeholderIndex];
+                }, 3000);
+
+                return;
+            }
+
+            this.currentPlaceholder = this.placeholder;
+        },
     },
 };
 </script>
@@ -634,14 +686,34 @@ export default {
                 opacity: 0;
             }
 
+            .placeholder {
+                visibility: hidden;
+            }
+
             .border {
                 opacity: 0;
+            }
+
+            .shadow {
+                opacity: 0;
+                transition: opacity $default-transition;
             }
 
             &._focused {
                 .native {
                     border-color: $primary-500;
                 }
+            }
+        }
+
+        &._focused {
+            .shadow {
+                opacity: 0;
+                transition: opacity $default-transition;
+            }
+
+            .placeholder {
+                visibility: hidden;
             }
         }
 
@@ -681,7 +753,7 @@ export default {
     }
 
     .native {
-        border-radius: 20px;
+        border-radius: 16px;
         border: 1px solid $base-200;
         transition: $default-transition;
     }
@@ -692,10 +764,29 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        border-radius: 20px;
+        border-radius: 16px;
         border: 1.5px solid $primary-500;
         transition: opacity $default-transition;
         pointer-events: none;
+    }
+
+    .shadow {
+        position: absolute;
+        top: -28px;
+        left: -28px;
+        width: calc(100% + 56px);
+        height: calc(100% + 56px);
+        padding: 28px;
+        transition: opacity .5s ease .5s;
+        pointer-events: none;
+    }
+
+    .shadowInner {
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 28px #1f44ff;
+        border-radius: 16px;
+        opacity: .15;
     }
 
     .label {
@@ -705,6 +796,29 @@ export default {
         opacity: 0;
         transition: opacity $default-transition;
         pointer-events: none;
+    }
+
+    .placeholder {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        left: 16px;
+        overflow: hidden;
+        height: 16px;
+        font-size: 13px;
+        line-height: 16px;
+        letter-spacing: -.015em;
+        color: $base-400;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .placeholderInner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 
     .inner {

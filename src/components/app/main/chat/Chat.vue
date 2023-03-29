@@ -40,7 +40,7 @@
             <VInput
                 :value="value"
                 :autocomplete="false"
-                placeholder="Напишите любой вопрос..."
+                :placeholder="['Напишите любой вопрос...', 'Где расположены проекты?', 'Есть проекты с панорамными окнами?']"
                 :class="$style.input"
                 @input="$emit('set-value', $event)"
             />
