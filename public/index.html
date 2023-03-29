@@ -6,7 +6,16 @@
     <title>Test page</title>
   </head>
   <body style="margin: 0;">
-    <div style="height: 200vh; background-image: url(./fanera.jpg);"></div>
+    <div id="test-body" style="position: relative; height: 300vh;">
+        <div style="position: absolute; top: 0; height: 100%; width: 100%; background-image: url(./fanera.jpg); transition: all .3s ease;"></div>
+        <div style="position: absolute; top: 0; height: 100%; width: 100%; background-image: url(./list.jpg); opacity: 0; transition: all .3s ease;"></div>
+    </div>
     <script id="widget-sova" type="module" src="./widget-sova.js" data-id="00000000-0000-0000-0000-000000000000" defer></script>
-  </body>
+    <script>
+        document.querySelector('#test-body').addEventListener('click', (e) => {
+            e.currentTarget.firstElementChild.style.opacity = e.currentTarget.firstElementChild.style.opacity === '0' ? '1' : '0';
+            e.currentTarget.lastElementChild.style.opacity = e.currentTarget.lastElementChild.style.opacity === '0' ? '1' : '0';
+        });
+    </script>
+</body>
 </html>
