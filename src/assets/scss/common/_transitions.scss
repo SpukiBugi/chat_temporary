@@ -19,6 +19,20 @@
     opacity: 0;
 }
 
+.widget-sova-fade-abs-enter-active,
+.widget-sova-fade-abs-leave-active {
+    transition: opacity .3s ease;
+}
+
+.widget-sova-fade-abs-leave-active {
+    position: absolute;
+}
+
+.widget-sova-fade-abs-enter,
+.widget-sova-fade-abs-leave-to {
+    opacity: 0;
+}
+
 .widget-sova-appear-enter-active,
 .widget-sova-appear-leave-active {
     transition: all .3s ease;

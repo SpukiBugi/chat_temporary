@@ -35,7 +35,7 @@
                         :class="$style.longSwitch"
                         @click="switchLong(!isSwitchLong)"
                     >
-                        <transition name="widget-sova-fade" mode="out-in">
+                        <transition name="widget-sova-fade-abs">
                             <div :key="isSwitchLong" :class="[$style.longSwitchInner, [$style[isSwitchLong ? '_short' : '_long']] ]">
                                 {{ isSwitchLong ? 'Краткий вид' : 'История сообщений' }}
                                 <VIcon name="IcHistory"
@@ -186,7 +186,7 @@ export default {
                         }, 0);
                         timeline.to(this.$refs.componentWrap, {
                             height: `${height}px`,
-                            duration: .3,
+                            duration: .4,
                         }, 0);
                         timeline.set(this.$refs.componentWrap, {
                             overflow: '',
