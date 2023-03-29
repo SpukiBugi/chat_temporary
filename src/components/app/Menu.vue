@@ -24,14 +24,12 @@
                         />
                     </div>
 
-                    <div
-                        :class="$style.controls"
-                        @mouseleave="onControlsLeave"
-                    >
+                    <div :class="$style.controls">
                         <div v-for="control in controls"
                              :key="control.icon"
                              :class="[$style.control, {[$style._notif]: control.step === 'Chat' && hasNew}]"
                              @mouseenter="onControlEnter(control)"
+                             @mouseleave="onControlLeave"
                              @click="goStep(control.step)"
                         >
                             <VIcon
@@ -207,7 +205,7 @@ export default {
             this.activeText = control.text;
         },
 
-        onControlsLeave() {
+        onControlLeave() {
             this.activeText = '';
         },
 
