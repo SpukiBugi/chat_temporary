@@ -34,6 +34,7 @@
                     ref="main"
                     :current-step="currentStep"
                     :is-loading="isLoading"
+                    :is-long="isLong"
                     :history="history"
                     :value="value"
                     :message="message"
@@ -45,6 +46,7 @@
                     @submit="onSubmit"
                     @repeat-click="onRepeat"
                     @set-rating="onSetRating"
+                    @set-long="isLong = $event"
                 />
             </div>
             <div ref="avatarWrap" :class="$style.avatarWrap">
@@ -68,6 +70,14 @@ import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
 import Main from '@/components/app/Main.vue';
 
+/** Main Components (Если не подгружать заранее при первом открытии прыгает анимация) */
+import Chat from '@/components/app/main/chat/Chat.vue';
+import Rate from '@/components/app/main/rate/Rate.vue';
+import Call from '@/components/app/main/call/Call.vue';
+import Telegram from '@/components/app/main/telegram/Telegram.vue';
+import Whatsapp from '@/components/app/main/whatsapp/Whatsapp.vue';
+//
+
 export default {
     name: 'App',
 
@@ -75,6 +85,13 @@ export default {
         Menu,
         Avatar,
         Main,
+        /* eslint-disable vue/no-unused-components */
+        Chat,
+        Rate,
+        Call,
+        Telegram,
+        Whatsapp,
+        /* eslint-enable vue/no-unused-components */
     },
 
     props: {
@@ -94,6 +111,7 @@ export default {
             /** Flags */
             isOpen: false,
             isLoading: false,
+            isLong: false,
             hasNew: localStorage.getItem('widgetSovaHasNew') === 'true',
 
             /** Form */
@@ -111,32 +129,32 @@ export default {
             steps: [
                 {
                     id: 'Chat',
-                    component: () => import('@/components/app/main/chat/Chat.vue'),
+                    component: Chat,
                     height: 'auto',
                 },
                 {
                     id: 'Rate',
-                    component: () => import('@/components/app/main/rate/Rate.vue'),
+                    component: Rate,
                     height: '284px',
                 },
                 {
                     id: 'Call',
-                    component: () => import('@/components/app/main/call/Call.vue'),
+                    component: Call,
                     height: '284px',
                 },
                 {
                     id: 'Telegram',
-                    component: () => import('@/components/app/main/telegram/Telegram.vue'),
+                    component: Telegram,
                     height: '284px',
                 },
                 {
                     id: 'Whatsapp',
-                    component: () => import('@/components/app/main/whatsapp/Whatsapp.vue'),
+                    component: Whatsapp,
                     height: '284px',
                 },
                 {
                     id: 'Options',
-                    component: () => import('@/components/app/main/chat/Chat.vue'),
+                    component: Chat,
                     height: 'auto',
                 },
             ],

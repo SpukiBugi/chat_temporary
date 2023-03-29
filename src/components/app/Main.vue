@@ -110,6 +110,11 @@ export default {
             default: false,
         },
 
+        isLong: {
+            type: Boolean,
+            default: false,
+        },
+
         history: {
             type: Array,
             required: true,
@@ -133,9 +138,6 @@ export default {
 
     data() {
         return {
-            /** Flags */
-            isLong: false,
-
             resizeObserver: null,
         };
     },
@@ -169,7 +171,7 @@ export default {
     methods: {
         switchLong(value) {
             this.$emit('go-step', 'Chat');
-            this.isLong = value;
+            this.$emit('set-long', value);
         },
 
         startObserver() {
@@ -281,11 +283,20 @@ export default {
         font-size: 11px;
         line-height: 14px;
         letter-spacing: -.01em;
+        transition: $default-transition;
 
         &._short {
             background-color: $primary-500;
             color: $white;
             gap: 8px;
+
+            @include hover {
+                background-color: $primary-600;
+            }
+
+            &:active {
+                background-color: $primary-900;
+            }
 
             .longSwitchIcn {
                 transform: rotate(180deg);
@@ -296,6 +307,14 @@ export default {
             background-color: $white;
             color: $primary-500;
             gap: 4px;
+
+            @include hover {
+                color: $primary-600;
+            }
+
+            &:active {
+                color: $primary-900;
+            }
         }
     }
 

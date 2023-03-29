@@ -10,7 +10,7 @@
             <Expander :is-open="isOpen"
                       field="width"
                       ease="back.out(1)"
-                      :duration="0.5"
+                      :duration="closeDuration"
                       hide-size="48px"
                       :class="[$style.expander, $style._weight]"
             >
@@ -124,6 +124,10 @@ export default {
         isAutoActive() {
             return !this.isHovering && !this.isMainOpen && !this.activeText && this.device !== 'mobile';
         },
+
+        closeDuration() {
+            return this.isChatOpening ? 0.35 : 0.5;
+        },
     },
 
     watch: {
@@ -219,7 +223,7 @@ export default {
                 setTimeout(() => {
                     this.isChatOpening = false;
                 }, 500);
-            }, this.device === 'mobile' ? 0 : 500);
+            }, this.device === 'mobile' ? 0 : 350);
         },
 
         initInvite() {
@@ -307,6 +311,7 @@ export default {
     }
 
     .inner {
+        position: relative;
         display: flex;
         align-items: center;
         padding: 0;
@@ -402,6 +407,7 @@ export default {
         right: 0;
         bottom: calc(100% - 8px);
         z-index: -1;
+        overflow: hidden;
         padding: 8px;
         border-radius: 28px 28px 0 28px;
         pointer-events: none;

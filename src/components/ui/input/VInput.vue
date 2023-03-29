@@ -659,10 +659,25 @@ export default {
             .native {
                 padding: 16px;
             }
+
+            .placeholder {
+                right: 16px;
+                left: 16px;
+                height: 16px;
+                font-size: 13px;
+                line-height: 16px;
+                letter-spacing: -.015em;
+            }
         }
 
         /* Colors */
         &._base {
+            @include hover {
+                .placeholder {
+                    color: $base-500;
+                }
+            }
+
             input.native {
                 background-color: $base-100;
                 color: $black-color;
@@ -671,6 +686,10 @@ export default {
             .premask,
             .label {
                 color: $base-100;
+            }
+
+            .placeholder {
+                color: $base-400;
             }
         }
 
@@ -820,16 +839,10 @@ export default {
     .placeholder {
         position: absolute;
         top: 50%;
-        right: 16px;
-        left: 16px;
         overflow: hidden;
-        height: 16px;
-        font-size: 13px;
-        line-height: 16px;
-        letter-spacing: -.015em;
-        color: $base-400;
         transform: translateY(-50%);
         pointer-events: none;
+        transition: color $default-transition;
     }
 
     .placeholderInner {

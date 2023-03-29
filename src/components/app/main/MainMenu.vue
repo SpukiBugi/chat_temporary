@@ -48,10 +48,7 @@ export default {
 <style lang='scss' module>
     .MainMenu {
         display: flex;
+        justify-content: center;
         gap: 6px;
-    }
-
-    .btn {
-        flex-grow: 1;
     }
 </style>
