@@ -23,6 +23,7 @@
 
         <transition name="widget-sova-fade">
             <div v-show="hasStatus"
+                 ref="status"
                  :class="[$style.status, $style[`_${statusType}`]]"
             >
             </div>

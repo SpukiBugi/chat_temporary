@@ -53,7 +53,7 @@
                 <Avatar
                     ref="avatar"
                     status-type="chat"
-                    :has-status="isOpen"
+                    has-status
                     :show-pic="isRelink && isOpen"
                 />
             </div>
@@ -252,9 +252,16 @@ export default {
             const duration = .4;
             const timeline = gsap.timeline();
 
+            timeline.fromTo(this.$refs.avatar.$refs.status, {
+                opacity: 0,
+            }, {
+                opacity: 1,
+                duration: duration,
+            }, 0);
+
             timeline.to(this.$refs.avatarWrap, {
                 opacity: 1,
-            });
+            }, 0);
 
             timeline.to(this.$refs.menu.$el, {
                 opacity: 0,
@@ -271,6 +278,7 @@ export default {
             timeline.to(this.$refs.mainWrap, {
                 duration: duration,
                 transform: 'scale(1)',
+                transformOrigin: '100% 100%',
             }, 0);
 
             timeline.fromTo(this.$refs.main.$refs.head, {
@@ -306,9 +314,17 @@ export default {
             const duration = .4;
             const timeline = gsap.timeline();
 
+            timeline.fromTo(this.$refs.avatar.$refs.status, {
+                opacity: 0,
+            }, {
+                opacity: 1,
+                duration: .3,
+                delay: duration,
+            }, 0);
+
             timeline.to(this.$refs.avatarWrap, {
                 opacity: 1,
-            });
+            }, 0);
 
             timeline.set(this.$refs.menu.$el, {
                 opacity: 0,
@@ -330,6 +346,7 @@ export default {
             timeline.to(this.$refs.mainWrap, {
                 duration: duration,
                 transform: 'scale(1)',
+                transformOrigin: '50% 40px',
                 delay: duration,
             }, 0);
 
@@ -363,24 +380,48 @@ export default {
         },
 
         closeAnimBottom() {
-            const duration = .3;
+            const duration = .4;
+            const firstStep = .1;
             const timeline = gsap.timeline();
 
-            timeline.to(this.$refs.mainWrap, {
-                duration: duration,
-                transform: 'scale(0)',
+            timeline.to(this.$refs.main.$refs.head, {
+                opacity: 0,
+                duration: firstStep,
             }, 0);
 
+            timeline.to(this.$refs.main.$refs.componentWrap, {
+                transform: 'scale(.8)',
+                opacity: 0,
+                duration: firstStep,
+            }, 0);
+
+            timeline.to(this.$refs.main.$refs.mainMenu.$el, {
+                opacity: 0,
+                transform: 'scale(.8)',
+                duration: firstStep,
+            }, 0);
+
+            timeline.to(this.$refs.mainWrap, {
+                duration: (duration - firstStep / 2),
+                transform: 'scale(0)',
+                transformOrigin: `${this.$refs.mainWrap.clientWidth - 30}px ${this.$refs.mainWrap.clientHeight - 30}px`,
+            }, firstStep);
+
+            timeline.to(this.$refs.avatar.$refs.status, {
+                duration: (duration - firstStep / 2),
+                opacity: 0,
+            }, firstStep);
+
             timeline.to(this.$refs.avatarWrap, {
-                duration: duration,
+                duration: (duration - firstStep / 2),
                 top: 'calc(100% - 8px)',
                 left: 'calc(100% - 8px)',
                 transform: 'scale(1) translate3d(-100%, -100%, 0)',
-            }, 0);
+            }, firstStep);
 
             timeline.set(this.$refs.menu.$refs.mainBlur, {
                 opacity: 0,
-            }, 0);
+            }, firstStep);
 
             timeline.set(this.$refs.menu.$el, {
                 opacity: 1,
@@ -407,6 +448,12 @@ export default {
             timeline.to(this.$refs.mainWrap, {
                 duration: .15,
                 transform: 'scale(0)',
+                transformOrigin: '50% 40px',
+            }, 0);
+
+            timeline.to(this.$refs.avatar.$refs.status, {
+                duration: .15,
+                opacity: 0,
             }, 0);
 
             timeline.to(this.$refs.mainContainer, {
@@ -556,10 +603,6 @@ export default {
 
         /** По дефолту на десктопе */
         &._bottom {
-            .mainWrap {
-                transform-origin: 100% 100%;
-            }
-
             .avatarWrap {
                 transform: scale(1) translate3d(-100%, -100%, 0);
             }
@@ -570,10 +613,6 @@ export default {
             .mainContainer {
                 top: 76px;
                 bottom: auto;
-            }
-
-            .mainWrap {
-                transform-origin: 50% 40px;
             }
 
             .avatarWrap {
