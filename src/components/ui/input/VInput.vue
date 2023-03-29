@@ -140,6 +140,8 @@ export default {
             default: '',
         },
 
+        isPlaceholderAnimating: Boolean,
+
         /**
          * Позволяет отображать лейбл после ввода
          */
@@ -286,6 +288,21 @@ export default {
                     maskImage: `radial-gradient(${this.borderXSize} ${this.borderYSize} at ${this.borderX}% ${this.borderY}%, black 60%, transparent)`,
                 },
             ];
+        },
+    },
+
+    watch: {
+        isPlaceholderAnimating: {
+            handler(val) {
+                clearInterval(this.placeholderInterval);
+
+                if (val) {
+                    this.animatePlaceholder();
+                } else {
+                    this.currentPlaceholder = this.placeholder[0];
+                }
+            },
+            immediate: true,
         },
     },
 
@@ -586,23 +603,25 @@ export default {
 
         setPlaceholder() {
             if (Array.isArray(this.placeholder)) {
-                let placeholderIndex = 0;
-                this.currentPlaceholder = this.placeholder[placeholderIndex];
-
-                this.placeholderInterval = setInterval(() => {
-                    if (placeholderIndex < (this.placeholder.length - 1)) {
-                        placeholderIndex++;
-                    } else {
-                        placeholderIndex = 0;
-                    }
-
-                    this.currentPlaceholder = this.placeholder[placeholderIndex];
-                }, 3000);
-
+                this.currentPlaceholder = this.placeholder[0];
                 return;
             }
 
             this.currentPlaceholder = this.placeholder;
+        },
+
+        animatePlaceholder() {
+            let placeholderIndex = 0;
+
+            this.placeholderInterval = setInterval(() => {
+                if (placeholderIndex < (this.placeholder.length - 1)) {
+                    placeholderIndex++;
+                } else {
+                    placeholderIndex = 0;
+                }
+
+                this.currentPlaceholder = this.placeholder[placeholderIndex];
+            }, 2000);
         },
     },
 };
@@ -687,7 +706,7 @@ export default {
             }
 
             .placeholder {
-                visibility: hidden;
+                display: none;
             }
 
             .border {
@@ -713,7 +732,7 @@ export default {
             }
 
             .placeholder {
-                visibility: hidden;
+                display: none;
             }
         }
 

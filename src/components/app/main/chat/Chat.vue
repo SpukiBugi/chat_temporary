@@ -9,7 +9,7 @@
         />
 
         <ChatMessages
-            v-else-if="history.length || isLoading"
+            v-else-if="isShowMessages"
             :history="history"
             :is-loading="isLoading"
             :is-long="isLong"
@@ -41,6 +41,7 @@
                 :value="value"
                 :autocomplete="false"
                 :placeholder="['Напишите любой вопрос...', 'Где расположены проекты?', 'Есть проекты с панорамными окнами?']"
+                :is-placeholder-animating="!isShowMessages"
                 :class="$style.input"
                 @input="$emit('set-value', $event)"
             />
@@ -112,6 +113,10 @@ export default {
     computed: {
         isSendGray() {
             return this.isLoading || !this.value;
+        },
+
+        isShowMessages() {
+            return this.history.length || this.isLoading;
         },
     },
 };
