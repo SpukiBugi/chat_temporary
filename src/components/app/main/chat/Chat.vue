@@ -136,6 +136,10 @@ export default {
         font-size: 18px;
         line-height: 22px;
         letter-spacing: -.02em;
+
+        @include respond-to(mobile) {
+            padding-top: 40px;
+        }
     }
 
     .helloBottom {

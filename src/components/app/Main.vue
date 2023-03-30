@@ -156,7 +156,7 @@ export default {
         },
 
         isShowSwitch() {
-            return (this.currentStep.id === 'Chat' || this.currentStep.id === 'Options') && this.history.length > 2;
+            return (this.currentStep.id === 'Chat' || this.currentStep.id === 'Options') && this.history.length > 2 && this.device !== 'mobile';
         },
     },
 
@@ -206,8 +206,6 @@ export default {
 
 <style lang='scss' module>
     .Main {
-        @include backdrop;
-
         position: relative;
         overflow: hidden;
         width: 356px;
@@ -216,13 +214,18 @@ export default {
         border-radius: 32px;
         mask-image: url('/mask.svg');
         mask-position: center top;
+        background: rgba(25, 27, 30, .08);
+
+        @include respond-to(mobile) {
+            padding: 40px 8px 16px;
+        }
     }
 
     .wrapper {
         position: relative;
         width: 100%;
         padding-bottom: 8px;
-        border-radius: 24px;
+        border-radius: 26px;
         background-color: white;
     }
 
@@ -235,6 +238,14 @@ export default {
         padding: 12px;
         background-color: $white;
         mask-image: url('/mask-head.svg');
+
+        @include respond-to(mobile) {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            mask-image: none;
+            height: 48px;
+            // border-bottom: 1px solid $base-200;
+        }
     }
 
     .close {

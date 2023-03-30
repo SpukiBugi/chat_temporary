@@ -223,7 +223,7 @@ export default {
         justify-content: flex-end;
         flex-wrap: wrap;
         margin-top: 12px;
-        column-gap: 6px;
-        row-gap: 8px;
+        column-gap: 4px;
+        row-gap: 6px;
     }
 </style>

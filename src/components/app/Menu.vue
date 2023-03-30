@@ -5,8 +5,38 @@
         @mouseleave="onMouseLeave"
         @click="onClick"
     >
-        <div ref="main" :class="$style.main">
+        <div ref="blur" :class="$style.blur">
             <div ref="mainBlur" :class="$style.mainBlur"></div>
+
+            <transition
+                name="widget-sova-appear"
+                mode="out-in"
+            >
+                <div v-if="activeText"
+                     :key="activeText"
+                     :class="[$style.text, $style._blur]"
+                >
+                    <div :class="$style.textInner" v-html="activeText"> </div>
+                </div>
+            </transition>
+        </div>
+
+        <transition
+            name="widget-sova-appear"
+            mode="out-in"
+            @before-leave="onBeforeLeaveText"
+            @before-enter="onBeforeEnterText"
+        >
+            <div v-if="activeText"
+                 :key="activeText"
+                 :class="[$style.text, {[$style._link]: activeText === inviteText || activeText === newText}]"
+                 @click="onTextClick"
+            >
+                <div :class="$style.textInner" v-html="activeText"></div>
+            </div>
+        </transition>
+
+        <div ref="main" :class="$style.main">
             <Expander :is-open="isOpen"
                       field="width"
                       ease="back.out(1)"
@@ -41,24 +71,6 @@
                 </div>
             </Expander>
         </div>
-
-        <transition
-            name="widget-sova-appear"
-            mode="out-in"
-            @before-leave="onBeforeLeaveText"
-            @before-enter="onBeforeEnterText"
-        >
-            <div v-if="activeText"
-                 :key="activeText"
-                 :class="[$style.text, {[$style._link]: activeText === inviteText || activeText === newText}]"
-                 @click="onTextClick"
-            >
-                <div :class="$style.textBlur"></div>
-                <div :class="$style.textInner">
-                    <div v-html="activeText"></div>
-                </div>
-            </div>
-        </transition>
     </div>
 </template>
 
@@ -113,7 +125,7 @@ export default {
 
             activeText: '',
             autoInterval: null,
-            inviteText: `За 4 секунды отвечу на любой вопрос<span class="${this.$style.textLink}"></span>`,
+            inviteText: `За 4 <span class="${this.$style._desk}">секунды</span><span class="${this.$style._mob}">сек</span> отвечу на любой вопрос<span class="${this.$style.textLink}"></span>`,
             newText: `1 новое сообщение – <span class="${this.$style.textLink}">смотреть</span>`,
         };
     },
@@ -129,31 +141,19 @@ export default {
     },
 
     watch: {
-        isAutoActive: {
-            handler(val) {
-                if (val) {
-                    this.initAuto();
-                } else {
-                    clearInterval(this.autoInterval);
-                }
-            },
-            immediate: true,
+        isAutoActive() {
+            this.onAutoActiveChange();
         },
 
-        hasNew: {
-            handler(val) {
-                if (val) {
-                    this.activeText = this.newText;
-                    this.isOpen = true;
-                } else if (this.activeText === this.newText) {
-                    this.activeText = '';
-                }
-            },
-            immediate: true,
+        hasNew() {
+            this.onHasNewChange();
         },
     },
 
     mounted() {
+        this.onHasNewChange();
+        this.onAutoActiveChange();
+
         if (!this.hasInteracted) {
             this.initInvite();
         }
@@ -261,6 +261,26 @@ export default {
                 this.goStep('Chat');
             }
         },
+
+        onHasNewChange() {
+            if (this.hasNew) {
+                this.activeText = this.newText;
+
+                if (this.device !== 'mobile') {
+                    this.isOpen = true;
+                }
+            } else if (this.activeText === this.newText) {
+                this.activeText = '';
+            }
+        },
+
+        onAutoActiveChange() {
+            if (this.isAutoActive) {
+                this.initAuto();
+            } else {
+                clearInterval(this.autoInterval);
+            }
+        },
     },
 };
 </script>
@@ -296,6 +316,15 @@ export default {
         transition: all .3s ease;
     }
 
+    .blur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: .08;
+    }
+
     .mainBlur {
         position: absolute;
         top: 0;
@@ -303,8 +332,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 40px;
-        background: rgba(157, 168, 185, .2);
-        filter: blur(2px);
+        background: rgba(30, 30, 34, .5);
         transition: all .3s ease;
     }
 
@@ -313,7 +341,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 0;
-        border-radius: 24px;
+        border-radius: 26px;
         background-color: $primary-500;
         transition: padding $default-transition;
     }
@@ -404,7 +432,6 @@ export default {
         position: absolute;
         right: 0;
         bottom: calc(100% - 8px);
-        z-index: -1;
         overflow: hidden;
         padding: 8px;
         border-radius: 28px 28px 0 28px;
@@ -412,9 +439,9 @@ export default {
         transition: all $default-transition;
 
         @include respond-to(mobile) {
-            right: 73px;
+            right: 26px;
             bottom: 50%;
-            padding: 0;
+            padding: 8px 38px 8px 8px;
             border-radius: 28px;
             transform: translateY(50%);
 
@@ -433,20 +460,32 @@ export default {
                 color: $primary-500;
             }
         }
-    }
 
-    .textBlur {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 28px 28px 0 28px;
-        background: linear-gradient(-10deg, transparent 0, transparent 5px, rgba(157, 168, 185, .2) 7px, rgba(157, 168, 185, .2) 100%);
-        filter: blur(2px);
+        &._blur {
+            border-radius: 28px 28px 0 28px;
+            background: rgb(30, 30, 34);
 
-        @include respond-to(mobile) {
+            @include respond-to(mobile) {
+                border-radius: 28px;
+            }
+
+            .textInner {
+                visibility: hidden;
+            }
+        }
+
+        ._desk {
+            @include respond-to(mobile) {
+                display: none;
+            }
+        }
+
+        ._mob {
             display: none;
+
+            @include respond-to(mobile) {
+                display: inline;
+            }
         }
     }
 

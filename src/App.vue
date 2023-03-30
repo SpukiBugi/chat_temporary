@@ -186,13 +186,17 @@ export default {
 
     watch: {
         device(newVal, oldVal) {
-            if (newVal === 'mobile' || oldVal === 'mobile') {
+            if ((newVal === 'mobile' || oldVal === 'mobile') && this.isOpen) {
                 this.onClose();
             }
         },
     },
 
     mounted() {
+        if (this.device === 'mobile') {
+            this.isLong = true;
+        }
+
         this.checkAnimationType();
         window.addEventListener('resize', this.debouncedResize);
     },
@@ -281,7 +285,7 @@ export default {
                 transformOrigin: '100% 100%',
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.head, {
+            timeline.fromTo(this.$refs.main?.$refs.head, {
                 opacity: 0,
             }, {
                 opacity: 1,
@@ -289,7 +293,7 @@ export default {
                 delay: duration,
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.componentWrap, {
+            timeline.fromTo(this.$refs.main?.$refs.componentWrap, {
                 opacity: 0,
                 transform: 'scale(.8)',
             }, {
@@ -299,7 +303,7 @@ export default {
                 delay: duration,
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.mainMenu.$el, {
+            timeline.fromTo(this.$refs.main?.$refs.mainMenu.$el, {
                 opacity: 0,
                 transform: 'scale(.8)',
             }, {
@@ -332,9 +336,11 @@ export default {
 
             timeline.to(this.$refs.avatarWrap, {
                 duration: duration,
-                top: '8px',
+                top: 0,
                 left: '50%',
-                transform: 'scale(1.34) translate(-50%)',
+                xPercent: -50,
+                y: 8,
+                transform: 'scale(1.34)',
             }, 0);
 
             timeline.to(this.$refs.mainContainer, {
@@ -350,7 +356,7 @@ export default {
                 delay: duration,
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.head, {
+            timeline.fromTo(this.$refs.main?.$refs.head, {
                 opacity: 0,
             }, {
                 opacity: 1,
@@ -358,7 +364,7 @@ export default {
                 delay: duration * 2,
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.componentWrap, {
+            timeline.fromTo(this.$refs.main?.$refs.componentWrap, {
                 opacity: 0,
                 transform: 'scale(.8)',
             }, {
@@ -368,7 +374,7 @@ export default {
                 delay: duration * 2,
             }, 0);
 
-            timeline.fromTo(this.$refs.main.$refs.mainMenu.$el, {
+            timeline.fromTo(this.$refs.main?.$refs.mainMenu.$el, {
                 opacity: 0,
                 transform: 'scale(.8)',
             }, {
@@ -384,18 +390,18 @@ export default {
             const firstStep = .1;
             const timeline = gsap.timeline();
 
-            timeline.to(this.$refs.main.$refs.head, {
+            timeline.to(this.$refs.main?.$refs.head, {
                 opacity: 0,
                 duration: firstStep,
             }, 0);
 
-            timeline.to(this.$refs.main.$refs.componentWrap, {
+            timeline.to(this.$refs.main?.$refs.componentWrap, {
                 transform: 'scale(.8)',
                 opacity: 0,
                 duration: firstStep,
             }, 0);
 
-            timeline.to(this.$refs.main.$refs.mainMenu.$el, {
+            timeline.to(this.$refs.main?.$refs.mainMenu.$el, {
                 opacity: 0,
                 transform: 'scale(.8)',
                 duration: firstStep,
@@ -460,13 +466,16 @@ export default {
                 duration: duration - .1,
                 top: menuRect?.top,
                 yPercent: 0,
+                onComplete: () => this.$refs.mainContainer.style.top = '',
             }, .1);
 
             timeline.to(this.$refs.avatarWrap, {
                 duration: duration - .1,
-                top: 8,
+                top: 0,
                 left: 'calc(100% - 20px)',
-                transform: 'scale(1) translate3d(-100%, 0, 0)',
+                y: 8,
+                xPercent: -100,
+                transform: 'scale(1)',
             }, .1);
 
             timeline.set(this.$refs.menu.$refs.mainBlur, {
@@ -487,10 +496,6 @@ export default {
 
             timeline.set(this, {
                 stepId: '',
-            }, duration);
-
-            timeline.set(this.$refs.mainContainer, {
-                top: '',
             }, duration);
         },
 
@@ -603,8 +608,15 @@ export default {
 
         /** По дефолту на десктопе */
         &._bottom {
+            .mainContainer {
+                right: 32px;
+                bottom: 32px;
+            }
+
             .avatarWrap {
-                transform: scale(1) translate3d(-100%, -100%, 0);
+                top: calc(100% - 8px);
+                left: calc(100% - 8px);
+                transform: scale(1) translate(-100%, -100%);
             }
         }
 
@@ -612,11 +624,13 @@ export default {
         &._top {
             .mainContainer {
                 top: 76px;
-                bottom: auto;
+                right: 0;
             }
 
             .avatarWrap {
-                transform: scale(1) translate3d(-100%, 0, 0);
+                top: 0;
+                left: calc(100% - 20px);
+                transform: scale(1) translate(-100%, 8px);
             }
         }
     }
@@ -637,7 +651,7 @@ export default {
     .overlay {
         display: none;
 
-        @include respond-to(tablet) {
+        @include respond-to(mobile) {
             position: fixed;
             top: 0;
             right: 0;
@@ -651,15 +665,12 @@ export default {
 
     .mainContainer {
         position: fixed;
-        right: 32px;
-        bottom: 32px;
         z-index: $zIndex;
         display: flex;
         justify-content: center;
         pointer-events: none;
 
         @include respond-to(mobile) {
-            right: 0;
             width: 100%;
         }
 
@@ -678,18 +689,10 @@ export default {
 
     .avatarWrap {
         position: absolute;
-        top: calc(100% - 8px);
-        left: calc(100% - 8px);
         width: 48px;
         height: 48px;
         border-radius: 50%;
         opacity: 0;
-        will-change: transform;
         transform-origin: top left;
-
-        @include respond-to(mobile) {
-            top: 8px;
-            left: calc(100% - 20px);
-        }
     }
 </style>

@@ -113,7 +113,7 @@ export default {
         max-height: 552px;
 
         @include respond-to(tablet) {
-            max-height: calc(100vh - 212px);
+            max-height: calc(100vh - 150px);
         }
     }
 

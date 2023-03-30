@@ -140,7 +140,9 @@ export default {
         margin-top: -16px;
 
         @include respond-to(tablet) {
-            max-height: calc(100vh - 212px);
+            height: calc(100vh - 170px);
+            max-height: none;
+            margin-top: 0;
         }
 
         :global(.v-scrollbox__scrollbar._vertical) {
@@ -152,6 +154,12 @@ export default {
         display: flex;
         flex-direction: column;
         padding: 48px 16px 20px;
+
+        @include respond-to(mobile) {
+            justify-content: flex-end;
+            min-height: calc(100vh - 170px);
+            padding: 8px 16px 20px;
+        }
     }
 
     .message {

@@ -30,7 +30,7 @@ export default {
         width: 176px;
         height: 176px;
         margin-top: 12px;
-        border-radius: 24px;
+        border-radius: 16px;
         background-color: black;
     }
 

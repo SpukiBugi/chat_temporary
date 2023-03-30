@@ -165,7 +165,7 @@ export default {
         justify-content: center;
         width: 100%;
         padding: 20px 20px 12px;
-        border-radius: 24px;
+        border-radius: 26px;
         background-color: $white;
         gap: 6px;
     }
