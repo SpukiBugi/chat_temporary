@@ -332,7 +332,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 40px;
-        background: rgba(30, 30, 34, .5);
+        background: rgb(30, 30, 34);
         transition: all .3s ease;
     }
 
