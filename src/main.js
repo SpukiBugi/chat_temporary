@@ -15,25 +15,25 @@ import VButton from '@/components/ui/button/VButton.vue';
 import VButtonIcon from '@/components/ui/button/VButtonIcon.vue';
 import VInput from '@/components/ui/input/VInput.vue';
 
-const addCss = () => {
+const addCss = async () => new Promise(resolve => {
     if (import.meta.env.MODE !== 'production') {
+        resolve();
         return;
     }
 
-    // create a link element
     const link = document.createElement('link');
-
-    // set the attributes for the link element
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = `${import.meta.env.BASE_URL}style.css`;
-
-    // append the link element to the head element
     document.head.appendChild(link);
-};
 
-const init = () => {
-    addCss();
+    link.onload = () => {
+        resolve();
+    };
+});
+
+const init = async () => {
+    await addCss();
     const block = document.createElement('div');
     document.body.appendChild(block);
 
@@ -74,5 +74,5 @@ const init = () => {
 if (document.readyState === 'complete') {
     init();
 } else {
-    document.addEventListener('DOMContentLoaded', init());
+    document.addEventListener('DOMContentLoaded', init);
 }
