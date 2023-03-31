@@ -220,7 +220,7 @@ export default {
         },
 
         fixSafariInputs() {
-            if (isIOS() && this.isMobile) {
+            if (isIOS() && this.device === 'mobile') {
                 const el = document.querySelector('meta[name=viewport]');
 
                 if (el !== null) {
