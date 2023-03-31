@@ -202,12 +202,11 @@ export default {
         if (this.device === 'mobile') {
             this.isLong = true;
         }
-
-        this.checkAnimationType();
         window.addEventListener('resize', this.debouncedResize);
 
         this.$nextTick(() => {
             this.getVh();
+            this.checkAnimationType();
         });
     },
 
