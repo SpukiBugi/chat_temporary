@@ -207,6 +207,7 @@ export default {
         this.$nextTick(() => {
             this.getVh();
             this.checkAnimationType();
+            this.fixSafariInputs();
         });
     },
 

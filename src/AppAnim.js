@@ -4,7 +4,6 @@ export default {
     methods: {
         checkAnimationType() {
             const menuRect = this.$refs.menu.$el.getBoundingClientRect();
-            console.log('rect', menuRect);
 
             if (menuRect?.top < window.innerHeight / 2) {
                 this.animationType = 'top';

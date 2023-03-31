@@ -244,8 +244,8 @@ export default {
 
         onBeforeLeaveText() {
             if (this.device !== 'mobile') {
-                this.$refs.mainBlur.style['border-top-right-radius'] = '40px';
-                this.$refs.main.style['border-top-right-radius'] = '40px';
+                this.$refs.mainBlur.style['border-top-right-radius'] = '';
+                this.$refs.main.style['border-top-right-radius'] = '';
             }
         },
 
@@ -288,6 +288,10 @@ export default {
 <style lang='scss' module>
     .Menu {
         &._open {
+            .mainBlur {
+                border-radius: 40px;
+            }
+
             .inner {
                 padding: 4px;
             }
@@ -312,7 +316,7 @@ export default {
         position: relative;
         overflow: hidden;
         padding: 8px;
-        border-radius: 40px;
+        border-radius: 32px;
         transition: all .3s ease;
     }
 
@@ -331,7 +335,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
-        border-radius: 40px;
+        border-radius: 32px;
         background: rgb(30, 30, 34);
         transition: all .3s ease;
     }
@@ -434,7 +438,7 @@ export default {
         bottom: calc(100% - 8px);
         overflow: hidden;
         padding: 8px;
-        border-radius: 28px 28px 0 28px;
+        border-radius: 24px 24px 0 24px;
         pointer-events: none;
         transition: all $default-transition;
 
@@ -442,7 +446,7 @@ export default {
             right: 26px;
             bottom: 50%;
             padding: 8px 38px 8px 8px;
-            border-radius: 28px;
+            border-radius: 24px;
             transform: translateY(50%);
 
             &:global(.widget-sova-appear-enter),
@@ -462,12 +466,7 @@ export default {
         }
 
         &._blur {
-            border-radius: 28px 28px 0 28px;
             background: rgb(30, 30, 34);
-
-            @include respond-to(mobile) {
-                border-radius: 28px;
-            }
 
             .textInner {
                 visibility: hidden;
