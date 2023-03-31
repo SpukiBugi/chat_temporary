@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { debounce } from '@/assets/js/utils/common-utils';
+import { debounce, isIOS } from '@/assets/js/utils/common-utils';
 import testHistory from '@/assets/json/testHistory';
 import AppAnim from './AppAnim';
 
@@ -127,6 +127,7 @@ export default {
 
             animationType: 'bottom',
             debouncedResize: debounce(this.onResize, 100),
+            vh: 0,
 
             /** Steps */
             stepId: '',
@@ -183,6 +184,7 @@ export default {
                     '--primary-500': '#1F44FF',
                     '--primary-600': '#1233EE',
                     '--primary-900': '#1431BF',
+                    '--vh': this.vh ? `${this.vh}px` : '1vh',
                 },
             ];
         },
@@ -203,6 +205,10 @@ export default {
 
         this.checkAnimationType();
         window.addEventListener('resize', this.debouncedResize);
+
+        this.$nextTick(() => {
+            this.getVh();
+        });
     },
 
     beforeDestroy() {
@@ -210,6 +216,22 @@ export default {
     },
 
     methods: {
+        getVh() {
+            this.vh = window.innerHeight * 0.01;
+        },
+
+        fixSafariInputs() {
+            if (isIOS() && this.isMobile) {
+                const el = document.querySelector('meta[name=viewport]');
+
+                if (el !== null) {
+                    let content = el.getAttribute('content');
+                    content = [content, 'maximum-scale=1.0'].join(', ');
+                    el.setAttribute('content', content);
+                }
+            }
+        },
+
         onGoStep(step) {
             this.stepId = step;
 

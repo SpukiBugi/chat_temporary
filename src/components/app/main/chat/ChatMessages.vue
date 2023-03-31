@@ -172,14 +172,14 @@ export default {
 
         @include respond-to(tablet) {
             @include landscape {
-                height: calc(100vh - 200px);
+                height: calc(100 * var(--vh) - 200px);
                 max-height: none;
                 margin-top: 0;
             }
         }
 
         @include respond-to(mobile) {
-            height: calc(100vh - 170px);
+            height: calc(100 * var(--vh) - 170px);
             max-height: none;
             margin-top: 0;
         }
@@ -196,7 +196,7 @@ export default {
 
         @include respond-to(mobile) {
             justify-content: flex-end;
-            min-height: calc(100vh - 170px);
+            min-height: calc(100 * var(--vh) - 170px);
             padding: 8px 16px 20px;
         }
     }
