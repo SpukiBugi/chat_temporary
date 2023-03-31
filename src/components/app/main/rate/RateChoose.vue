@@ -104,8 +104,8 @@ export default {
 
         &._rated {
             .title {
-                font-size: 13px;
-                line-height: 16px;
+                font-size: 14px;
+                line-height: 17px;
             }
 
             .smiles {

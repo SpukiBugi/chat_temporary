@@ -49,6 +49,6 @@ export default {
     .MainMenu {
         display: flex;
         justify-content: center;
-        gap: 6px;
+        gap: 4px;
     }
 </style>

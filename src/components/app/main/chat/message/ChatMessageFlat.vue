@@ -57,15 +57,15 @@ export default {
 
     .title {
         font-weight: 500;
-        font-size: 13px;
-        line-height: 16px;
+        font-size: 14px;
+        line-height: 17px;
         letter-spacing: -.015em;
     }
 
     .desc {
         margin-top: 4px;
-        font-size: 13px;
-        line-height: 16px;
+        font-size: 14px;
+        line-height: 17px;
         letter-spacing: -.015em;
         color: $base-500;
     }

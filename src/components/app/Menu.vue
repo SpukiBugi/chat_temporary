@@ -47,10 +47,12 @@
                 <div ref="inner" :class="$style.inner">
                     <div
                         :class="$style.avatarWrap"
+                        @mouseenter="onControlEnter('Познакомиться с Совой')"
+                        @mouseleave="onControlLeave"
                         @click="goStep('Chat')"
                     >
                         <Avatar :has-status="isOpen"
-                                status-type="menu"
+                                :has-smile="isOpen"
                         />
                     </div>
 
@@ -58,7 +60,7 @@
                         <div v-for="control in controls"
                              :key="control.icon"
                              :class="[$style.control, {[$style._notif]: control.step === 'Chat' && hasNew}]"
-                             @mouseenter="onControlEnter(control)"
+                             @mouseenter="onControlEnter(control.text)"
                              @mouseleave="onControlLeave"
                              @click="goStep(control.step)"
                         >
@@ -107,19 +109,19 @@ export default {
 
             controls: [
                 {
-                    icon: 'IcMessage',
-                    text: 'Получить ответ',
-                    step: 'Chat',
+                    icon: 'IcStar',
+                    text: 'Оставить отзыв',
+                    step: 'Rate',
                 },
                 {
                     icon: 'IcPhone',
-                    text: 'Заказать звонок',
+                    text: 'Связаться с менеджером',
                     step: 'Call',
                 },
                 {
-                    icon: 'IcMenu',
-                    text: 'Весь функционал',
-                    step: 'Options',
+                    icon: 'IcMessage',
+                    text: 'Получить ответ',
+                    step: 'Chat',
                 },
             ],
 
@@ -198,11 +200,11 @@ export default {
                 this.activeText = '';
             }
 
-            this.goStep(this.controls[0].step);
+            this.goStep('Chat');
         },
 
-        onControlEnter(control) {
-            this.activeText = control.text;
+        onControlEnter(text) {
+            this.activeText = text;
         },
 
         onControlLeave() {
@@ -327,6 +329,7 @@ export default {
         width: 100%;
         height: 100%;
         opacity: .08;
+        pointer-events: none;
     }
 
     .mainBlur {
@@ -355,6 +358,7 @@ export default {
         flex-shrink: 0;
         width: 48px;
         height: 48px;
+        color: $primary-500;
         transition: width $default-transition, height $default-transition;
         cursor: pointer;
         user-select: none;
@@ -498,13 +502,9 @@ export default {
         background-color: $white;
         white-space: nowrap;
         font-weight: 500;
-        font-size: 13px;
-        line-height: 16px;
+        font-size: 14px;
+        line-height: 17px;
         letter-spacing: -.015em;
-
-        @media only screen and (max-width: 360px) {
-            font-size: 12px;
-        }
     }
 
     .textLink {
@@ -517,8 +517,8 @@ export default {
             position: relative;
             top: 2px;
             display: inline-block;
-            width: 13px;
-            height: 13px;
+            width: 16px;
+            height: 16px;
             margin-left: 4px;
             border-radius: 3px;
             background-image: url('/link.svg');

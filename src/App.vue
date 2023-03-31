@@ -52,8 +52,7 @@
             <div ref="avatarWrap" :class="$style.avatarWrap">
                 <Avatar
                     ref="avatar"
-                    status-type="chat"
-                    has-status
+                    :has-status="hasStatus"
                     :show-pic="isRelink && isOpen"
                 />
             </div>
@@ -116,6 +115,7 @@ export default {
             isOpen: false,
             isLoading: false,
             isLong: false,
+            hasStatus: false,
             hasNew: localStorage.getItem('widgetSovaHasNew') === 'true',
 
             /** Form */
@@ -156,11 +156,6 @@ export default {
                     id: 'Whatsapp',
                     component: Whatsapp,
                     height: '284px',
-                },
-                {
-                    id: 'Options',
-                    component: Chat,
-                    height: 'auto',
                 },
             ],
         };
@@ -270,7 +265,7 @@ export default {
         /** Чат */
         async onSubmit() {
             if (this.isLoading) {
-                this.note = 'Отправить сообщение можно после получения ответа';
+                this.note = 'Отправьте сообщение после получения ответа';
 
                 return;
             }
@@ -293,7 +288,7 @@ export default {
                 this.note = '';
 
                 if (this.history.length === 2) {
-                    this.note = 'Не тот ответ? Попробуйте переформулировать вопрос';
+                    this.note = 'Не совсем тот ответ? Переформулируйте вопрос';
                 }
 
                 if (!this.isOpen) {
@@ -468,6 +463,7 @@ export default {
         width: 48px;
         height: 48px;
         border-radius: 50%;
+        color: $white;
         opacity: 0;
         transform-origin: top left;
     }

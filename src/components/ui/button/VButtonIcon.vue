@@ -149,6 +149,28 @@ export default {
             }
         }
 
+        &._base-400 {
+            border: 1px solid $base-400;
+            background-color: $base-400;
+            color: $white;
+
+            @include hover {
+                border-color: $base-500;
+                background-color: $base-500;
+            }
+
+            &:active {
+                background-color: $primary-500;
+                color: $white;
+            }
+
+            &._disabled {
+                border-color: $base-100;
+                background-color: $base-100;
+                color: $base-300;
+            }
+        }
+
         &._primary-500 {
             border: 1px solid $primary-500;
             background-color: $primary-500;

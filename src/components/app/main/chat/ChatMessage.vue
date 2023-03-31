@@ -8,7 +8,7 @@
             <div v-if="item.type === 'answer' && item.id !== 'error'" :class="$style.rate">
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
-                             :color="item.rating === false ? 'primary-500' : 'base-100'"
+                             :color="item.rating === false ? 'primary-500' : 'base-400'"
                              rotate
                              :class="[$style.rateItem, $style._dislike, {[$style._active]: item.rating === false }]"
                              @click="$emit('set-rating', {value: item.rating === false ? null : false, item: item})"
@@ -98,7 +98,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 18px;
         letter-spacing: -.015em;
 
@@ -165,10 +165,10 @@ export default {
             &:after {
                 content: '';
                 position: relative;
-                top: 2px;
+                top: 3px;
                 display: inline-block;
-                width: 13px;
-                height: 13px;
+                width: 16px;
+                height: 16px;
                 margin-left: 4px;
                 border-radius: 3px;
                 background-image: url('/link.svg');
@@ -183,24 +183,32 @@ export default {
         float: right;
         margin-top: 4px;
         margin-left: 12px;
-        font-size: 11px;
+        font-size: 12px;
         line-height: 14px;
         color: $base-400;
         transition: $default-transition;
+
+        @include respond-to(mobile) {
+            opacity: 0;
+        }
     }
 
     .rate {
         position: absolute;
         right: 12px;
-        bottom: 0;
+        bottom: -8px;
         display: flex;
         width: 28px;
         height: 28px;
         border-radius: 12px;
         background-color: $white;
         opacity: 0;
-        transform: translateY(50%);
         transition: $default-transition;
+
+        @include respond-to(mobile) {
+            width: 52px;
+            opacity: 1;
+        }
     }
 
     .rateItem {
@@ -211,6 +219,12 @@ export default {
 
         &._active {
             z-index: 1;
+        }
+
+        &._dislike {
+            @include respond-to(mobile) {
+                transform: translateX(calc(-100% - 4px));
+            }
         }
     }
 

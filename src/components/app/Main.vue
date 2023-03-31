@@ -30,7 +30,7 @@
                 >
                     <transition name="widget-sova-fade">
                         <svg
-                            v-show="isSwitchLong"
+                            v-show="isLong"
                             width="340"
                             height="64"
                             viewBox="0 0 340 64"
@@ -46,11 +46,11 @@
 
                     <div
                         :class="$style.longSwitch"
-                        @click="switchLong(!isSwitchLong)"
+                        @click="switchLong(!isLong)"
                     >
                         <transition name="widget-sova-fade-abs">
-                            <div :key="isSwitchLong" :class="[$style.longSwitchInner, [$style[isSwitchLong ? '_short' : '_long']] ]">
-                                {{ isSwitchLong ? 'Краткий вид' : 'История сообщений' }}
+                            <div :key="isLong" :class="[$style.longSwitchInner, [$style[isLong ? '_short' : '_long']] ]">
+                                {{ isLong ? 'Краткий вид' : 'История сообщений' }}
                                 <VIcon name="IcHistory"
                                        size="size-14"
                                        :class="$style.longSwitchIcn"
@@ -74,7 +74,6 @@
                             v-if="currentStep"
                             ref="componentStep"
                             :is-long="isLong"
-                            :is-show-options="isShowOptions"
                             :is-loading="isLoading"
                             :is-show-switch="isShowSwitch"
                             :history="history"
@@ -156,20 +155,12 @@ export default {
     },
 
     computed: {
-        isShowOptions() {
-            return this.currentStep.id === 'Options';
-        },
-
         isMenuHidden() {
-            return this.isShowOptions || (this.currentStep.id === 'Chat' && this.history.length);
-        },
-
-        isSwitchLong() {
-            return this.isLong && !this.isShowOptions;
+            return this.currentStep.id === 'Chat' && this.history.length;
         },
 
         isShowSwitch() {
-            return (this.currentStep.id === 'Chat' || this.currentStep.id === 'Options') && this.history.length > 2 && this.device !== 'mobile';
+            return this.currentStep.id === 'Chat' && this.history.length > 2 && this.device !== 'mobile';
         },
     },
 
@@ -241,6 +232,7 @@ export default {
         width: 100%;
         height: 100%;
         opacity: .08;
+        pointer-events: none;
     }
 
     .blurHat {
@@ -326,8 +318,8 @@ export default {
         border-radius: 8px;
         white-space: nowrap;
         font-weight: 500;
-        font-size: 11px;
-        line-height: 14px;
+        font-size: 12px;
+        line-height: 15px;
         letter-spacing: -.01em;
         transition: $default-transition;
 

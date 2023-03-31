@@ -1,15 +1,7 @@
 <template>
     <div :class="$style.Chat">
-        <ChatOptions
-            v-if="isShowOptions"
-            :is-show-switch="isShowSwitch"
-            :class="$style.options"
-            @value-click="$emit('value-click', $event)"
-            @go-step="$emit('go-step', $event)"
-        />
-
         <ChatMessages
-            v-else-if="isShowMessages"
+            v-if="isShowMessages"
             :history="history"
             :is-loading="isLoading"
             :is-long="isLong"
@@ -51,17 +43,11 @@ export default {
     name: 'Chat',
 
     components: {
-        ChatOptions: () => import('@/components/app/main/chat/ChatOptions.vue'),
         ChatMessages: () => import('@/components/app/main/chat/ChatMessages.vue'),
     },
 
     props: {
         isLong: {
-            type: Boolean,
-            default: false,
-        },
-
-        isShowOptions: {
             type: Boolean,
             default: false,
         },

@@ -211,9 +211,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 38px;
-        font-size: 11px;
-        line-height: 14px;
+        height: 39px;
+        font-size: 12px;
+        line-height: 15px;
         letter-spacing: -.01em;
         color: $base-500;
 
@@ -246,8 +246,8 @@ export default {
         background-color: $primary-100;
         text-align: center;
         font-weight: 500;
-        font-size: 11px;
-        line-height: 14px;
+        font-size: 12px;
+        line-height: 15px;
         letter-spacing: -.01em;
         color: $primary-500;
         transition: $default-transition;

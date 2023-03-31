@@ -50,8 +50,8 @@ export default {
         margin-top: 20px;
         padding: 8px 0;
         text-align: center;
-        font-size: 13px;
-        line-height: 16px;
+        font-size: 14px;
+        line-height: 17px;
         letter-spacing: -.015em;
         color: $base-500;
     }

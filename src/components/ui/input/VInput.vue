@@ -651,8 +651,8 @@ export default {
             .premask,
             .label,
             .native {
-                font-size: 13px;
-                line-height: 16px;
+                font-size: 14px;
+                line-height: 17px;
                 letter-spacing: -.015em;
             }
 
@@ -664,8 +664,8 @@ export default {
                 right: 16px;
                 left: 16px;
                 height: 16px;
-                font-size: 13px;
-                line-height: 16px;
+                font-size: 14px;
+                line-height: 17px;
                 letter-spacing: -.015em;
             }
         }

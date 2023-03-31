@@ -1,5 +1,5 @@
 <template>
-    <div :class="$style.Avatar">
+    <div :class="[$style.Avatar, {[$style._smile]: hasSmile}]">
         <div :class="$style.videoWrap">
             <video
                 autoplay
@@ -21,13 +21,19 @@
             </transition>
         </div>
 
-        <transition name="widget-sova-fade">
-            <div v-show="hasStatus"
-                 ref="status"
-                 :class="[$style.status, $style[`_${statusType}`]]"
+        <div ref="status"
+             :class="[$style.status, {[$style._visible]: hasStatus}]"
+        />
+
+        <div v-if="hasSmile"
+             :class="$style.smile"
+        >
+            <img
+                src="/smile.gif"
+                alt="smile"
+                :class="$style.smileImg"
             >
-            </div>
-        </transition>
+        </div>
     </div>
 </template>
 
@@ -41,9 +47,9 @@ export default {
             default: false,
         },
 
-        statusType: {
-            type: String,
-            default: 'menu',
+        hasSmile: {
+            type: Boolean,
+            default: false,
         },
 
         showPic: {
@@ -67,7 +73,18 @@ export default {
         position: relative;
         width: 100%;
         height: 100%;
-        pointer-events: none;
+
+        &._smile {
+            @include hover {
+                .smile {
+                    opacity: 1;
+                }
+
+                .smileImg {
+                    transform: scale(1);
+                }
+            }
+        }
     }
 
     .status {
@@ -77,14 +94,15 @@ export default {
         width: 16px;
         height: 16px;
         border-radius: 50%;
+        border: 4px solid currentColor;
         background: linear-gradient(180deg, #148200 0%, #baeab1 100%);
+        opacity: 0;
+        transform: scale(0);
+        transition: $default-transition;
 
-        &._menu {
-            border: 4px solid $primary-500;
-        }
-
-        &._chat {
-            border: 4px solid $white;
+        &._visible {
+            opacity: 1;
+            transform: scale(1);
         }
     }
 
@@ -95,6 +113,7 @@ export default {
         height: 100%;
         border-radius: 50%;
         isolation: isolate;
+        pointer-events: none;
     }
 
     .video,
@@ -107,5 +126,28 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
+    }
+
+    .smile {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: $primary-600;
+        opacity: 0;
+        transition: $default-transition;
+        pointer-events: none;
+    }
+
+    .smileImg {
+        width: 36px;
+        height: 36px;
+        transform: scale(0);
+        transition: $default-transition;
     }
 </style>

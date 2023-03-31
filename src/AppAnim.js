@@ -16,15 +16,6 @@ export default {
             const duration = .4;
             const timeline = gsap.timeline();
 
-            /** Иконка статуса на аватарке */
-            timeline.fromTo(this.$refs.avatar.$refs.status, {
-                opacity: 0,
-            }, {
-                opacity: 1,
-                duration: duration,
-            }, 0);
-            //
-
             /** Подмена аватарки */
             timeline.to(this.$refs.avatarWrap, {
                 opacity: 1,
@@ -82,21 +73,17 @@ export default {
                 delay: duration,
             }, 0);
             //
+
+            /** Иконка статуса на аватарке */
+            timeline.set(this, {
+                hasStatus: true,
+            }, 0);
+            //
         },
 
         openAnimTop() {
             const duration = .4;
             const timeline = gsap.timeline();
-
-            /** Иконка статуса на аватарке */
-            timeline.fromTo(this.$refs.avatar.$refs.status, {
-                opacity: 0,
-            }, {
-                opacity: 1,
-                duration: .3,
-                delay: duration,
-            }, 0);
-            //
 
             /** Подмена аватарки */
             timeline.to(this.$refs.avatarWrap, {
@@ -162,6 +149,12 @@ export default {
                 delay: duration * 2,
             }, 0);
             //
+
+            /** Иконка статуса на аватарке */
+            timeline.set(this, {
+                hasStatus: true,
+            }, duration);
+            //
         },
 
         closeAnimBottom() {
@@ -189,10 +182,9 @@ export default {
             //
 
             /** Иконка статуса на аватарке */
-            timeline.to(this.$refs.avatar.$refs.status, {
-                duration: (duration - firstStep / 2),
-                opacity: 0,
-            }, firstStep);
+            timeline.set(this, {
+                hasStatus: false,
+            }, 0);
             //
 
             /** Раскрытие контента */
@@ -262,10 +254,9 @@ export default {
             //
 
             /** Иконка статуса на аватарке */
-            timeline.to(this.$refs.avatar.$refs.status, {
-                duration: secondStep,
-                opacity: 0,
-            }, firstStep - .1);
+            timeline.set(this, {
+                hasStatus: false,
+            }, 0);
             //
 
             /** Раскрытие контента */

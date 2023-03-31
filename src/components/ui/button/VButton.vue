@@ -99,8 +99,8 @@ export default {
             padding: 0 15px;
             border-radius: 12px;
             font-weight: 500;
-            font-size: 13px;
-            line-height: 16px;
+            font-size: 14px;
+            line-height: 17px;
             letter-spacing: -.01em;
         }
 
@@ -109,8 +109,8 @@ export default {
             padding: 0 7px;
             border-radius: 8px;
             font-weight: 500;
-            font-size: 11px;
-            line-height: 14px;
+            font-size: 12px;
+            line-height: 15px;
             letter-spacing: -.01em;
         }
 
