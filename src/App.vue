@@ -37,7 +37,7 @@
                     :is-long="isLong"
                     :history="history"
                     :value="value"
-                    :message="message"
+                    :note="note"
                     :class="$style.main"
                     @close="onClose"
                     @go-step="onGoStep"
@@ -120,10 +120,10 @@ export default {
 
             /** Form */
             value: '',
-            message: '',
+            note: '',
 
             /** Info */
-            history: testHistory,
+            history: []||testHistory,
 
             animationType: 'bottom',
             debouncedResize: debounce(this.onResize, 100),
@@ -247,7 +247,7 @@ export default {
         /** Чат */
         async onSubmit() {
             if (this.isLoading) {
-                this.message = 'Отправить сообщение можно после получения ответа';
+                this.note = 'Отправить сообщение можно после получения ответа';
 
                 return;
             }
@@ -259,7 +259,7 @@ export default {
             this.isLoading = true;
             const question = this.value;
             this.value = '';
-            this.message = '';
+            this.note = '';
             const id = String(Math.random());
             this.history.push({ id: id, type: 'question', text: question, date: new Date(Date.now()) });
 
@@ -267,10 +267,10 @@ export default {
                 const res = await this.getAnswer(question);
                 res.type = 'answer';
                 this.history.push(res);
-                this.message = '';
+                this.note = '';
 
                 if (this.history.length === 2) {
-                    this.message = 'Не тот ответ? Попробуйте переформулировать вопрос';
+                    this.note = 'Не тот ответ? Попробуйте переформулировать вопрос';
                 }
 
                 if (!this.isOpen) {
@@ -384,6 +384,11 @@ export default {
         bottom: 32px;
         z-index: $zIndex;
 
+        @include respond-to-min(x-large-desktop) {
+            transform: scale(1.3);
+            transform-origin: bottom right;
+        }
+
         @include respond-to(mobile) {
             top: 76px;
             right: 12px;
@@ -413,6 +418,11 @@ export default {
         justify-content: center;
         pointer-events: none;
 
+        @include respond-to-min(x-large-desktop) {
+            transform: scale(1.3);
+            transform-origin: bottom right;
+        }
+
         @include respond-to(mobile) {
             width: 100%;
         }
@@ -426,7 +436,7 @@ export default {
         transform: scale(0);
 
         @include respond-to(mobile) {
-            margin: 0 auto;
+            width: 100%;
         }
     }
 

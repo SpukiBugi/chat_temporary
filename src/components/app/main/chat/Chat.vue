@@ -13,6 +13,7 @@
             :history="history"
             :is-loading="isLoading"
             :is-long="isLong"
+            :note="note"
             :class="$style.messages"
             @set-rating="$emit('set-rating', $event)"
             @value-click="$emit('value-click', $event)"
@@ -23,18 +24,6 @@
             <p>Привет! Я Сова – </p>
             <p :class="$style.helloBottom">отвечу на вопрос за 4 секунды</p>
         </div>
-
-        <Expander :is-open="Boolean(message)"
-                  :class="$style.messageExpander"
-        >
-            <div :class="$style.messageWrap">
-                <div :key="message"
-                     :class="[$style.message]"
-                     v-html="message"
-                >
-                </div>
-            </div>
-        </Expander>
 
         <form :class="$style.inputWrap" @submit.prevent="$emit('submit')">
             <VInput
@@ -57,7 +46,6 @@
 </template>
 
 <script>
-import Expander from '@/components/ui/Expander.vue';
 
 export default {
     name: 'Chat',
@@ -65,7 +53,6 @@ export default {
     components: {
         ChatOptions: () => import('@/components/app/main/chat/ChatOptions.vue'),
         ChatMessages: () => import('@/components/app/main/chat/ChatMessages.vue'),
-        Expander,
     },
 
     props: {
@@ -99,7 +86,7 @@ export default {
             default: '',
         },
 
-        message: {
+        note: {
             type: String,
             default: '',
         },
@@ -144,32 +131,6 @@ export default {
 
     .helloBottom {
         color: $base-300;
-    }
-
-    .messageWrap {
-        padding: 0 16px 8px;
-    }
-
-    .message {
-        padding: 4px 6px;
-        border-radius: 8px;
-        border: 1px solid $primary-200;
-        background-color: $primary-100;
-        font-weight: 500;
-        font-size: 11px;
-        line-height: 14px;
-        letter-spacing: -.01em;
-        color: $primary-500;
-        transition: $default-transition;
-        animation: toGray .3s ease 3s forwards;
-    }
-
-    @keyframes toGray {
-        100% {
-            border: 1px solid $base-200;
-            background-color: $base-100;
-            color: $base-500;
-        }
     }
 
     .inputWrap {

@@ -128,9 +128,8 @@ export default {
                 duration: duration,
                 top: 0,
                 left: '50%',
-                xPercent: -50,
                 y: 8,
-                transform: 'scale(1.34)',
+                transform: 'scale(1.34) translateX(-50%)',
             }, 0);
             //
 

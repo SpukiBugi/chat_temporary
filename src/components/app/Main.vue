@@ -1,5 +1,18 @@
 <template>
     <div :class="[$style.Main]">
+        <div :class="$style.blur">
+            <svg :class="$style.blurHat"
+                 viewBox="0 0 144 32"
+                 xmlns="http://www.w3.org/2000/svg"
+            >
+                <path fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M 106.553,19.8362 C 110.395,26.405 116.669,32 124.278,32 c -96.951811,3.92e-4 -0.005,0.01663 -104.556001,0 7.609,0 13.883,-5.595 17.725,-12.1638 C 44.385999,7.97057 57.261999,0 71.999999,0 c 14.738,0 27.614,7.97058 34.553001,19.8362 z"
+                />
+            </svg>
+            <div :class="$style.blurBody"></div>
+        </div>
+
         <div :class="$style.wrapper">
             <div ref="head" :class="$style.head">
                 <VButton :class="$style.about" @click="$emit('go-step', 'Chat')">Обо мне</VButton>
@@ -66,7 +79,7 @@
                             :is-show-switch="isShowSwitch"
                             :history="history"
                             :value="value"
-                            :message="message"
+                            :note="note"
                             @go-step="$emit('go-step', $event)"
                             @set-value="$emit('set-value', $event)"
                             @value-click="$emit('value-click', $event)"
@@ -125,7 +138,7 @@ export default {
             default: '',
         },
 
-        message: {
+        note: {
             type: String,
             default: '',
         },
@@ -211,21 +224,44 @@ export default {
         width: 356px;
         max-width: 100vw;
         padding: 40px 8px 8px;
-        border-radius: 32px;
-        mask-image: url('/mask.svg');
-        mask-position: center top;
-        background: rgba(25, 27, 30, .08);
+        border-radius: 26px;
 
         @include respond-to(mobile) {
+            width: 100%;
             padding: 40px 8px 16px;
         }
+    }
+
+    .blur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        opacity: .08;
+    }
+
+    .blurHat {
+        width: 144px;
+        height: 32px;
+        margin: auto;
+        fill: rgb(25, 27, 30);
+    }
+
+    .blurBody {
+        flex-grow: 1;
+        width: 100%;
+        border-radius: 26px;
+        background: rgb(25, 27, 30);
     }
 
     .wrapper {
         position: relative;
         width: 100%;
         padding-bottom: 8px;
-        border-radius: 26px;
+        border-radius: 20px;
         background-color: white;
     }
 
@@ -244,7 +280,6 @@ export default {
             border-top-right-radius: 20px;
             mask-image: none;
             height: 48px;
-            // border-bottom: 1px solid $base-200;
         }
     }
 

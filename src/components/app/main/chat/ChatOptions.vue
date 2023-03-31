@@ -113,6 +113,12 @@ export default {
         max-height: 552px;
 
         @include respond-to(tablet) {
+            @include landscape {
+                height: calc(100vh - 200px);
+            }
+        }
+
+        @include respond-to(mobile) {
             max-height: calc(100vh - 150px);
         }
     }

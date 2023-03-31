@@ -5,7 +5,8 @@ const install = Vue => {
         tablet: 1024,
         laptop: 1280,
         desktop: 1440,
-        'large-desktop': 999999,
+        'large-desktop': 1940,
+        'x-large-desktop': 999999,
     };
 
     const setBp = () => {
