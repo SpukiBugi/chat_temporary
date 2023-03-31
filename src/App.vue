@@ -242,6 +242,7 @@ export default {
         },
 
         onResize() {
+            this.getVh();
             this.checkAnimationType();
         },
 
