@@ -89,15 +89,6 @@
                     </transition>
                 </div>
             </div>
-
-            <Expander :is-open="!isMenuHidden">
-                <MainMenu
-                    ref="mainMenu"
-                    :class="$style.menu"
-                    class="widget-sova-main-menu"
-                    @go-step="$emit('go-step', $event)"
-                />
-            </Expander>
         </div>
     </div>
 </template>
@@ -105,16 +96,8 @@
 <script>
 import { gsap } from 'gsap/dist/gsap.js';
 
-import Expander from '@/components/ui/Expander.vue';
-import MainMenu from '@/components/app/main/MainMenu.vue';
-
 export default {
     name: 'Main',
-
-    components: {
-        Expander,
-        MainMenu,
-    },
 
     props: {
         isLoading: {
@@ -259,7 +242,7 @@ export default {
 
     .head {
         position: relative;
-        z-index: 2;
+        z-index: 1;
         display: flex;
         justify-content: space-between;
         height: 64px;
@@ -295,7 +278,7 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 2;
+        z-index: 1;
         pointer-events: none;
     }
 
@@ -303,7 +286,7 @@ export default {
         position: absolute;
         top: 52px;
         left: 50%;
-        z-index: 2;
+        z-index: 1;
         display: flex;
         justify-content: center;
         transform: translateX(-50%);
@@ -362,7 +345,6 @@ export default {
 
     .componentWrap {
         position: relative;
-        z-index: 1;
         width: 100%;
     }
 
@@ -371,9 +353,5 @@ export default {
         bottom: 0;
         left: 0;
         width: 100%;
-    }
-
-    .menu {
-        padding: 20px 20px 4px;
     }
 </style>

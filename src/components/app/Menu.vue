@@ -40,7 +40,7 @@
             <Expander :is-open="isOpen"
                       field="width"
                       ease="back.out(1)"
-                      :duration="closeDuration"
+                      :duration="menuDuration"
                       hide-size="48px"
                       :class="[$style.expander, $style._weight]"
             >
@@ -57,15 +57,87 @@
                     </div>
 
                     <div :class="$style.controls">
-                        <div v-for="control in controls"
-                             :key="control.icon"
-                             :class="[$style.control, {[$style._notif]: control.step === 'Chat' && hasNew}]"
-                             @mouseenter="onControlEnter(control.text)"
+                        <Expander :is-open="!isCallOpen"
+                                  field="width"
+                                  ease="back.out(1)"
+                                  :class="$style.nonCallWrap"
+                        >
+                            <div :class="$style.nonCallEls">
+                                <div :class="[$style.control]"
+                                     @mouseenter="onControlEnter('Оставить отзыв')"
+                                     @mouseleave="onControlLeave"
+                                     @click="goStep('Rate')"
+                                >
+                                    <VIcon
+                                        name="IcStar"
+                                        size="size-20"
+                                    />
+                                </div>
+                            </div>
+                        </Expander>
+
+                        <div :class="$style.callWrap">
+                            <Expander :is-open="isCallOpen"
+                                      field="width"
+                                      ease="back.out(1)"
+                            >
+                                <div :class="$style.callEls">
+                                    <div :class="[$style.control]"
+                                         @mouseenter="onControlEnter('Связаться по Telegram')"
+                                         @mouseleave="onControlLeave"
+                                         @click="goStep('Telegram')"
+                                    >
+                                        <VIcon
+                                            name="IcTelegram"
+                                            size="size-20"
+                                        />
+                                    </div>
+                                    <div :class="[$style.control]"
+                                         @mouseenter="onControlEnter('Связаться по Whatsapp')"
+                                         @mouseleave="onControlLeave"
+                                         @click="goStep('Whatsapp')"
+                                    >
+                                        <VIcon
+                                            name="IcWhatsapp"
+                                            size="size-20"
+                                        />
+                                    </div>
+                                </div>
+                            </Expander>
+                            <div :class="[$style.control]"
+                                 @mouseenter="onControlEnter(isCallOpen ? 'Заказать звонок' : 'Связаться с менеджером')"
+                                 @mouseleave="onControlLeave"
+                                 @click="onCallClick"
+                            >
+                                <VIcon
+                                    name="IcPhone"
+                                    size="size-20"
+                                />
+
+                                <transition name="widget-sova-fade">
+                                    <svg
+                                        v-show="isCallOpen"
+                                        :class="$style.callPlus"
+                                        width="6"
+                                        height="6"
+                                        viewBox="0 0 6 6"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M5.08317 2.37496H3.62484V0.916626C3.62484 0.574959 3.3415 0.291626 2.99984 0.291626C2.65817 0.291626 2.37484 0.574959 2.37484 0.916626V2.37496H0.916504C0.574837 2.37496 0.291504 2.65829 0.291504 2.99996C0.291504 3.34163 0.574837 3.62496 0.916504 3.62496H2.37484V5.08329C2.37484 5.42496 2.65817 5.70829 2.99984 5.70829C3.3415 5.70829 3.62484 5.42496 3.62484 5.08329V3.62496H5.08317C5.42484 3.62496 5.70817 3.34163 5.70817 2.99996C5.70817 2.65829 5.42484 2.37496 5.08317 2.37496Z" />
+                                    </svg>
+                                </transition>
+                            </div>
+                        </div>
+
+                        <div :class="$style.controlLine"></div>
+
+                        <div :class="[$style.control, {[$style._notif]: hasNew}]"
+                             @mouseenter="onControlEnter('Получить ответ')"
                              @mouseleave="onControlLeave"
-                             @click="goStep(control.step)"
+                             @click="goStep('Chat')"
                         >
                             <VIcon
-                                :name="control.icon"
+                                name="IcMessage"
                                 size="size-20"
                             />
                         </div>
@@ -106,6 +178,7 @@ export default {
             isOpen: false,
             isHovering: false,
             hasInteracted: false,
+            isCallOpen: false,
 
             controls: [
                 {
@@ -137,8 +210,8 @@ export default {
             return !this.isHovering && !this.isMainOpen && !this.activeText && this.device !== 'mobile';
         },
 
-        closeDuration() {
-            return this.isChatOpening ? 0.35 : 0.5;
+        menuDuration() {
+            return this.isChatOpening ? 0.35 : .5;
         },
     },
 
@@ -171,7 +244,7 @@ export default {
                 return;
             }
 
-            this.isOpen = true;
+            this.toggleOpen(true);
             this.isHovering = true;
             this.hasInteracted = true;
         },
@@ -181,7 +254,7 @@ export default {
                 return;
             }
 
-            this.isOpen = false;
+            this.toggleOpen(false);
             this.isHovering = false;
 
             if (this.activeText === this.inviteText) {
@@ -213,7 +286,7 @@ export default {
 
         goStep(step) {
             this.isChatOpening = true;
-            this.isOpen = false;
+            this.toggleOpen(false);
             this.activeText = '';
             this.$emit('go-step', step);
 
@@ -239,7 +312,7 @@ export default {
 
             this.autoInterval = setInterval(() => {
                 if (this.isAutoActive) {
-                    this.isOpen = !this.isOpen;
+                    this.toggleOpen(!this.isOpen);
                 }
             }, 4000);
         },
@@ -269,7 +342,7 @@ export default {
                 this.activeText = this.newText;
 
                 if (this.device !== 'mobile') {
-                    this.isOpen = true;
+                    this.toggleOpen(true);
                 }
             } else if (this.activeText === this.newText) {
                 this.activeText = '';
@@ -281,6 +354,23 @@ export default {
                 this.initAuto();
             } else {
                 clearInterval(this.autoInterval);
+            }
+        },
+
+        onCallClick() {
+            if (this.isCallOpen) {
+                this.goStep('Call');
+            } else {
+                this.isCallOpen = true;
+                this.activeText = 'Заказать звонок';
+            }
+        },
+
+        toggleOpen(val) {
+            this.isOpen = val;
+
+            if (!val) {
+                this.isCallOpen = false;
             }
         },
     },
@@ -434,6 +524,36 @@ export default {
                 opacity: 1;
             }
         }
+    }
+
+    .controlLine {
+        flex-shrink: 0;
+        width: 1px;
+        height: 12px;
+        margin: auto 12px;
+        background-color: $base-300;
+    }
+
+    .nonCallWrap,
+    .callWrap {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+    .nonCallEls,
+    .callEls {
+        display: flex;
+    }
+
+    .callEls {
+        padding-right: 4px;
+    }
+
+    .callPlus {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        fill: currentColor;
     }
 
     .text {

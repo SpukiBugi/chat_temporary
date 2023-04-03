@@ -1,26 +1,36 @@
 <template>
-    <a :class="$style.Telegram"
-       href="https://www.google.com/"
-       target="_blank"
-    >
-        <VueQrcode
-            :value="'https://www.google.com/'"
-            :options="{ width: 176 }"
-            tag="svg"
-            :class="$style.image"
+    <div :class="$style.Telegram">
+        <a :class="$style.main"
+           href="https://www.google.com/"
+           target="_blank"
+        >
+            <VueQrcode
+                :value="'https://www.google.com/'"
+                :options="{ width: 176 }"
+                tag="svg"
+                :class="$style.image"
+            />
+            <div :class="$style.text">Нажмите для перехода к менеджеру<br>или наведите камеру на QR-код</div>
+        </a>
+
+        <MainMenu
+            :class="$style.menu"
+            class="widget-sova-main-menu"
+            @go-step="$emit('go-step', $event)"
         />
-        <div :class="$style.text">Нажмите для перехода к менеджеру<br>или наведите камеру на QR-код</div>
-    </a>
+    </div>
 </template>
 
 <script>
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import MainMenu from '@/components/app/main/MainMenu.vue';
 
 export default {
     name: 'Telegram',
 
     components: {
         VueQrcode,
+        MainMenu,
     },
 
     data() {
@@ -35,6 +45,10 @@ export default {
 
 <style lang='scss' module>
     .Telegram {
+        //
+    }
+
+    .main {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -55,5 +69,4 @@ export default {
         letter-spacing: -.015em;
         color: $base-500;
     }
-
 </style>

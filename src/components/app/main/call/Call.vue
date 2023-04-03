@@ -2,12 +2,24 @@
     <div :class="$style.Call">
         <div :class="$style.image"></div>
         <div :class="$style.text">Нажмите, чтобы заказать<br>консультацию у менеджера</div>
+
+        <MainMenu
+            :class="$style.menu"
+            class="widget-sova-main-menu"
+            @go-step="$emit('go-step', $event)"
+        />
     </div>
 </template>
 
 <script>
+import MainMenu from '@/components/app/main/MainMenu.vue';
+
 export default {
     name: 'Call',
+
+    components: {
+        MainMenu,
+    },
 
     data() {
         return {};

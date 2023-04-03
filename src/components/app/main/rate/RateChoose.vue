@@ -35,22 +35,20 @@
             </form>
         </Expander>
 
-        <transition name="widget-sova-fade">
-            <div v-show="isMounted" :class="$style.btns">
-                <VButton
-                    color="base-100"
-                    :class="$style.btn"
-                >
-                    Сделать скриншот
-                </VButton>
-                <VButton
-                    color="base-100"
-                    :class="$style.btn"
-                >
-                    Прикрепить фото
-                </VButton>
-            </div>
-        </transition>
+        <div :class="$style.btns">
+            <VButton
+                color="base-100"
+                :class="$style.btn"
+            >
+                Сделать скриншот
+            </VButton>
+            <VButton
+                color="base-100"
+                :class="$style.btn"
+            >
+                Прикрепить фото
+            </VButton>
+        </div>
     </div>
 </template>
 
@@ -66,8 +64,6 @@ export default {
 
     data() {
         return {
-            isMounted: false,
-
             values: {
                 rating: null,
                 question: '',
@@ -98,10 +94,6 @@ export default {
         };
     },
 
-    mounted() {
-        this.isMounted = true;
-    },
-
     methods: {
         onSubmit() {
             this.$emit('go-rate-step', 'Bye');
@@ -115,6 +107,7 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
+        height: 100%;
 
         &._rated {
             .title {
@@ -179,20 +172,11 @@ export default {
     }
 
     .btns {
-        position: absolute;
-        top: 100%;
-        left: 0;
         display: flex;
         justify-content: center;
         width: 100%;
-        padding: 20px 20px 12px;
-        border-radius: 26px;
-        background-color: $white;
+        padding: 20px 0 4px;
         gap: 6px;
-
-        &:global(.widget-sova-fade-enter-active) {
-            transition: opacity .4s ease .3s;
-        }
     }
 
     .inputExpander {

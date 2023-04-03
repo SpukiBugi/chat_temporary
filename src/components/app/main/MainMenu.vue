@@ -50,6 +50,7 @@ export default {
         display: flex;
         justify-content: center;
         gap: 4px;
+        padding: 20px 20px 4px;
     }
 
     .btn {

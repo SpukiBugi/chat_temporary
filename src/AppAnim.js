@@ -62,16 +62,6 @@ export default {
                 duration: .3,
                 delay: duration,
             }, 0);
-
-            timeline.fromTo(this.$refs.main?.$refs.mainMenu.$el, {
-                opacity: 0,
-                transform: 'scale(.8)',
-            }, {
-                transform: 'scale(1)',
-                opacity: 1,
-                duration: .3,
-                delay: duration,
-            }, 0);
             //
 
             /** Иконка статуса на аватарке */
@@ -138,16 +128,6 @@ export default {
                 duration: .3,
                 delay: duration * 2,
             }, 0);
-
-            timeline.fromTo(this.$refs.main?.$refs.mainMenu.$el, {
-                opacity: 0,
-                transform: 'scale(.8)',
-            }, {
-                transform: 'scale(1)',
-                opacity: 1,
-                duration: .3,
-                delay: duration * 2,
-            }, 0);
             //
 
             /** Иконка статуса на аватарке */
@@ -171,12 +151,6 @@ export default {
             timeline.to(this.$refs.main?.$refs.componentWrap, {
                 transform: 'scale(.8)',
                 opacity: 0,
-                duration: firstStep,
-            }, 0);
-
-            timeline.to(this.$refs.main?.$refs.mainMenu.$el, {
-                opacity: 0,
-                transform: 'scale(.8)',
                 duration: firstStep,
             }, 0);
             //
@@ -243,12 +217,6 @@ export default {
             timeline.to(this.$refs.main?.$refs.componentWrap, {
                 transform: 'scale(.8)',
                 opacity: 0,
-                duration: firstStep,
-            }, 0);
-
-            timeline.to(this.$refs.main?.$refs.mainMenu.$el, {
-                opacity: 0,
-                transform: 'scale(.8)',
                 duration: firstStep,
             }, 0);
             //

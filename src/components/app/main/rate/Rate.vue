@@ -47,10 +47,6 @@ export default {
 
 <style lang='scss' module>
     .Rate {
-        height: 256px;
-    }
-
-    .content {
-        height: 100%;
+        height: 304px;
     }
 </style>

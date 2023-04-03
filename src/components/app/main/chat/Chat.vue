@@ -34,15 +34,23 @@
                 />
             </button>
         </form>
+
+        <Expander :is-open="Boolean(!history.length)">
+            <div :class="$style.disclaimer">
+                Разработали и обучили <a href="https://idaproject.com/" target="_blank">idaproject</a>
+            </div>
+        </Expander>
     </div>
 </template>
 
 <script>
+import Expander from '@/components/ui/Expander.vue';
 
 export default {
     name: 'Chat',
 
     components: {
+        Expander,
         ChatMessages: () => import('@/components/app/main/chat/ChatMessages.vue'),
     },
 
@@ -150,6 +158,28 @@ export default {
 
         &._gray {
             color: $base-400;
+        }
+    }
+
+    .disclaimer {
+        padding: 16px 0 8px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: -.01em;
+        color: $base-300;
+
+        a {
+            color: $primary-300;
+            transition: $default-transition;
+
+            &:hover {
+                color: $primary-500;
+            }
+
+            &:active {
+                color: $primary-600;
+            }
         }
     }
 </style>
