@@ -19,10 +19,10 @@ export default {
     data() {
         return {
             items: [
-                // {
-                //     label: 'Оценить сайт',
-                //     step: { id: 'Rate' },
-                // },
+                {
+                    label: 'Оценить сайт',
+                    step: 'Rate',
+                },
                 {
                     label: 'Звонок',
                     step: 'Call',
@@ -50,5 +50,9 @@ export default {
         display: flex;
         justify-content: center;
         gap: 4px;
+    }
+
+    .btn {
+        white-space: nowrap;
     }
 </style>

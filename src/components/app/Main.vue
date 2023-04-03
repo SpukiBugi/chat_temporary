@@ -259,7 +259,7 @@ export default {
 
     .head {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         display: flex;
         justify-content: space-between;
         height: 64px;
@@ -295,7 +295,7 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1;
+        z-index: 2;
         pointer-events: none;
     }
 
@@ -303,7 +303,7 @@ export default {
         position: absolute;
         top: 52px;
         left: 50%;
-        z-index: 1;
+        z-index: 2;
         display: flex;
         justify-content: center;
         transform: translateX(-50%);
@@ -362,6 +362,7 @@ export default {
 
     .componentWrap {
         position: relative;
+        z-index: 1;
         width: 100%;
     }
 

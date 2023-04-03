@@ -31,6 +31,6 @@ export default {
     .message {
         width: 100%;
         height: 200px;
-        margin-top: 40px;
+        margin-top: 12px;
     }
 </style>

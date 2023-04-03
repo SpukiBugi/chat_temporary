@@ -25,15 +25,17 @@
              :class="[$style.status, {[$style._visible]: hasStatus}]"
         />
 
-        <div v-if="hasSmile"
-             :class="$style.smile"
-        >
-            <img
-                src="/smile.gif"
-                alt="smile"
-                :class="$style.smileImg"
+        <keep-alive>
+            <div v-if="hasSmile"
+                 :class="$style.smile"
             >
-        </div>
+                <img
+                    src="/smile.gif"
+                    alt="smile"
+                    :class="$style.smileImg"
+                >
+            </div>
+        </keep-alive>
     </div>
 </template>
 
@@ -82,6 +84,11 @@ export default {
 
                 .smileImg {
                     transform: scale(1);
+                }
+
+                .status {
+                    opacity: 0;
+                    transform: scale(0);
                 }
             }
         }

@@ -48,7 +48,7 @@ export default {
 
     .text {
         margin-top: 20px;
-        padding: 8px 0;
+        padding: 7px 0;
         text-align: center;
         font-size: 14px;
         line-height: 17px;

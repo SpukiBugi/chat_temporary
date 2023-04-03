@@ -17,12 +17,8 @@ export default {
 
     data() {
         return {
-            rateStepId: 'Hello',
+            rateStepId: 'Choose',
             rateSteps: [
-                {
-                    id: 'Hello',
-                    component: () => import('@/components/app/main/rate/RateHello.vue'),
-                },
                 {
                     id: 'Choose',
                     component: () => import('@/components/app/main/rate/RateChoose.vue'),
@@ -51,7 +47,7 @@ export default {
 
 <style lang='scss' module>
     .Rate {
-        //
+        height: 256px;
     }
 
     .content {

@@ -13,6 +13,7 @@
                 :class="[$style.smile, {[$style._active]: smile.value === values.rating}]"
                 @click="values.rating = smile.value"
             >
+                <img :src="smile.src" :class="$style.smileImg">
             </div>
         </div>
 
@@ -34,20 +35,22 @@
             </form>
         </Expander>
 
-        <div :class="$style.btns">
-            <VButton
-                color="base-100"
-                :class="$style.btn"
-            >
-                Сделать скриншот
-            </VButton>
-            <VButton
-                color="base-100"
-                :class="$style.btn"
-            >
-                Прикрепить фото
-            </VButton>
-        </div>
+        <transition name="widget-sova-fade">
+            <div v-show="isMounted" :class="$style.btns">
+                <VButton
+                    color="base-100"
+                    :class="$style.btn"
+                >
+                    Сделать скриншот
+                </VButton>
+                <VButton
+                    color="base-100"
+                    :class="$style.btn"
+                >
+                    Прикрепить фото
+                </VButton>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -63,6 +66,8 @@ export default {
 
     data() {
         return {
+            isMounted: false,
+
             values: {
                 rating: null,
                 question: '',
@@ -71,21 +76,30 @@ export default {
             smiles: [
                 {
                     value: 1,
+                    src: `${import.meta.env.BASE_URL}smiles/1.gif`,
                 },
                 {
                     value: 2,
+                    src: `${import.meta.env.BASE_URL}smiles/2.gif`,
                 },
                 {
                     value: 3,
+                    src: `${import.meta.env.BASE_URL}smiles/3.gif`,
                 },
                 {
                     value: 4,
+                    src: `${import.meta.env.BASE_URL}smiles/4.gif`,
                 },
                 {
                     value: 5,
+                    src: `${import.meta.env.BASE_URL}smiles/5.gif`,
                 },
             ],
         };
+    },
+
+    mounted() {
+        this.isMounted = true;
     },
 
     methods: {
@@ -125,7 +139,7 @@ export default {
         margin-top: 18px;
         text-align: center;
         font-weight: 500;
-        font-size: 15px;
+        font-size: 16px;
         line-height: 18px;
         letter-spacing: -.015em;
         transition: $default-transition;
@@ -143,18 +157,25 @@ export default {
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background-color: yellow;
+        filter: grayscale(1);
         transition: $default-transition;
         cursor: pointer;
         user-select: none;
 
         &:hover {
             transform: scale(1.18);
+            filter: grayscale(0);
         }
 
         &._active {
             transform: scale(1.18);
+            filter: grayscale(0);
         }
+    }
+
+    .smileImg {
+        width: 100%;
+        height: 100%;
     }
 
     .btns {
@@ -168,6 +189,10 @@ export default {
         border-radius: 26px;
         background-color: $white;
         gap: 6px;
+
+        &:global(.widget-sova-fade-enter-active) {
+            transition: opacity .4s ease .3s;
+        }
     }
 
     .inputExpander {

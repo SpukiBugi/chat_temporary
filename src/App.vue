@@ -135,27 +135,22 @@ export default {
                 {
                     id: 'Chat',
                     component: Chat,
-                    height: 'auto',
                 },
                 {
                     id: 'Rate',
                     component: Rate,
-                    height: '284px',
                 },
                 {
                     id: 'Call',
                     component: Call,
-                    height: '284px',
                 },
                 {
                     id: 'Telegram',
                     component: Telegram,
-                    height: '284px',
                 },
                 {
                     id: 'Whatsapp',
                     component: Whatsapp,
-                    height: '284px',
                 },
             ],
         };
