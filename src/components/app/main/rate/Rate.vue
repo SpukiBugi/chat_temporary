@@ -93,23 +93,23 @@ export default {
             smiles: [
                 {
                     value: 1,
-                    src: `${import.meta.env.BASE_URL}smiles/1.gif`,
+                    src: `${import.meta.env.BASE_URL}smiles/1.png`,
                 },
                 {
                     value: 2,
-                    src: `${import.meta.env.BASE_URL}smiles/2.gif`,
+                    src: `${import.meta.env.BASE_URL}smiles/2.png`,
                 },
                 {
                     value: 3,
-                    src: `${import.meta.env.BASE_URL}smiles/3.gif`,
+                    src: `${import.meta.env.BASE_URL}smiles/3.png`,
                 },
                 {
                     value: 4,
-                    src: `${import.meta.env.BASE_URL}smiles/4.gif`,
+                    src: `${import.meta.env.BASE_URL}smiles/4.png`,
                 },
                 {
                     value: 5,
-                    src: `${import.meta.env.BASE_URL}smiles/5.gif`,
+                    src: `${import.meta.env.BASE_URL}smiles/5.png`,
                 },
             ],
         };
@@ -217,28 +217,59 @@ export default {
     }
 
     .smile {
+        overflow: hidden;
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        filter: grayscale(1);
         transition: $default-transition;
         cursor: pointer;
+        filter: grayscale(1);
         user-select: none;
 
         &:hover {
             transform: scale(1.18);
             filter: grayscale(0);
+
+            .smileImg {
+                animation-play-state: running;
+            }
         }
 
         &._active {
             transform: scale(1.18);
             filter: grayscale(0);
+
+            .smileImg {
+                animation-play-state: running;
+            }
+        }
+
+        &:nth-child(3) {
+            .smileImg {
+                animation-timing-function: steps(37);
+            }
+        }
+
+        &:nth-child(4) {
+            .smileImg {
+                animation-timing-function: steps(55);
+            }
         }
     }
 
     .smileImg {
-        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
         height: 100%;
+        animation: smile 2.88s steps(72) infinite;
+        animation-play-state: paused;
+    }
+
+    @keyframes smile {
+        100% {
+            transform: translateX(-100%);
+        }
     }
 
     .btns {

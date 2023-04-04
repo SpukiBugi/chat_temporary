@@ -9,11 +9,19 @@ export default {
     name: 'FeedbackThanks',
 
     data() {
-        return {};
+        return {
+            timeout: null,
+        };
     },
 
-    methods: {
+    mounted() {
+        this.timeout = setTimeout(() => {
+            this.$emit('go-step', 'Chat');
+        }, 4000);
+    },
 
+    beforeDestroy() {
+        clearTimeout(this.timeout);
     },
 };
 </script>

@@ -4,6 +4,7 @@
             <component
                 :is="currentFeedback.component"
                 :class="$style.component"
+                @go-step="$emit('go-step', $event)"
             />
         </transition>
 
