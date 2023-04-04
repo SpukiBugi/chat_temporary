@@ -1,24 +1,26 @@
 <template>
-    <div :class="$style.Call">
-        <div :class="$style.image"></div>
-        <div :class="$style.text">Нажмите, чтобы заказать<br>консультацию у менеджера</div>
-
-        <MainMenu
-            :class="$style.menu"
-            class="widget-sova-main-menu"
-            @go-step="$emit('go-step', $event)"
+    <a :class="$style.FeedbackTelegram"
+       href="https://www.google.com/"
+       target="_blank"
+    >
+        <VueQrcode
+            :value="'https://www.google.com/'"
+            :options="{ width: 176 }"
+            tag="svg"
+            :class="$style.image"
         />
-    </div>
+        <div :class="$style.text">Нажмите для перехода к менеджеру<br>или наведите камеру на QR-код</div>
+    </a>
 </template>
 
 <script>
-import MainMenu from '@/components/app/main/MainMenu.vue';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 export default {
-    name: 'Call',
+    name: 'FeedbackTelegram',
 
     components: {
-        MainMenu,
+        VueQrcode,
     },
 
     data() {
@@ -32,7 +34,7 @@ export default {
 </script>
 
 <style lang='scss' module>
-    .Call {
+    .FeedbackTelegram {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -42,8 +44,6 @@ export default {
         width: 176px;
         height: 176px;
         margin-top: 12px;
-        border-radius: 16px;
-        background-color: black;
     }
 
     .text {
@@ -55,5 +55,4 @@ export default {
         letter-spacing: -.015em;
         color: $base-500;
     }
-
 </style>

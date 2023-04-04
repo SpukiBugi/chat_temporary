@@ -79,6 +79,7 @@
                             :history="history"
                             :value="value"
                             :note="note"
+                            :current-step="currentStep"
                             @go-step="$emit('go-step', $event)"
                             @set-value="$emit('set-value', $event)"
                             @value-click="$emit('value-click', $event)"

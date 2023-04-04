@@ -72,9 +72,7 @@ import Main from '@/components/app/Main.vue';
 /** Main Components (Если не подгружать заранее при первом открытии прыгает анимация) */
 import Chat from '@/components/app/main/chat/Chat.vue';
 import Rate from '@/components/app/main/rate/Rate.vue';
-import Call from '@/components/app/main/call/Call.vue';
-import Telegram from '@/components/app/main/telegram/Telegram.vue';
-import Whatsapp from '@/components/app/main/whatsapp/Whatsapp.vue';
+import Feedback from '@/components/app/main/feedback/Feedback.vue';
 //
 
 export default {
@@ -87,9 +85,7 @@ export default {
         /* eslint-disable vue/no-unused-components */
         Chat,
         Rate,
-        Call,
-        Telegram,
-        Whatsapp,
+        Feedback,
         /* eslint-enable vue/no-unused-components */
     },
 
@@ -141,16 +137,20 @@ export default {
                     component: Rate,
                 },
                 {
-                    id: 'Call',
-                    component: Call,
+                    id: 'FeedbackThanks',
+                    component: Feedback,
                 },
                 {
-                    id: 'Telegram',
-                    component: Telegram,
+                    id: 'FeedbackCall',
+                    component: Feedback,
                 },
                 {
-                    id: 'Whatsapp',
-                    component: Whatsapp,
+                    id: 'FeedbackTelegram',
+                    component: Feedback,
+                },
+                {
+                    id: 'FeedbackWhatsapp',
+                    component: Feedback,
                 },
             ],
         };

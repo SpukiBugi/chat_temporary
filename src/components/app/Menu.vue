@@ -85,7 +85,7 @@
                                     <div :class="[$style.control]"
                                          @mouseenter="onControlEnter('Связаться по Telegram')"
                                          @mouseleave="onControlLeave"
-                                         @click="goStep('Telegram')"
+                                         @click="goStep('FeedbackTelegram')"
                                     >
                                         <VIcon
                                             name="IcTelegram"
@@ -95,7 +95,7 @@
                                     <div :class="[$style.control]"
                                          @mouseenter="onControlEnter('Связаться по Whatsapp')"
                                          @mouseleave="onControlLeave"
-                                         @click="goStep('Whatsapp')"
+                                         @click="goStep('FeedbackWhatsapp')"
                                     >
                                         <VIcon
                                             name="IcWhatsapp"
@@ -189,7 +189,7 @@ export default {
                 {
                     icon: 'IcPhone',
                     text: 'Связаться с менеджером',
-                    step: 'Call',
+                    step: 'FeedbackCall',
                 },
                 {
                     icon: 'IcMessage',
@@ -359,7 +359,7 @@ export default {
 
         onCallClick() {
             if (this.isCallOpen) {
-                this.goStep('Call');
+                this.goStep('FeedbackCall');
             } else {
                 this.isCallOpen = true;
                 this.activeText = 'Заказать звонок';

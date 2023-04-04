@@ -1,27 +1,12 @@
 <template>
-    <div
-        :class="$style.RateBye"
-        @click="$emit('go-step', 'Chat')"
-    >
+    <div :class="$style.FeedbackThanks">
         <VIcon name="IcRateFinish" :class="$style.message" />
-
-        <MainMenu
-            :class="$style.menu"
-            class="widget-sova-main-menu"
-            @go-step="$emit('go-step', $event)"
-        />
     </div>
 </template>
 
 <script>
-import MainMenu from '@/components/app/main/MainMenu.vue';
-
 export default {
-    name: 'RateBye',
-
-    components: {
-        MainMenu,
-    },
+    name: 'FeedbackThanks',
 
     data() {
         return {};
@@ -34,7 +19,7 @@ export default {
 </script>
 
 <style lang='scss' module>
-    .RateBye {
+    .FeedbackThanks {
         display: flex;
         flex-direction: column;
         height: 100%;
