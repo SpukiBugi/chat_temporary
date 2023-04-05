@@ -159,6 +159,9 @@ export default {
                 const captureStream = await navigator.mediaDevices.getDisplayMedia();
                 console.log('wtf2', captureStream);
                 video.srcObject = captureStream;
+                video.muted = true;
+                video.playsInline = true;
+                console.log('wtf2.4', captureStream);
                 await video.play();
                 console.log('wtf2.5', captureStream);
 
