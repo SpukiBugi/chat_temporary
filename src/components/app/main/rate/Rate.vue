@@ -153,30 +153,17 @@ export default {
             const video = document.createElement('video');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            console.log('wtf1');
 
             try {
                 const captureStream = await navigator.mediaDevices.getDisplayMedia();
-                console.log('wtf2', captureStream);
                 video.srcObject = captureStream;
-                video.muted = true;
-                video.playsInline = true;
-                console.log('wtf2.4', captureStream, video);
-                video.style.position = 'fixed';
-                video.style.width = '100%';
-                video.style.height = '100vh';
-                video.style.top = '0';
-                video.style.left = '0';
-                document.body.appendChild(video);
-                video.play();
-                console.log('wtf2.5', captureStream, play);
+                await video.play();
 
                 setTimeout(async () => {
-                    console.log('wtf3', captureStream);
                     context.drawImage(video, 0, 0, window.innerWidth, window.innerHeight);
                     const frame = canvas.toDataURL('image/png');
-                    // captureStream.getTracks().forEach(track => track.stop());
-                    // video.pause();
+                    captureStream.getTracks().forEach(track => track.stop());
+                    video.pause();
                     this.screenshotLink = frame;
                 }, 300);
             } catch (err) {
@@ -184,7 +171,6 @@ export default {
             }
 
             this.isScreenshoting = false;
-            console.log('wtf4');
         },
 
         onUpload() {
