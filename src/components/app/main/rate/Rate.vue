@@ -153,13 +153,16 @@ export default {
             const video = document.createElement('video');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+                console.log('wtf1', captureStream);
 
             try {
                 const captureStream = await navigator.mediaDevices.getDisplayMedia();
+                console.log('wtf2', captureStream);
                 video.srcObject = captureStream;
                 await video.play();
 
                 setTimeout(async () => {
+                    console.log('wtf3', captureStream);
                     context.drawImage(video, 0, 0, window.innerWidth, window.innerHeight);
                     const frame = canvas.toDataURL('image/png');
                     captureStream.getTracks().forEach(track => track.stop());
@@ -171,6 +174,7 @@ export default {
             }
 
             this.isScreenshoting = false;
+            console.log('wtf4', captureStream);
         },
 
         onUpload() {
