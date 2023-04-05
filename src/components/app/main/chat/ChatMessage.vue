@@ -3,7 +3,14 @@
         <div :class="$style.bubble">
             <div :class="$style.bubbleText">
                 <span v-html="item.text"></span>
-                <span v-if="item.type === 'answer' && item.date" :class="$style.time">{{ item.date|formatDateTime('$G:$I') }}</span>
+                <span v-if="item.type === 'answer' && item.date" :class="$style.time">
+                    <VIcon name="IcLike"
+                           size="size-12"
+                           rotate
+                           :class="[$style.timeLike, {[$style._active]: typeof item.rating === 'boolean', [$style._dislike]: item.rating === false}]"
+                    />
+                    <span>{{ item.date|formatDateTime('$G:$I') }}</span>
+                </span>
             </div>
             <div v-if="item.type === 'answer' && item.id !== 'error'" :class="$style.rate">
                 <VButtonIcon name="IcLike"
@@ -81,7 +88,7 @@ export default {
             return [
                 this.$style[`_${this.item.type}`],
                 {
-                    [this.$style._rated]: typeof this.item.rating == 'boolean',
+                    [this.$style._flat]: Boolean(this.item.flat),
                 },
             ];
         },
@@ -102,21 +109,6 @@ export default {
         line-height: 18px;
         letter-spacing: -.015em;
 
-        @include hover {
-            .rate {
-                width: 52px;
-                opacity: 1;
-            }
-
-            .rateItem._dislike {
-                transform: translateX(calc(-100% - 4px));
-            }
-
-            .time {
-                opacity: 0;
-            }
-        }
-
         &._question {
             margin-left: auto;
             text-align: right;
@@ -136,13 +128,11 @@ export default {
             }
         }
 
-        &._rated {
-            .rate {
-                opacity: 1;
-            }
-
+        &._flat {
             .time {
-                opacity: 0;
+                position: absolute;
+                right: 16px;
+                bottom: 12px;
             }
         }
     }
@@ -150,6 +140,21 @@ export default {
     .bubble {
         position: relative;
         padding: 12px 16px;
+
+        @include hover {
+            .rate {
+                width: 52px;
+                opacity: 1;
+            }
+
+            .rateItem._dislike {
+                transform: translateX(calc(-100% - 4px));
+            }
+
+            .time {
+                opacity: 0;
+            }
+        }
     }
 
     .bubbleText {
@@ -190,6 +195,23 @@ export default {
 
         @include respond-to(mobile) {
             opacity: 0;
+        }
+    }
+
+    .timeLike {
+        position: relative;
+        top: 2px;
+        visibility: hidden;
+        display: inline-block;
+        margin-right: 6px;
+        color: $primary-500;
+
+        &._active {
+            visibility: visible;
+        }
+
+        &._dislike {
+            transform: rotate(180deg);
         }
     }
 

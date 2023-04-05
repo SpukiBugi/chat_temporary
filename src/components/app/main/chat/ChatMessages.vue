@@ -217,8 +217,8 @@ export default {
         letter-spacing: -.01em;
         color: $base-500;
 
-        &:not(:last-child) {
-            margin-bottom: 12px;
+        &:not(:first-child) {
+            margin-top: 12px;
         }
     }
 
