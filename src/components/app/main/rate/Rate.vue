@@ -160,6 +160,7 @@ export default {
                 console.log('wtf2', captureStream);
                 video.srcObject = captureStream;
                 await video.play();
+                console.log('wtf2.5', captureStream);
 
                 setTimeout(async () => {
                     console.log('wtf3', captureStream);
