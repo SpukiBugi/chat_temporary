@@ -153,7 +153,7 @@ export default {
             const video = document.createElement('video');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-                console.log('wtf1', captureStream);
+            console.log('wtf1');
 
             try {
                 const captureStream = await navigator.mediaDevices.getDisplayMedia();
@@ -174,7 +174,7 @@ export default {
             }
 
             this.isScreenshoting = false;
-            console.log('wtf4', captureStream);
+            console.log('wtf4');
         },
 
         onUpload() {
