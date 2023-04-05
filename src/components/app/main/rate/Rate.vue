@@ -46,11 +46,16 @@
 
         <div :class="$style.btns">
             <VButton
-                color="base-100"
+                :color="screenshotLink ? 'primary-100' : 'base-100'"
                 :class="$style.btn"
                 @click="screenshot"
             >
-                Сделать скриншот
+                <template v-if="screenshotLink">
+                    Ссылка на скриншот
+                </template>
+                <template v-else>
+                    Сделать скриншот
+                </template>
             </VButton>
             <VButton
                 :color="values.file ? 'primary-100' : 'base-100'"
@@ -81,6 +86,8 @@ export default {
     data() {
         return {
             isScreenshoting: false,
+
+            screenshotLink: '',
 
             values: {
                 rating: null,
@@ -133,6 +140,13 @@ export default {
                 return;
             }
 
+            if (this.screenshotLink) {
+                const newTab = window.open();
+                newTab?.document.write(`<!DOCTYPE html><head><title>Document preview</title></head><body><img src="${this.screenshotLink}" width="${window.innerWidth}" height="${window.innerHeight}" ></body></html>`);
+                this.screenshotLink = '';
+                return;
+            }
+
             this.isScreenshoting = true;
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -150,9 +164,7 @@ export default {
                     const frame = canvas.toDataURL('image/png');
                     captureStream.getTracks().forEach(track => track.stop());
                     video.pause();
-
-                    const newTab = window.open();
-                    newTab?.document.write(`<!DOCTYPE html><head><title>Document preview</title></head><body><img src="${frame}" width="${window.innerWidth}" height="${window.innerHeight}" ></body></html>`);
+                    this.screenshotLink = frame;
                 }, 300);
             } catch (err) {
                 console.error('Error: ' + err);
