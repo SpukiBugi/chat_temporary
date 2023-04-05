@@ -217,6 +217,7 @@ export default {
     }
 
     .smile {
+        position: relative;
         overflow: hidden;
         width: 44px;
         height: 44px;

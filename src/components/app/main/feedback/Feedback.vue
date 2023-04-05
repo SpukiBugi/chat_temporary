@@ -89,4 +89,8 @@ export default {
         flex-grow: 1;
         width: 100%;
     }
+
+    .menu {
+        margin-top: auto;
+    }
 </style>

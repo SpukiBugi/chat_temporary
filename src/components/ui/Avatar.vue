@@ -158,6 +158,7 @@ export default {
     }
 
     .smileImgWrap {
+        position: relative;
         overflow: hidden;
         width: 36px;
         height: 36px;
