@@ -168,7 +168,7 @@ export default {
                 video.style.top = '0';
                 video.style.left = '0';
                 document.body.appendChild(video);
-                const play = await video.play();
+                video.play();
                 console.log('wtf2.5', captureStream, play);
 
                 setTimeout(async () => {
