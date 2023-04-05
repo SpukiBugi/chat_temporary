@@ -29,11 +29,13 @@
             <div v-if="hasSmile"
                  :class="$style.smile"
             >
-                <img
-                    src="/smile.gif"
-                    alt="smile"
-                    :class="$style.smileImg"
-                >
+                <div :class="$style.smileImgWrap">
+                    <img
+                        src="/smile.png"
+                        alt="smile"
+                        :class="$style.smileImg"
+                    >
+                </div>
             </div>
         </keep-alive>
     </div>
@@ -82,8 +84,12 @@ export default {
                     opacity: 1;
                 }
 
-                .smileImg {
+                .smileImgWrap {
                     transform: scale(1);
+                }
+
+                .smileImg {
+                    animation-play-state: running;
                 }
 
                 .status {
@@ -151,10 +157,23 @@ export default {
         pointer-events: none;
     }
 
-    .smileImg {
+    .smileImgWrap {
+        overflow: hidden;
         width: 36px;
         height: 36px;
         transform: scale(0);
         transition: $default-transition;
+    }
+
+    .smileImg {
+        height: 100%;
+        animation: smile 2.89s steps(73) infinite;
+        animation-play-state: paused;
+    }
+
+    @keyframes smile {
+        100% {
+            transform: translateX(-100%);
+        }
     }
 </style>
