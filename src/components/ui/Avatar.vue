@@ -167,14 +167,14 @@ export default {
     }
 
     .smileImg {
-        height: 100%;
+        width: 100%;
         animation: smile 2.89s steps(73) infinite;
         animation-play-state: paused;
     }
 
     @keyframes smile {
         100% {
-            transform: translateX(-100%);
+            transform: translateY(-100%);
         }
     }
 </style>

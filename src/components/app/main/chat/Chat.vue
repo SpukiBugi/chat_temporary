@@ -14,7 +14,7 @@
 
         <div v-else :class="$style.hello">
             <p>Привет! Я Сова – </p>
-            <p :class="$style.helloBottom">отвечу на вопрос за 4 секунды</p>
+            <p :class="$style.helloBottom">нейросеть быстрых ответов</p>
         </div>
 
         <form :class="$style.inputWrap" @submit.prevent="$emit('submit')">
