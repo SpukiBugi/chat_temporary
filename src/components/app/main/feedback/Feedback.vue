@@ -82,7 +82,7 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 304px;
+        height: 320px;
     }
 
     .component {

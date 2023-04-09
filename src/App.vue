@@ -36,6 +36,7 @@
                     :is-loading="isLoading"
                     :is-long="isLong"
                     :history="history"
+                    :history-page-info="historyPageInfo"
                     :value="value"
                     :note="note"
                     :class="$style.main"
@@ -64,6 +65,8 @@
 import { debounce, isIOS } from '@/assets/js/utils/common-utils';
 import testHistory from '@/assets/json/testHistory';
 import AppAnim from './AppAnim';
+import api from '@/assets/js/api';
+import { objectToQuery } from '@/assets/js/utils/query-utils';
 
 import Menu from '@/components/app/Menu.vue';
 import Avatar from '@/components/ui/Avatar.vue';
@@ -99,7 +102,7 @@ export default {
             default: '00000000-0000-0000-0000-000000000000',
         },
 
-        api: {
+        apiUrl: {
             type: String,
             default: 'http://185.105.108.90:8000/v1/',
         },
@@ -120,6 +123,11 @@ export default {
 
             /** Info */
             history: []||testHistory,
+            historyPageInfo: {
+                limit: 10,
+                offset: 0,
+                hasNext: false,
+            },
 
             animationType: 'bottom',
             debouncedResize: debounce(this.onResize, 100),
@@ -186,6 +194,10 @@ export default {
                 this.onClose();
             }
         },
+    },
+
+    created() {
+        this.getHistory();
     },
 
     mounted() {
@@ -274,13 +286,14 @@ export default {
             this.value = '';
             this.note = '';
             const id = String(Math.random());
-            this.history.push({ id: id, type: 'question', text: question, date: new Date(Date.now()) });
+            this.history.push({ id: id, type: 'question', text: question, created: new Date(Date.now()) });
 
             try {
                 const res = await this.getAnswer(question);
                 res.type = 'answer';
                 this.history.push(res);
                 this.note = '';
+                this.historyPageInfo.offset += 2;
 
                 if (this.history.length === 2) {
                     this.note = 'Не совсем тот ответ? Переформулируйте вопрос';
@@ -292,11 +305,12 @@ export default {
                 }
             } catch (e) {
                 console.warn('[Chat/onSubmit] error: ', e);
+
                 this.history.push({
                     id: 'error',
                     type: 'answer',
                     text: 'Упс… Произошла ошибка!<br><br>Попробуйте отправить сообщение<br>снова, а я пока расскажу анекдот:<br><br>«Что делает кофе, прежде чем попадет<br>в пачку? Молится»',
-                    date: new Date(Date.now()),
+                    created: new Date(Date.now()),
                 });
             }
 
@@ -304,33 +318,33 @@ export default {
         },
 
         getAnswer(value) {
-            const id = String(Math.random());
+            // const id = String(Math.random());
 
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    resolve({
-                        id: `a-${id}`,
-                        question_id: `q-${id}`,
-                        type: 'answer',
-                        text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
-                        rating: null,
-                        date: new Date(Date.now()),
-                    });
-                }, 3000);
-            });
-            // const sendValues = {
-            //     company_id: this.id,
-            //     question: value,
-            //     user_id: 1,
-            // };
+            // return new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //         resolve({
+            //             id: `a-${id}`,
+            //             question_id: `q-${id}`,
+            //             type: 'answer',
+            //             text: 'Да, у нас есть несколько евроквартир с балконами. <a href="https://google.com">Двухкомнатные</a> квартиры имеют эркеры, большие кухни и кладовые, спальни с панорамным видом, балконы. В однокомнатных квартирах есть гардеробные, уютные спальни с балконами, панорамные окна на кухнях. Апартаменты Terrace также имеют балконы, поэтому вы можете насладиться утренним кофе или романтическим ужином на свежем воздухе.',
+            //             rating: null,
+            //             created: new Date(Date.now()),
+            //         });
+            //     }, 3000);
+            // });
+            const sendValues = {
+                company_id: this.id,
+                question: value,
+                user_id: 1,
+            };
 
-            // return fetch(`${this.api}messages`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(sendValues),
-            // }).then(response => response.json());
+            return fetch(`${this.apiUrl}${api.messages}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sendValues),
+            }).then(response => response.json());
         },
 
         onValueClick(e) {
@@ -348,8 +362,45 @@ export default {
         onSetRating({ value, item }) {
             const index = this.history.findIndex(el => el.id === item.id);
             this.history.splice(index, 1, { ...item, rating: value });
-            /** Запрос на изменение */
-            //
+
+            try {
+                const sendValues = {
+                    message_id: item.id,
+                    rating: value,
+                };
+
+                fetch(`${this.apiUrl}${api.feedbacks}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(sendValues),
+                }).then(response => response.json());
+            } catch (e) {
+                console.warn('[Chat/onSetRating] error: ', e);
+            }
+        },
+
+        async getHistory() {
+            try {
+                const sendValues = {
+                    limit: this.historyPageInfo.limit,
+                    offset: this.historyPageInfo.offset,
+                };
+
+                const res = await fetch(`${this.apiUrl}${api.history}${objectToQuery(sendValues)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => response.json());
+
+                this.historyPageInfo.offset += res.results?.length;
+                this.historyPageInfo.hasNext = res.hasNext;
+                console.log('res', res);
+            } catch (e) {
+                console.warn('[Chat/getHistory] error: ', e);
+            }
         },
 
         /** Конец Чата */

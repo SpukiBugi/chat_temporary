@@ -39,7 +39,7 @@ export default {
     .message {
         width: 100%;
         height: 200px;
-        margin-top: 12px;
+        margin-top: 28px;
         margin-bottom: auto;
     }
 </style>

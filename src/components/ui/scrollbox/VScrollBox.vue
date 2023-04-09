@@ -213,7 +213,7 @@ export default {
             this.$emit('close');
         },
 
-        onScroll() {
+        onScroll(e) {
             if (!this.scrollXTicking && this.isXOverflowing) {
                 requestAnimationFrame(() => {
                     this.axis.x.scrollLeft = this.$refs.wrapper.scrollLeft;
@@ -229,7 +229,7 @@ export default {
                 });
                 this.scrollYTicking = true;
             }
-            this.$emit('on-scroll');
+            this.$emit('on-scroll', e);
         },
 
         onThumbClick(e, axis = 'y') {

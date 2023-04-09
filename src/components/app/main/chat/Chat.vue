@@ -3,6 +3,7 @@
         <ChatMessages
             v-if="isShowMessages"
             :history="history"
+            :history-page-info="historyPageInfo"
             :is-loading="isLoading"
             :is-long="isLong"
             :note="note"
@@ -23,7 +24,7 @@
                 :autocomplete="false"
                 :placeholder="['Напишите любой вопрос...', 'Где расположены проекты?', 'Есть проекты с панорамными окнами?']"
                 :is-placeholder-animating="!isShowMessages"
-                :class="$style.input"
+                :class="[$style.input, $style._send]"
                 @input="$emit('set-value', $event)"
             />
 
@@ -73,6 +74,11 @@ export default {
         history: {
             type: Array,
             required: true,
+        },
+
+        historyPageInfo: {
+            type: Object,
+            default: () => ({}),
         },
 
         value: {
@@ -130,6 +136,14 @@ export default {
     .inputWrap {
         position: relative;
         padding: 0 8px;
+    }
+
+    .input {
+        &._send {
+            :global(.sova-input__native._weight) {
+                padding-right: 44px;
+            }
+        }
     }
 
     .send {

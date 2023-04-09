@@ -4,6 +4,7 @@
                     resizable
                     skip-offset
                     :class="$style.scrollable"
+                    @on-scroll="onScroll"
         >
             <div :class="$style.list">
                 <template
@@ -13,7 +14,7 @@
                          :key="item.id"
                          :class="$style.date"
                     >
-                        {{ item.date|formatDateTime('$j $e') }}
+                        {{ item.created|formatDateTime('$j $e') }}
                     </div>
                     <ChatMessage
                         v-else
@@ -69,6 +70,11 @@ export default {
         history: {
             type: Array,
             default: () => [],
+        },
+
+        historyPageInfo: {
+            type: Object,
+            default: () => ({}),
         },
 
         isLoading: {
@@ -140,15 +146,25 @@ export default {
             const list = [];
 
             items.forEach((element, key) => {
-                if (element.date && formatDateTime(element.date, '$j $e') !== formatDateTime(currentDate, '$j $e')) {
-                    list.push({ id: `date-${key}`, type: 'date', date: element.date });
-                    currentDate = element.date;
+                if (element.created && formatDateTime(element.created, '$j $e') !== formatDateTime(currentDate, '$j $e')) {
+                    // list.push({ id: `date-${key}`, type: 'date', created: element.created });
+                    currentDate = element.created;
                 }
 
                 list.push(element);
             });
 
             return list;
+        },
+
+        onScroll(e) {
+            if (this.isLoading || !this.isLong || !this.historyPageInfo.hasNext) {
+                return;
+            }
+
+            if (e.currentTarget.scrollTop < 100) {
+                console.log('loadMore');
+            }
         },
     },
 };
@@ -168,20 +184,17 @@ export default {
 
     .scrollable {
         max-height: 516px;
-        margin-top: -16px;
 
         @include respond-to(tablet) {
             @include landscape {
                 height: calc(100 * var(--vh) - 200px);
                 max-height: none;
-                margin-top: 0;
             }
         }
 
         @include respond-to(mobile) {
             height: calc(100 * var(--vh) - 170px);
             max-height: none;
-            margin-top: 0;
         }
 
         :global(.v-scrollbox__scrollbar._vertical) {

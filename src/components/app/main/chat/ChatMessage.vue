@@ -3,28 +3,28 @@
         <div :class="$style.bubble">
             <div :class="$style.bubbleText">
                 <span v-html="item.text"></span>
-                <span v-if="item.type === 'answer' && item.date" :class="$style.time">
+                <span v-if="item.type === 'answer' && item.created" :class="$style.time">
                     <VIcon name="IcLike"
                            size="size-12"
                            rotate
-                           :class="[$style.timeLike, {[$style._active]: typeof item.rating === 'boolean', [$style._dislike]: item.rating === false}]"
+                           :class="[$style.timeLike, {[$style._active]: item.rating, [$style._dislike]: item.rating === 'dislike'}]"
                     />
-                    <span>{{ item.date|formatDateTime('$G:$I') }}</span>
+                    <span>{{ item.created|formatDateTime('$G:$I') }}</span>
                 </span>
             </div>
             <div v-if="item.type === 'answer' && item.id !== 'error'" :class="$style.rate">
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
-                             :color="item.rating === false ? 'primary-500' : 'base-400'"
+                             :color="item.rating === 'dislike' ? 'primary-500' : 'base-400'"
                              rotate
-                             :class="[$style.rateItem, $style._dislike, {[$style._active]: item.rating === false }]"
-                             @click="$emit('set-rating', {value: item.rating === false ? null : false, item: item})"
+                             :class="[$style.rateItem, $style._dislike, {[$style._active]: item.rating === 'dislike' }]"
+                             @click="$emit('set-rating', {value: item.rating === 'dislike' ? null : 'dislike', item: item})"
                 />
                 <VButtonIcon name="IcLike"
                              icon-size="size-12"
-                             :color="item.rating === true ? 'primary-500' : 'base-100'"
-                             :class="[$style.rateItem, $style._like, {[$style._active]: item.rating === true }]"
-                             @click="$emit('set-rating', {value: item.rating === true ? null : true, item: item})"
+                             :color="item.rating === 'like' ? 'primary-500' : 'base-100'"
+                             :class="[$style.rateItem, $style._like, {[$style._active]: item.rating === 'like' }]"
+                             @click="$emit('set-rating', {value: item.rating === 'like' ? null : 'like', item: item})"
                 />
             </div>
             <ChatMessageFlat v-if="item.flat"
@@ -50,8 +50,8 @@
             Спросить еще раз
         </VButton>
 
-        <div v-show="item.projects && item.projects !== 'NONE' && item.projects.length" :class="$style.projects">
-            <VButton v-for="(project, key) in item.projects"
+        <div v-show="item.projects_choice && item.projects_choice.length" :class="$style.projects">
+            <VButton v-for="(project, key) in item.projects_choice"
                      :key="project + key"
                      :class="$style.project"
                      @click="$emit('value-click', project)"
@@ -111,7 +111,6 @@ export default {
 
         &._question {
             margin-left: auto;
-            text-align: right;
 
             .bubble {
                 border-radius: 16px 16px 4px 16px;

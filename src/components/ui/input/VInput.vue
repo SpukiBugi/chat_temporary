@@ -15,6 +15,7 @@
                 ref="input"
                 :aria-label="label"
                 :class="$style.native"
+                class="sova-input__native _weight"
                 :tabindex="0"
                 :value="inputValue"
                 v-bind="attributes"

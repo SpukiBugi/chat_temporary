@@ -23,7 +23,7 @@
                     v-model="values.question"
                     :autocomplete="false"
                     placeholder="Напишите комментарий"
-                    :class="$style.input"
+                    :class="[$style.input, $style._send]"
                 />
 
                 <input
@@ -189,7 +189,7 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
-        height: 304px;
+        height: 320px;
 
         &._rated {
             .title {
@@ -211,7 +211,7 @@ export default {
     }
 
     .title {
-        margin-top: 18px;
+        margin-top: 34px;
         text-align: center;
         font-weight: 500;
         font-size: 16px;
@@ -300,6 +300,14 @@ export default {
     .inputWrap {
         position: relative;
         padding: 0 8px;
+    }
+
+    .input {
+        &._send {
+            :global(.sova-input__native._weight) {
+                padding-right: 44px;
+            }
+        }
     }
 
     .send {

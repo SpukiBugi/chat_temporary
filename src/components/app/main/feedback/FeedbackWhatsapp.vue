@@ -43,7 +43,7 @@ export default {
     .image {
         width: 176px;
         height: 176px;
-        margin-top: 12px;
+        margin-top: 28px;
     }
 
     .text {
