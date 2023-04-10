@@ -118,23 +118,23 @@ export default {
 
         /** Colors */
         &._primary-100 {
-            border: 1px solid $primary-200;
-            background-color: $primary-100;
-            color: $primary-500;
+            border: 1px solid var(--primary-200);
+            background-color: var(--primary-100);
+            color: var(--primary-500);
 
             @include hover {
-                background-color: $primary-200;
-                color: $primary-600;
+                background-color: var(--primary-200);
+                color: var(--primary-600);
             }
 
             &:active {
-                background-color: $primary-500;
+                background-color: var(--primary-500);
                 color: $white;
             }
 
             &._disabled {
-                border-color: $primary-100;
-                color: $primary-300;
+                border-color: var(--primary-100);
+                color: var(--primary-300);
             }
         }
 
@@ -149,7 +149,7 @@ export default {
             }
 
             &:active {
-                background-color: $primary-500;
+                background-color: var(--primary-500);
                 color: $white;
             }
 

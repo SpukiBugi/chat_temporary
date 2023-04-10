@@ -246,7 +246,7 @@ export default {
         z-index: 2;
         display: flex;
         justify-content: space-between;
-        height: 48px;
+        height: 47px;
         padding: 12px;
         background-color: $white;
         border-top-left-radius: 20px;
@@ -265,7 +265,7 @@ export default {
         }
 
         &:active {
-            color: $primary-500;
+            color: var(--primary-500);
         }
     }
 
@@ -302,16 +302,16 @@ export default {
         transition: $default-transition;
 
         &._short {
-            background-color: $primary-500;
+            background-color: var(--primary-500);
             color: $white;
             gap: 8px;
 
             @include hover {
-                background-color: $primary-600;
+                background-color: var(--primary-600);
             }
 
             &:active {
-                background-color: $primary-900;
+                background-color: var(--primary-900);
             }
 
             .longSwitchIcn {
@@ -321,15 +321,15 @@ export default {
 
         &._long {
             background-color: $white;
-            color: $primary-500;
+            color: var(--primary-500);
             gap: 4px;
 
             @include hover {
-                color: $primary-600;
+                color: var(--primary-600);
             }
 
             &:active {
-                color: $primary-900;
+                color: var(--primary-900);
             }
         }
     }

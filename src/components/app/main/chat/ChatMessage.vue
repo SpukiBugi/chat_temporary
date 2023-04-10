@@ -114,7 +114,7 @@ export default {
 
             .bubble {
                 border-radius: 16px 16px 4px 16px;
-                background-color: $primary-100;
+                background-color: var(--primary-100);
             }
         }
 
@@ -159,7 +159,7 @@ export default {
     .bubbleText {
         a {
             position: relative;
-            color: $primary-500;
+            color: var(--primary-500);
             transition: $default-transition;
 
             &:hover {
@@ -203,7 +203,7 @@ export default {
         visibility: hidden;
         display: inline-block;
         margin-right: 6px;
-        color: $primary-500;
+        color: var(--primary-500);
 
         &._active {
             visibility: visible;

@@ -740,7 +740,7 @@ export default {
 
             &._focused {
                 .native {
-                    border-color: $primary-500;
+                    border-color: var(--primary-500);
                 }
             }
         }
@@ -804,7 +804,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 16px;
-        border: 1.5px solid $primary-500;
+        border: 1.5px solid var(--primary-500);
         transition: opacity $default-transition;
         pointer-events: none;
     }

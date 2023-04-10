@@ -320,18 +320,18 @@ export default {
         justify-content: center;
         width: 48px;
         height: 48px;
-        color: $primary-500;
+        color: var(--primary-500);
         transform: translateY(-50%);
         transition: $default-transition;
         cursor: pointer;
         user-select: none;
 
         @include hover {
-            color: $primary-600;
+            color: var(--primary-600);
         }
 
         &:active {
-            color: $primary-900;
+            color: var(--primary-900);
         }
     }
 </style>

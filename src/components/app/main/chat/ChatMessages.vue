@@ -255,14 +255,14 @@ export default {
     .note {
         padding: 4px 6px;
         border-radius: 8px;
-        border: 1px solid $primary-200;
-        background-color: $primary-100;
+        border: 1px solid var(--primary-200);
+        background-color: var(--primary-100);
         text-align: center;
         font-weight: 500;
         font-size: 12px;
         line-height: 15px;
         letter-spacing: -.01em;
-        color: $primary-500;
+        color: var(--primary-500);
         transition: $default-transition;
         animation: toGray .3s ease 3s forwards;
     }

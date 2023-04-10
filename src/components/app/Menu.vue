@@ -439,7 +439,7 @@ export default {
         align-items: center;
         padding: 0;
         border-radius: 26px;
-        background-color: $primary-500;
+        background-color: var(--primary-500);
         transition: padding $default-transition;
     }
 
@@ -448,7 +448,7 @@ export default {
         flex-shrink: 0;
         width: 48px;
         height: 48px;
-        color: $primary-500;
+        color: var(--primary-500);
         transition: width $default-transition, height $default-transition;
         cursor: pointer;
         user-select: none;
@@ -499,19 +499,19 @@ export default {
             width: 5px;
             height: 5px;
             border-radius: 50%;
-            border: 1px solid $primary-500;
+            border: 1px solid var(--primary-500);
             background-color: $white;
             opacity: 0;
             transition: $default-transition;
         }
 
         &:hover {
-            background-color: $primary-600;
-            color: $primary-300;
+            background-color: var(--primary-600);
+            color: var(--primary-300);
 
             &:after {
-                border-color: $primary-600;
-                background-color: $primary-300;
+                border-color: var(--primary-600);
+                background-color: var(--primary-300);
             }
         }
 
@@ -531,7 +531,7 @@ export default {
         width: 1px;
         height: 12px;
         margin: auto 12px;
-        background-color: $base-300;
+        background-color: var(--primary-400);
     }
 
     .nonCallWrap,
@@ -585,7 +585,7 @@ export default {
             user-select: none;
 
             &:hover {
-                color: $primary-500;
+                color: var(--primary-500);
             }
         }
 
@@ -629,7 +629,7 @@ export default {
 
     .textLink {
         position: relative;
-        color: $primary-500;
+        color: var(--primary-500);
         transition: $default-transition;
 
         &:after {

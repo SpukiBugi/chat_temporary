@@ -179,6 +179,7 @@ export default {
                     '--primary-100': '#EAF5FF',
                     '--primary-200': '#B9DAFF',
                     '--primary-300': '#6497FF',
+                    '--primary-400': '#3D70F4',
                     '--primary-500': '#1F44FF',
                     '--primary-600': '#1233EE',
                     '--primary-900': '#1431BF',
