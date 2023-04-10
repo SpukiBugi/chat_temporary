@@ -3,7 +3,6 @@
         <ChatMessages
             v-if="isShowMessages"
             :history="history"
-            :history-page-info="historyPageInfo"
             :is-loading="isLoading"
             :is-long="isLong"
             :note="note"
@@ -11,6 +10,7 @@
             @set-rating="$emit('set-rating', $event)"
             @value-click="$emit('value-click', $event)"
             @repeat-click="$emit('repeat-click')"
+            @append-history="$emit('append-history')"
         />
 
         <div v-else :class="$style.hello">
@@ -74,11 +74,6 @@ export default {
         history: {
             type: Array,
             required: true,
-        },
-
-        historyPageInfo: {
-            type: Object,
-            default: () => ({}),
         },
 
         value: {

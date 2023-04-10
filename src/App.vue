@@ -48,6 +48,7 @@
                     @repeat-click="onRepeat"
                     @set-rating="onSetRating"
                     @set-long="isLong = $event"
+                    @append-history="getHistory"
                 />
             </div>
             <div ref="avatarWrap" :class="$style.avatarWrap">
@@ -122,6 +123,7 @@ export default {
             note: '',
 
             /** Info */
+            isHistoryLoading: false,
             history: []||testHistory,
             historyPageInfo: {
                 limit: 10,
@@ -383,6 +385,12 @@ export default {
         },
 
         async getHistory() {
+            if (this.isHistoryLoading || !this.isLong || !this.historyPageInfo.hasNext) {
+                return;
+            }
+
+            this.isHistoryLoading = true;
+
             try {
                 const sendValues = {
                     limit: this.historyPageInfo.limit,
@@ -397,11 +405,13 @@ export default {
                 }).then(response => response.json());
 
                 this.historyPageInfo.offset += res.results?.length;
-                this.historyPageInfo.hasNext = res.hasNext;
+                this.historyPageInfo.hasNext = Boolean(res.results?.length);
                 console.log('res', res);
             } catch (e) {
                 console.warn('[Chat/getHistory] error: ', e);
             }
+
+            this.isHistoryLoading = false;
         },
 
         /** Конец Чата */

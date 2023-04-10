@@ -72,11 +72,6 @@ export default {
             default: () => [],
         },
 
-        historyPageInfo: {
-            type: Object,
-            default: () => ({}),
-        },
-
         isLoading: {
             type: Boolean,
             default: false,
@@ -158,12 +153,8 @@ export default {
         },
 
         onScroll(e) {
-            if (this.isLoading || !this.isLong || !this.historyPageInfo.hasNext) {
-                return;
-            }
-
             if (e.currentTarget.scrollTop < 100) {
-                console.log('loadMore');
+                this.$emit('append-history');
             }
         },
     },

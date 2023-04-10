@@ -52,7 +52,7 @@
                             <div :key="isLong" :class="[$style.longSwitchInner, [$style[isLong ? '_short' : '_long']] ]">
                                 {{ isLong ? 'Краткий вид' : 'История сообщений' }}
                                 <VIcon name="IcHistory"
-                                       size="size-14"
+                                       size="size-12"
                                        :class="$style.longSwitchIcn"
                                 />
                             </div>
@@ -77,7 +77,6 @@
                             :is-loading="isLoading"
                             :is-show-switch="isShowSwitch"
                             :history="history"
-                            :history-page-info="historyPageInfo"
                             :value="value"
                             :note="note"
                             :current-step="currentStep"
@@ -87,6 +86,7 @@
                             @submit="$emit('submit')"
                             @repeat-click="$emit('repeat-click')"
                             @set-rating="$emit('set-rating', $event)"
+                            @append-history="$emit('append-history')"
                         />
                     </transition>
                 </div>
@@ -115,11 +115,6 @@ export default {
         history: {
             type: Array,
             required: true,
-        },
-
-        historyPageInfo: {
-            type: Object,
-            default: () => ({}),
         },
 
         value: {
